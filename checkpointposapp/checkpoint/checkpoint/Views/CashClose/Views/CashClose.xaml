@@ -1,0 +1,335 @@
+﻿<UserControl x:Class="checkpoint.Views.CashClose.Views.CashClose"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             KeyDown="UserControl_KeyDown"
+             xmlns:local="clr-namespace:checkpoint.Views.CashClose.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1200">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type DataGrid}">
+            <Setter Property="BorderBrush" Value="#495057"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="white"/>
+            <Style.Resources>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="#2196f3"/>
+                    <Setter Property="Padding" Value="30 5 5 5 "/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Style>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Foreground" Value="#495057"/>
+                    <Style.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="Padding" Value="30 5 5 5"/>
+                        </Style>
+                    </Style.Resources>
+                </Style>
+            </Style.Resources>
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="15"
+          Background="white">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Grid.ColumnSpan="3">
+                <StackPanel>
+                    <TextBlock Text="CORTE DE CAJA"
+				       FontSize="40"
+                       FontWeight="Bold"/>
+                </StackPanel>
+            </Grid>
+            <Grid  Grid.Row="1" Grid.Column="0" Margin="15">
+                <StackPanel>
+                    <StackPanel Margin="0 30 0 0">
+                        <StackPanel>
+                            <TextBlock Text="VENTA"
+                                       Foreground="white"
+                                       Background="#0069c0"
+                                       FontSize="20px"
+                                       Padding="5px"/>
+                        </StackPanel>
+                        <Border BorderThickness="1 0 1 1"
+                                BorderBrush="#495057"
+                                Padding="10">
+                            <StackPanel>
+                                <StackPanel Margin=" 0 15 0 0">
+                                    <TextBlock Text="TOTAL:"
+							                   FontSize="20"
+                                               FontWeight="Bold"
+                                               Foreground="#495057"
+                                               HorizontalAlignment="Left"/>
+                                    <TextBlock Text=""
+							                   FontSize="25"
+                                               Foreground="#495057"
+                                               Width="165"
+                                               HorizontalAlignment="Left"
+                                               Margin="30 5 0 0"
+                                               x:Name="totalSale"/>
+                                </StackPanel>
+                                <StackPanel Margin=" 0 30 0 0" x:Name="paymentsContent">
+                                    <TextBlock Text="TIPOS DE PAGO:"
+							                   FontSize="20"
+                                               FontWeight="Bold"
+                                               Foreground="#495057"
+                                               HorizontalAlignment="Left"
+                                               Margin="0 0 0 0"/>
+                                    <DataGrid x:Name="paymentsGrid"
+                                              AlternatingRowBackground="#bae4ff"
+                                              Margin="0 10 0 0"                     
+                                              AutoGenerateColumns="false"
+                                              MaxHeight="200"
+                                              HorizontalAlignment="Left"
+                                              GridLinesVisibility="None"
+                                              RowHeaderWidth="0"
+                                              MinHeight="200"
+                                              CanUserAddRows="False"
+                                              Width="{Binding ActualWidth, ElementName=paymentsContent}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Nombre" 
+                                                                Width="150"
+                                                                Binding="{Binding TipoPago}"/>
+                                            <DataGridTextColumn Header="Cantidad" 
+                                                                Width="150"
+                                                                Binding="{Binding Total}"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+            <Grid  Grid.Row="1" Grid.Column="1" Margin="15">
+                <StackPanel>
+                    <StackPanel Margin="0 30 0 0">
+                        <StackPanel>
+                            <TextBlock Text="IMPUESTOS"
+                                       Foreground="white"
+                                       Background="#0069c0"
+                                       FontSize="20px"
+                                       Padding="5px"/>
+                        </StackPanel>
+                        <Border BorderThickness="1 0 1 1"
+                                BorderBrush="#495057"
+                                Padding="10">
+                            <StackPanel>
+                                <StackPanel Margin=" 0 0 0 0" x:Name="taxesContent">
+                                    <StackPanel Margin=" 0 15 0 15">
+                                        <TextBlock Text="TOTAL:"
+							                   FontSize="20"
+                                               FontWeight="Bold"
+                                               Foreground="#495057"
+                                               HorizontalAlignment="Left"/>
+                                        <TextBlock Text="{Binding  StringFormat={}{0:C2}}"
+							                   FontSize="25"
+                                               Foreground="#495057"
+                                               Width="165"
+                                               HorizontalAlignment="Left"
+                                               Margin="30 5 0 0"
+                                               x:Name="totalTaxes"/>
+                                    </StackPanel>
+                                    <StackPanel Margin="0 15 0 0">
+                                        <TextBlock Text="DESGLOSE IMPUESTOS:"
+							                   FontSize="20"
+                                               FontWeight="Bold"
+                                               Foreground="#495057"
+                                               HorizontalAlignment="Left"/>
+                                    </StackPanel>
+                                    <DataGrid x:Name="taxesGrid"
+                                              AlternatingRowBackground="#bae4ff"
+                                              Margin="0 10 0 0"                     
+                                              AutoGenerateColumns="false"
+                                              MaxHeight="200"
+                                              HorizontalAlignment="Left"
+                                              GridLinesVisibility="None"
+                                              RowHeaderWidth="0"
+                                              MinHeight="200"
+                                              CanUserAddRows="False"
+                                              Width="{Binding ActualWidth, ElementName=taxesContent}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Nombre" 
+                                                                Width="150"
+                                                                Binding="{Binding TipoImpuesto}"/>
+                                            <DataGridTextColumn Header="Cantidad" 
+                                                                Width="150"
+                                                                Binding="{Binding Total, StringFormat={}{0:C2}}"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+            <Grid  Grid.Row="1" Grid.Column="2" Margin="15">
+                <StackPanel>
+                    <StackPanel Margin="0 30 0 0">
+                        <StackPanel>
+                            <TextBlock Text="SEPARACION POR TASA"
+                                       Foreground="white"
+                                       Background="#0069c0"
+                                       FontSize="20px"
+                                       Padding="5px"/>
+                        </StackPanel>
+                        <Border BorderThickness="1 0 1 1"
+                                BorderBrush="#495057"
+                                Padding="10">
+                            <StackPanel>
+                                <StackPanel Margin=" 0 0 0 0" x:Name="ivaContent">
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel Margin=" 0 15 0 15">
+                                            <TextBlock Text="TOTAL:"
+							                   FontSize="20"
+                                               FontWeight="Bold"
+                                               Foreground="#495057"
+                                               HorizontalAlignment="Left"/>
+                                            <TextBlock Text="{Binding  StringFormat={}{0:C2}}"
+							                   FontSize="25"
+                                               Foreground="#495057"
+                                               Width="165"
+                                               HorizontalAlignment="Left"
+                                               Margin="30 5 0 0"
+                                               x:Name="totalTasa"/>
+                                        </StackPanel>
+                                        <StackPanel Margin=" 0 15 0 15">
+                                            <TextBlock Text="IVA:"
+							                   FontSize="20"
+                                               FontWeight="Bold"
+                                               Foreground="#495057"
+                                               HorizontalAlignment="Left"/>
+                                            <TextBlock Text="{Binding  StringFormat={}{0:C2}}"
+							                   FontSize="25"
+                                               Foreground="#495057"
+                                               Width="165"
+                                               HorizontalAlignment="Left"
+                                               Margin="30 5 0 0"
+                                               x:Name="totalTasaIva"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Margin="0 15 0 0">
+                                        <TextBlock Text="DESGLOSE X TASA:"
+							                   FontSize="20"
+                                               FontWeight="Bold"
+                                               Foreground="#495057"
+                                               HorizontalAlignment="Left"/>
+                                    </StackPanel>
+                                    <DataGrid x:Name="ivaGrid"
+                                              AlternatingRowBackground="#bae4ff"
+                                              Margin="0 10 0 0"                     
+                                              AutoGenerateColumns="false"
+                                              MaxHeight="200"
+                                              HorizontalAlignment="Left"
+                                              GridLinesVisibility="None"
+                                              RowHeaderWidth="0"
+                                              MinHeight="200"
+                                              CanUserAddRows="False"
+                                              Width="{Binding ActualWidth, ElementName=ivaContent}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Nombre" 
+                                                                Width="150"
+                                                                Binding="{Binding Nombre}"/>
+                                            <DataGridTextColumn Header="Cantidad" 
+                                                                Width="150"
+                                                                Binding="{Binding Total}"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+            <Grid  Grid.Row="2" Grid.Column="0" Margin="15">
+                <StackPanel>
+                    <StackPanel Margin="0 30 0 0">
+                        <StackPanel>
+                            <TextBlock Text="DEVOLUCIONES"
+                                       Foreground="white"
+                                       Background="#0069c0"
+                                       FontSize="20px"
+                                       Padding="5px"/>
+                        </StackPanel>
+                        <Border BorderThickness="1 0 1 1"
+                                BorderBrush="#495057"
+                                Padding="10">
+                            <StackPanel>
+                                <StackPanel Margin=" 0 0 0 0" x:Name="returnsContent">
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel Margin=" 0 15 0 15">
+                                            <TextBlock Text="TOTAL:"
+							                   FontSize="20"
+                                               FontWeight="Bold"
+                                               Foreground="#495057"
+                                               HorizontalAlignment="Left"/>
+                                            <TextBlock Text="{Binding  StringFormat={}{0:C2}}"
+							                   FontSize="25"
+                                               Foreground="#495057"
+                                               Width="165"
+                                               HorizontalAlignment="Left"
+                                               Margin="30 5 0 0"
+                                               x:Name="totalReturn"/>
+                                        </StackPanel>
+                                        <StackPanel Margin=" 0 15 0 15">
+                                            <TextBlock Text="IVA:"
+							                   FontSize="20"
+                                               FontWeight="Bold"
+                                               Foreground="#495057"
+                                               HorizontalAlignment="Left"/>
+                                            <TextBlock Text="{Binding  StringFormat={}{0:C2}}"
+							                   FontSize="25"
+                                               Foreground="#495057"
+                                               Width="165"
+                                               HorizontalAlignment="Left"
+                                               Margin="30 5 0 0"
+                                               x:Name="totalReturnIva"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Margin="0 15 0 0">
+                                        <TextBlock Text="DESGLOSE X TASA:"
+							                   FontSize="20"
+                                               FontWeight="Bold"
+                                               Foreground="#495057"
+                                               HorizontalAlignment="Left"/>
+                                    </StackPanel>
+                                    <DataGrid x:Name="returnsGrid"
+                                              AlternatingRowBackground="#bae4ff"
+                                              Margin="0 10 0 0"                     
+                                              AutoGenerateColumns="false"
+                                              MaxHeight="200"
+                                              HorizontalAlignment="Left"
+                                              GridLinesVisibility="None"
+                                              RowHeaderWidth="0"
+                                              MinHeight="200"
+                                              CanUserAddRows="False"
+                                              Width="{Binding ActualWidth, ElementName=returnsContent}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Nombre" 
+                                                                Width="150"
+                                                                Binding="{Binding Nombre}"/>
+                                            <DataGridTextColumn Header="Cantidad" 
+                                                                Width="150"
+                                                                Binding="{Binding Total}"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

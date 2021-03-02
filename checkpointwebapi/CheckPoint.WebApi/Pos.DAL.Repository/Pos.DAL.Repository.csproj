@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="DomainUoW\" />
+    <Folder Include="EFLogger\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pos.BAL.Interface\Pos.BAL.Interface.csproj" />
+    <ProjectReference Include="..\Pos.Business\Pos.Business.csproj" />
+    <ProjectReference Include="..\Pos.EntityFramework\Pos.EntityFramework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="USLib">
+      <HintPath>..\..\..\USLib-Install-dotnet-20201021\USLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

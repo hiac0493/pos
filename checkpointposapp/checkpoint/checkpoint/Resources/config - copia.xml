@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cash_Config>
+  <ticket>
+    <Caja xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <name>MINI MARKET</name>
+      <fiscal_name>test</fiscal_name>
+      <rfc>MMC110808MA8</rfc>
+      <adress>CARRETERA ESTATAL LIBRAMIENTO NORTE SANTIAGO OCEGUERA KM 12 MARQUEZ DE LEON LA PAZ BAJA CALIFORNIA SUR MEXICO 23030</adress>
+    </Caja>
+    <footer_Ticket>
+      <message1>GRACIAS POR SU COMPRA</message1>
+      <message2>REGIMEN PERSONAS MORALES</message2>
+      <message3>EXPEDIDO EN LA PAZ BCS MEX</message3>
+    </footer_Ticket>
+  </ticket>
+  <connection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <name>Caja1</name>
+    <store>Balmaceda</store>
+    <ip_cash>192.16.4.1</ip_cash>
+    <ip_server>192.162.8.1</ip_server>
+  </connection>
+</cash_Config>

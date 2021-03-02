@@ -1,0 +1,271 @@
+﻿<UserControl x:Class="checkpoint.Views.Catalogs.CatalogSat.Views.CatalogSat"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:checkpoint.Views.Catalogs.CatalogSat.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1200">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type DataGrid}">
+            <Setter Property="BorderBrush" Value="#495057"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="white"/>
+            <Style.Resources>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="#2196f3"/>
+                    <Setter Property="Padding" Value="30 5 5 5 "/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Style>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Foreground" Value="#495057"/>
+                    <Style.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="Padding" Value="30 5 5 5"/>
+                        </Style>
+                    </Style.Resources>
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style TargetType="{x:Type TabControl}">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style TargetType="{x:Type Button}">
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style TargetType="{x:Type TextBox}">
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style TargetType="{x:Type PasswordBox}">
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Style.Resources>
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="15px"
+          Background="white">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="490"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Grid.ColumnSpan="2">
+            <TextBlock  Text="CATÁLOGO DEL SAT"
+                        FontSize="40"
+                        FontWeight="Bold"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <StackPanel Margin="0 30 0 0">
+                <TextBlock Text="CATÁLOGO"
+                           Foreground="#495057"
+                           FontSize="20"
+                           FontWeight="Bold">
+                </TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <Button Padding="5"
+                            Margin="0 10 30 0"
+                            Background="#0069c0"
+                            BorderThickness="0"
+                            Width="120"
+                            Height="30"
+                            Click="activeCatalogSat_Click">
+                        <StackPanel Orientation="Horizontal" >
+                            <fa5:SvgAwesome Icon="Solid_LockOpen"   
+                                            Width="15"
+                                            Foreground="White"
+                                            Margin="0 0 10 0"/>
+                            <TextBlock Text="ACTIVAR"
+                                       Foreground="white"
+                                       FontSize="12"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Padding="5"
+                            Margin="0 10 30 0"
+                            Background="#0069c0"
+                            BorderThickness="0"
+                            Width="120"
+                            Height="30"
+                            Click="deactivateCatalogSat_Click">
+                        <StackPanel Orientation="Horizontal" >
+                            <fa5:SvgAwesome Icon="Solid_Minus"   
+                                            Width="15"
+                                            Foreground="White"
+                                            Margin="0 0 10 0"/>
+                            <TextBlock Text="ELIMINAR"
+                                       Foreground="white"
+                                       FontSize="12"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Margin=" 0 15 0 0">
+                    <TextBlock Text="BUSCAR:"
+                               FontSize="20"
+                               VerticalAlignment="Center"
+                               FontWeight="Bold"
+                               Foreground="#495057"/>
+                    <TextBox   Padding="5"
+                               Foreground="#495057"
+                               FontSize="15"
+                               HorizontalAlignment="Left"
+                               MinWidth="300"
+                               MaxHeight="30"
+                               Margin="30 0 0 0"
+                               KeyUp="searchCatalogSat_KeyUp"
+                               TextChanged="searchCatalogSat_TextChanged"
+                               x:Name="searchCatalogSatTextBox"/>
+                </StackPanel>
+                <StackPanel  Margin=" 0 15 0 0" 
+                             x:Name="UsersContent">
+                    <DataGrid x:Name="catalogSatGrid"
+                              MouseDoubleClick="catalogSatGrid_MouseDoubleClick"
+                              CanUserAddRows="False"
+                              AlternatingRowBackground="#bae4ff"
+                              Margin="0"
+                              IsReadOnly="True"
+                              AutoGenerateColumns="false"
+                              Focusable="True"
+                              MaxHeight="300"
+                              HorizontalAlignment="Left"
+                              GridLinesVisibility="None"
+                              RowHeaderWidth="0"
+                              MinHeight="300"
+                              Width="{Binding ElementName=UsersContent, Path=ActualWidth}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Clave"
+                                                Binding="{Binding Clave}"
+                                                Width="150"/>
+                            <DataGridTextColumn Header="Nombre"
+                                                Binding="{Binding Descripcion}"
+                                                Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="1" Margin="10 0 0 0">
+            <TabControl x:Name="brandGrid">
+                <TabItem>
+                    <StackPanel>
+                        <StackPanel Width="460"
+                                    HorizontalAlignment="Left"
+                                    Margin="0 30 0 0">
+                            <TextBlock Text="NUEVO CATALOGO"
+                                       FontSize="20"
+                                       FontWeight="Bold"
+                                       Foreground="#495057"
+                                       Margin="0 0 10 10"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Left"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Padding="5"
+                                    Margin="0 0 30 0"
+                                    Background="#0069c0"
+                                    BorderThickness="0"
+                                    Width="120"
+                                    Height="30"
+                                    HorizontalAlignment="Left"
+                                    Click="cancelCatalogSat_Click">
+                                    <StackPanel Orientation="Horizontal" >
+                                        <fa5:SvgAwesome Icon="Solid_Times"   
+                                                        Width="15"
+                                                        Foreground="White"
+                                                        Margin="0 0 10 0"/>
+                                        <TextBlock Text="CANCELAR"
+                                       Foreground="white"
+                                       FontSize="12"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Padding="5"
+                                    Margin="0 0 30 0"
+                                    Background="#0069c0"
+                                    BorderThickness="0"
+                                    Width="120"
+                                    Height="30"
+                                    HorizontalAlignment="Left"
+                                    Click="saveCatalogSat_Click">
+                                    <StackPanel Orientation="Horizontal" >
+                                        <fa5:SvgAwesome Icon="Solid_Save"   
+                                            Width="15"
+                                            Foreground="White"
+                                            Margin="0 0 10 0"/>
+                                        <TextBlock Text="GUARDAR"
+                                       Foreground="white"
+                                       FontSize="12"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Margin=" 0 15 0 0"
+                                    Orientation="Horizontal">
+                            <TextBlock Text="ACTIVAR:"
+                                       FontSize="15"
+                                       VerticalAlignment="Center"
+                                       FontWeight="Bold"
+                                       Foreground="#495057"
+                                       Width="80"/>
+                            <CheckBox Margin="0 3 0 0"
+                                      Name="checkStatus"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <StackPanel Margin=" 0 15 0 15"
+                                        Orientation="Horizontal">
+
+                                <TextBlock Text="CLAVE:"
+                                           FontSize="15"
+                                           VerticalAlignment="Center"
+                                           FontWeight="Bold"
+                                           Foreground="#495057"
+                                           Width="150"/>
+                                <TextBox   Padding="5"
+                                           Foreground="#495057"
+                                           FontSize="15"
+                                           HorizontalAlignment="Left"
+                                           MinWidth="300"
+                                           MaxHeight="30"
+                                           Margin="10 0 0 0"
+                                           Name="txtClave"/>
+                            </StackPanel>
+                            <StackPanel Margin=" 0 15 0 15"
+                                        Orientation="Horizontal">
+                                <TextBlock Text="NOMBRE:"
+                                           FontSize="15"
+                                           VerticalAlignment="Center"
+                                           FontWeight="Bold"
+                                           Foreground="#495057"
+                                           Width="150"/>
+                                <TextBox   Padding="5"
+                                           Foreground="#495057"
+                                           FontSize="15"
+                                           HorizontalAlignment="Left"
+                                           MinWidth="300"
+                                           MaxHeight="30"
+                                           Margin="10 0 0 0"
+                                           Name="txtName"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</UserControl>

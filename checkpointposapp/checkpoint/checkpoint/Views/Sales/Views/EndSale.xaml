@@ -1,0 +1,356 @@
+﻿<Window x:Class="checkpoint.Sales.Views.EndSale"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:checkpoint.Sales.Views"
+        xmlns:fa5="http://schemas.fontawesome.com/icons/"
+        mc:Ignorable="d"
+        Title="Cobrar" Height="500" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBox}">
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style TargetType="{x:Type Button}">
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style TargetType="{x:Type TabControl}">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Height="auto"
+                        Margin="0 30 0 0">
+                <Label Content="TOTAL:"
+                   Foreground="#495057"
+                       FontSize="40"
+                       FontWeight="Bold"
+                       Padding="0"
+                       Margin=" 0 0 15 0"/>
+                <Label Content=""
+                   Foreground="#495057"
+                   FontSize="40"
+                   Name="totalLabel"
+                   FontWeight="Bold"
+                   Padding="0"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition  Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Border Padding="15">
+                    <StackPanel>
+                        <TabControl Name="tabPay">
+                            <TabItem >
+                                <StackPanel>
+                                    <Label Content="PAGO"
+                                           Foreground="#495057"
+                                           FontSize="30"
+                                           FontWeight="Bold"/>
+                                    <TextBox MinWidth="200"
+                                             MaxWidth="200"
+                                             Padding="5"
+                                             Foreground="#495057"
+                                             FontSize="30"
+                                             Loaded="Got_Loaded"
+                                             Name="textPagoEfectivo"
+                                             HorizontalAlignment="Left"/>
+                                    <StackPanel Orientation="Horizontal"
+                                                 Margin="0 30 0 0">
+                                        <Label Content="CAMBIO:"
+                                               Foreground="#495057"
+                                               FontSize="30"
+                                               FontWeight="Bold"
+                                               Padding="0"
+                                               Margin="0 0 15 0"/>
+                                        <Label Content=""
+                                               Name="cambioLabel"
+                                               Foreground="#495057"
+                                               FontSize="30"
+                                               FontWeight="Bold"
+                                               Padding="0"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem>
+                                <StackPanel>
+                                    <Label Content="PAGO"
+                                           Foreground="#495057"
+                                           FontSize="30"
+                                           FontWeight="Bold"/>
+                                    <TextBox MinWidth="200"
+                                             MaxWidth="200"
+                                             Padding="5"
+                                             Name="textPagoCredito"
+                                             Loaded="Got_Loaded"
+                                             Foreground="#495057"
+                                             FontSize="30"
+                                             HorizontalAlignment="Left"/>
+                                    <StackPanel Orientation="Horizontal"
+                                                Margin="0 15 0 0">
+                                        <Label Content="CLIENTE:"
+                                               Foreground="#495057"
+                                               FontSize="15"
+                                               FontWeight="Bold"
+                                               Padding="0"/>
+                                        <Label Content="PEDRO ALBERTO JIMENEZ POSADA"
+                                               Foreground="#495057"
+                                               FontSize="15"
+                                               Margin="15 0 0 0"
+                                               Padding="0"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal"
+                                                Margin="0 15 0 0">
+                                        <Label Content="CRÉDITO DISPONIBLE:"
+                                               Foreground="#495057"
+                                               FontSize="15"
+                                               FontWeight="Bold"
+                                               Padding="0"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="$"
+                                                   Foreground="#495057"
+                                                   FontSize="15"
+                                                   Margin="15 0 0 0"
+                                                   Padding="0"/>
+                                            <Label Content="500"
+                                                   Foreground="#495057"
+                                                   FontSize="15"
+                                                   Margin="0"
+                                                   Padding="0"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal"
+                                                Margin="0 15 0 0">
+                                        <Label Content="SALDO:"
+                                               Foreground="#495057"
+                                               FontSize="15"
+                                               FontWeight="Bold"
+                                               Padding="0"/>
+                                        <Label Content="$"
+                                               Foreground="#495057"
+                                               FontSize="15"
+                                               Margin="15 0 0 0"
+                                               Padding="0"/>
+                                        <Label Content="1000"
+                                               Foreground="#495057"
+                                               FontSize="15"
+                                               Margin="0"
+                                               Padding="0"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem>
+                                <StackPanel>
+                                    <Label Content="MONTO"
+                                           Foreground="#495057"
+                                           FontSize="30"
+                                           FontWeight="Bold"/>
+                                    <TextBox MinWidth="200"
+                                             MaxWidth="200"
+                                             Padding="5"
+                                             Name="textPagoTarjetas"
+                                             Loaded="Got_Loaded"
+                                             Foreground="#495057"
+                                             FontSize="30"
+                                             HorizontalAlignment="Left"/>
+                                    <Image Width="100" Source="../../Assets/img/card.png"
+                                           Margin="0 15 0 0"
+                                           HorizontalAlignment="Left"/>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem>
+                                <StackPanel x:Name="main4">
+                                    <Label Content="MONTO"
+                                           Foreground="#495057"
+                                           FontSize="30"
+                                           FontWeight="Bold"/>
+                                    <TextBox MinWidth="200"
+                                             MaxWidth="200"
+                                             Padding="5"
+                                             Name="totalPagoVales"
+                                             Loaded="Got_Loaded"
+                                             Foreground="#495057"
+                                             FontSize="30"
+                                             HorizontalAlignment="Left"/>
+                                    <Label Content="REFERENCIA"
+                                           Foreground="#495057"
+                                           FontSize="30"
+                                           FontWeight="Bold"/>
+                                    <TextBox MaxWidth="300"
+                                             Width="{Binding ElementName=main4,Path=ActualWidth}"
+                                             Padding="5"
+                                             Name="referenciaTextVales"
+                                             Foreground="#495057"
+                                             FontSize="30"
+                                             HorizontalAlignment="Left"/>
+                                </StackPanel>
+                            </TabItem>
+                        </TabControl>
+
+                        <Button Padding="10"
+                        Margin="0 30 0 0"
+                        Background="#0069c0"
+                        BorderThickness="0"
+                        Name="cobrarButton"
+                        MaxHeight="90" Click="cobrarButton_Click">
+                            <Label Content="COBRAR  (F12)"
+                           Foreground="white"
+                           FontSize="30"
+                           FontWeight="Bold"/>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Border Padding="15">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Column="0" Grid.Row="0">
+                            <Border Padding="15">
+                                <StackPanel>
+                                    <Label Content="EFECTIVO"
+                                           Foreground="#495057"
+                                           FontSize="20"
+                                           FontWeight="Bold"
+                                           Padding="0"/>
+                                    <Button Padding="10"
+                                            Margin="0 10 0 0"
+                                            Name="efectivoButton"
+                                            Click="efectivoButton_Click"
+                                            Background="#0069c0"
+                                            BorderThickness="0">
+                                        <StackPanel>
+                                            <fa5:SvgAwesome Icon="Regular_MoneyBillAlt"   
+                                            Width="50"
+                                            Margin="30 0 30 0" 
+                                            Foreground="White"/>
+                                            <TextBlock Text="F3"
+                                                       Foreground="white"
+                                                       FontSize="20"
+                                                       HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                        <Grid Grid.Column="1" Grid.Row="0">
+                            <Border Padding="15">
+                                <StackPanel>
+                                    <Label Content="CRÉDITO"
+                                           Foreground="#495057"
+                                           FontSize="20"
+                                           FontWeight="Bold"
+                                           Padding="0"/>
+                                    <Button Padding="10"
+                                            Margin="0 10 0 0"
+                                            Background="#0069c0"
+                                            Name="creditoButton"
+                                            Click="creditoButton_Click"
+                                            BorderThickness="0">
+                                        <StackPanel>
+                                            <fa5:SvgAwesome Icon="Regular_AddressBook"   
+                                            Width="35"
+                                            Margin="30 0 30 0" 
+                                            Foreground="White"/>
+                                            <TextBlock Text="F4"
+                                                       Foreground="white"
+                                                       FontSize="20"
+                                                       HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                        <Grid Grid.Column="0" Grid.Row="1">
+                            <Border Padding="15">
+                                <StackPanel>
+                                    <Label Content="TARJETAS"
+                                           Foreground="#495057"
+                                           FontSize="20"
+                                           FontWeight="Bold"
+                                           Padding="0"/>
+                                    <Button Padding="10"
+                                            Margin="0 10 0 0"
+                                            Background="#0069c0"
+                                            Name="tarjetasButton"
+                                            Click="tarjetasButton_Click"
+                                            BorderThickness="0">
+                                        <StackPanel>
+                                            <fa5:SvgAwesome Icon="Regular_CreditCard"   
+                                            Width="46"
+                                            Margin="30 0 30 0" 
+                                            Foreground="White"/>
+                                            <TextBlock Text="F5"
+                                                       Foreground="white"
+                                                       FontSize="20"
+                                                       HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                        <Grid Grid.Column="1" Grid.Row="1">
+                            <Border Padding="15">
+                                <StackPanel>
+                                    <Label Content="VALES"
+                                           Foreground="#495057"
+                                           FontSize="20"
+                                           FontWeight="Bold"
+                                           Padding="0"/>
+                                    <Button Padding="10"
+                                            Margin="0 10 0 0"
+                                            Background="#0069c0"
+                                            Name="valesButton"
+                                            Click="valesButton_Click"
+                                            BorderThickness="0">
+                                        <StackPanel>
+                                            <fa5:SvgAwesome Icon="Solid_Wallet"   
+                                            Width="40"
+                                            Margin="30 0 30 0" 
+                                            Foreground="White"/>
+                                            <TextBlock Text="F6"
+                                                       Foreground="white"
+                                                       FontSize="20"
+                                                       HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

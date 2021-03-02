@@ -1,0 +1,173 @@
+﻿<UserControl x:Class="checkpoint.Views.Sales.Views.StartSale"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             KeyDown="UserControl_KeyDown"
+             SizeChanged="UserControl_SizeChanged"
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1200">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type TabControl}">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style TargetType="{x:Type Button}">
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style TargetType="{x:Type TextBox}">
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style TargetType="{x:Type DataGrid}">
+            <Setter Property="BorderBrush" Value="#495057"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="white"/>
+            <Style.Resources>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="#2196f3"/>
+                    <Setter Property="Padding" Value="30 5 5 5 "/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Style>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Foreground" Value="#495057"/>
+                    <Style.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="Padding" Value="30 5 5 5"/>
+                        </Style>
+                    </Style.Resources>
+                </Style>
+            </Style.Resources>
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="15"
+          Background="White">
+        <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal"
+                            Margin="0 0 30 0">
+                                <TextBlock Text="Cliente:"
+                               Foreground="#495057"
+                               Margin="0 0 20 0"
+                               FontSize="14"
+                               VerticalAlignment="Center"/>
+                                <TextBox  TextWrapping="Wrap" 
+                              Width="200"
+                              Padding="5"
+                              Name="clienteText"
+                              Foreground="#495057"
+                              FontSize="14"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0 0 30 0">
+                                <TextBlock Text="SKU:"
+                                           Foreground="#495057"
+                                           Margin="0 0 20 0"
+                                           VerticalAlignment="Center"
+                                           FontSize="14"/>
+                                <TextBox  TextWrapping="Wrap" 
+                                          Width="600"
+                                          KeyDown="OnKeyDownHandler"
+                                          Padding="5"
+                                          Name="skuText"
+                                          Foreground="#495057"
+                                          FontSize="14"/>
+                            </StackPanel>
+                            
+                        </StackPanel>
+                    </Grid>
+        <Grid Grid.Row="1" PreviewKeyDown="Grid_PreviewKeyDown">
+            <StackPanel>
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <StackPanel>
+                                <DataGrid x:Name="Product"
+                                      CanUserAddRows="False"
+                                      AlternatingRowBackground="#bae4ff"
+                                      Margin="0 30 0 0"             
+                                      SizeChanged="Product_SizeChanged"
+                                      AutoGenerateColumns="false"
+                                      HorizontalAlignment="Left"
+                                      GridLinesVisibility="None"
+                                      MinHeight="350"
+                                      RowHeaderWidth="0">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn  Header="Cantidad" 
+                                                 Width="100">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Text="{Binding Quantity, StringFormat={}{0:N3}}" KeyDown="TextBox_KeyDown" LostFocus="TextBox_LostFocus"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn Header="Descripción" 
+                                            Binding="{Binding Description}"
+                                            Width="*"/>
+                                        <DataGridTextColumn Header="Precio" 
+                                            Binding="{Binding Price, StringFormat={}{0:C2}}"
+                                            Width="200"/>
+                                        <DataGridTextColumn Width="200"
+                                            Header="Total"                                             
+                                            Binding="{Binding Total, StringFormat={}{0:C2}}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Right"
+                                            Margin="0 0 60 0">
+                                    <Label Content="Total:"
+                                           FontSize="40"
+                                           Margin="0 10 0 0"
+                                           FontWeight="Bold"
+                                           Foreground="#495057"/>
+                                    <Label Content="$"
+                                           Padding="0"
+                                           VerticalAlignment="Center"
+                                           FontSize="40"
+                                           Margin="0 10 0 0"
+                                           FontWeight="Bold"
+                                           Foreground="#495057"/>
+                                    <Label Content="0.00"
+                                           Padding="0"
+                                           Margin="0 10 0 0"
+                                           Name="totalLabel"
+                                           VerticalAlignment="Center"
+                                           FontSize="40"
+                                           FontWeight="Bold"
+                                           Foreground="#495057"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <StackPanel>
+                                <Image Width="100" 
+                                       Name="imageProduct"
+                                       Margin="10 80 0 0"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

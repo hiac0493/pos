@@ -1,0 +1,409 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddCompra" xml:space="preserve">
+    <value>AddCompra?orden=</value>
+    <comment>Add compra</comment>
+  </data>
+  <data name="AddOrders" xml:space="preserve">
+    <value>AddOrders</value>
+    <comment>Add order list</comment>
+  </data>
+  <data name="AddVenta" xml:space="preserve">
+    <value>AddVenta</value>
+    <comment>Add venta</comment>
+  </data>
+  <data name="GetAllCatalogoSat" xml:space="preserve">
+    <value>GetAllCatalogoSat</value>
+    <comment>Get all catalogo sat</comment>
+  </data>
+  <data name="GetAllDepartamentos" xml:space="preserve">
+    <value>GetAllDepartamentos</value>
+    <comment>Get all departamentos</comment>
+  </data>
+  <data name="GetAllImpuestos" xml:space="preserve">
+    <value>GetAllImpuestos</value>
+    <comment>Get all impuestos</comment>
+  </data>
+  <data name="GetAllMarcas" xml:space="preserve">
+    <value>GetAllMarcas</value>
+    <comment>Get all marcas</comment>
+  </data>
+  <data name="GetAllOrders" xml:space="preserve">
+    <value>GetAllOrders</value>
+    <comment>Get all orders by idOrden LIFO</comment>
+  </data>
+  <data name="GetAllProveedores" xml:space="preserve">
+    <value>GetAllProveedores</value>
+    <comment>Get all active suppliers</comment>
+  </data>
+  <data name="GetAllTipoPago" xml:space="preserve">
+    <value>GetAllTipoPago</value>
+    <comment>Get list with all payment types</comment>
+  </data>
+  <data name="GetAllUnidades" xml:space="preserve">
+    <value>GetAllUnidades</value>
+    <comment>Get all unidades</comment>
+  </data>
+  <data name="GetAllUnidadesSat" xml:space="preserve">
+    <value>GetAllUnidadesSat</value>
+    <comment>Get all unidades sat</comment>
+  </data>
+  <data name="GetAllUsuarios" xml:space="preserve">
+    <value>GetAllUsuarios</value>
+    <comment>Get all usuarios</comment>
+  </data>
+  <data name="GetProdcutByName" xml:space="preserve">
+    <value>GetProductosByName?nombre=</value>
+    <comment>Get products by name</comment>
+  </data>
+  <data name="GetProductByPLU" xml:space="preserve">
+    <value>GetProductoByPLU?PLU=</value>
+    <comment>Get products by PLU</comment>
+  </data>
+  <data name="GetProductoWithSuppliers" xml:space="preserve">
+    <value>GetProductoWithSuppliers?pluProducto=</value>
+    <comment>Get product with suppliers</comment>
+  </data>
+  <data name="GetProductsByList" xml:space="preserve">
+    <value>GetProductsByList</value>
+    <comment>Get products by list of products order to buy</comment>
+  </data>
+  <data name="GetSuppliersByName" xml:space="preserve">
+    <value>GetSuppliersByName?name=</value>
+    <comment>Get suppliers list by search criteria(name)</comment>
+  </data>
+  <data name="GetUnidadesSatByid" xml:space="preserve">
+    <value>GetUnidadesSatByid?unitSatId=</value>
+    <comment>Get all units sat with sended id</comment>
+  </data>
+  <data name="GetUsuarioByName" xml:space="preserve">
+    <value>GetUsuarioByName?name=</value>
+    <comment>Get user by name</comment>
+  </data>
+  <data name="GetUsuarioByUserName" xml:space="preserve">
+    <value>GetUsuarioByUserName?userName=</value>
+    <comment>Get user by user name</comment>
+  </data>
+  <data name="SaveProveedor" xml:space="preserve">
+    <value>SaveProveedor</value>
+    <comment>Add and update supplier</comment>
+  </data>
+  <data name="SaveProduct" xml:space="preserve">
+    <value>SaveProduct</value>
+    <comment>Save a product</comment>
+  </data>
+  <data name="SaveUser" xml:space="preserve">
+    <value>SaveUser</value>
+    <comment>Save User</comment>
+  </data>
+  <data name="SaveDepartamento" xml:space="preserve">
+    <value>SaveDepartamento</value>
+    <comment>Save departamento</comment>
+  </data>
+  <data name="GetDepartmenByName" xml:space="preserve">
+    <value>GetDepartmenByName?name=</value>
+    <comment>GetDepartmenByName</comment>
+  </data>
+  <data name="GetPaymentByName" xml:space="preserve">
+    <value>GetPaymentByName?name=</value>
+    <comment>GetPaymentByName</comment>
+  </data>
+  <data name="SavePayment" xml:space="preserve">
+    <value>SavePayment</value>
+    <comment>SavePayment</comment>
+  </data>
+  <data name="GetAllPantallas" xml:space="preserve">
+    <value>GetAllPantallas</value>
+    <comment>Get all screen of application</comment>
+  </data>
+  <data name="GetAllProductsByDepartment" xml:space="preserve">
+    <value>GetAllProductsByDepartment?idDepartamento=</value>
+    <comment>Get all products by department</comment>
+  </data>
+  <data name="GetSuppliersWithProducts" xml:space="preserve">
+    <value>GetSuppliersWithProducts</value>
+    <comment>Get all supplier with their products</comment>
+  </data>
+  <data name="GetImpuestoByName" xml:space="preserve">
+    <value>GetImpuestoByName?name=</value>
+    <comment>GetImpuestoByName</comment>
+  </data>
+  <data name="SaveImpuesto" xml:space="preserve">
+    <value>SaveImpuesto</value>
+    <comment>SaveImpuesto</comment>
+  </data>
+  <data name="DeleteProductoProveedor" xml:space="preserve">
+    <value>DeleteProductoProveedor</value>
+    <comment>Delete Producto Proveedor</comment>
+  </data>
+  <data name="GetBrandsByName" xml:space="preserve">
+    <value>GetBrandsByName?brandName=</value>
+    <comment>Get brands by name</comment>
+  </data>
+  <data name="GetCatalogByName" xml:space="preserve">
+    <value>GetCatalogByName?catalogName=</value>
+    <comment>Get Catalog By Name</comment>
+  </data>
+  <data name="GetScreenByName" xml:space="preserve">
+    <value>GetScreenByName?screenName=</value>
+    <comment>Get Screen By Name</comment>
+  </data>
+  <data name="GetUnitsByName" xml:space="preserve">
+    <value>GetUnitsByName?unitName=</value>
+    <comment>Get units by name</comment>
+  </data>
+  <data name="GetUnitsSatByName" xml:space="preserve">
+    <value>GetUnitsSatByName?unitName=</value>
+    <comment>Get Units Sat By Name</comment>
+  </data>
+  <data name="SaveBrand" xml:space="preserve">
+    <value>SaveBrand</value>
+    <comment>Save Brand</comment>
+  </data>
+  <data name="SaveCatalogSat" xml:space="preserve">
+    <value>SaveCatalogSat</value>
+    <comment>Save Catalog Sat</comment>
+  </data>
+  <data name="SaveScreen" xml:space="preserve">
+    <value>SaveScreen</value>
+    <comment>Save Screen</comment>
+  </data>
+  <data name="SaveUnit" xml:space="preserve">
+    <value>SaveUnit</value>
+    <comment>Save Unit</comment>
+  </data>
+  <data name="SaveUnitSat" xml:space="preserve">
+    <value>SaveUnitSat</value>
+    <comment>Save Unit Sat</comment>
+  </data>
+  <data name="GetAllSubPantallas" xml:space="preserve">
+    <value>GetAllSubPantallas</value>
+    <comment>Get All screens catalogs</comment>
+  </data>
+  <data name="GetAllPrincipalPantallas" xml:space="preserve">
+    <value>GetAllPrincipalPantallas</value>
+    <comment>Get All Principal Pantallas</comment>
+  </data>
+  <data name="UpdateOrder" xml:space="preserve">
+    <value>UpdateOrder</value>
+    <comment>Update orders</comment>
+  </data>
+  <data name="GetProductsSuggestToBuy" xml:space="preserve">
+    <value>GetProductsSuggestToBuy?supplier=</value>
+    <comment>Get products suggest by supplier to purchase</comment>
+  </data>
+  <data name="GetAllTurns" xml:space="preserve">
+    <value>GetAllTurns</value>
+    <comment>Get All Turns</comment>
+  </data>
+  <data name="GetTurnsByName" xml:space="preserve">
+    <value>GetTurnsByName?turnName=</value>
+    <comment>Save Turn</comment>
+  </data>
+  <data name="SaveTurn" xml:space="preserve">
+    <value>SaveTurn</value>
+  </data>
+  <data name="GetLastFolio" xml:space="preserve">
+    <value>GetLastFolio</value>
+    <comment>Get Last Folio</comment>
+  </data>
+  <data name="GetTotalSale" xml:space="preserve">
+    <value>GetTotalSale</value>
+    <comment>Get Total Sale of Turn</comment>
+  </data>
+  <data name="SaveCashClose" xml:space="preserve">
+    <value>SaveCashClose</value>
+    <comment>Save Cash Close</comment>
+  </data>
+  <data name="GetCurrentCashClose" xml:space="preserve">
+    <value>GetCurrentCashClose?idUsuario=</value>
+    <comment>Get Current Cash Close</comment>
+  </data>
+  <data name="GetOrdersByEstatusWithSupplier" xml:space="preserve">
+    <value>GetOrdersByEstatusWithSupplier?estatusSearch=</value>
+    <comment>Get orders by estatus with supplier info</comment>
+  </data>
+  <data name="GetAllPagosCorte" xml:space="preserve">
+    <value>GetAllPagosCorte</value>
+    <comment>Get All Pagos Cortes</comment>
+  </data>
+  <data name="GetAllTaxes" xml:space="preserve">
+    <value>GetAllTaxes</value>
+    <comment>Get All Taxes</comment>
+  </data>
+  <data name="GetTotalTaxes" xml:space="preserve">
+    <value>GetTotalTaxes</value>
+  </data>
+  <data name="CalcIvaReturn" xml:space="preserve">
+    <value>CalcIvaReturn</value>
+  </data>
+  <data name="CalcIvaTasa" xml:space="preserve">
+    <value>CalcIvaTasa</value>
+  </data>
+  <data name="GetReturnsWithTaxes" xml:space="preserve">
+    <value>GetReturnsWithTaxes</value>
+  </data>
+  <data name="GetTotalReturns" xml:space="preserve">
+    <value>GetTotalReturns</value>
+  </data>
+  <data name="GetTotalWithTaxes" xml:space="preserve">
+    <value>GetTotalWithTaxes</value>
+  </data>
+  <data name="SaveRetiro" xml:space="preserve">
+    <value>SaveRetiro</value>
+    <comment>Save Retiro</comment>
+  </data>
+  <data name="GetAllRetiros" xml:space="preserve">
+    <value>GetAllRetiros?idcorte=</value>
+    <comment>Get All Retiros</comment>
+  </data>
+  <data name="GetAllCashIncomes" xml:space="preserve">
+    <value>GetAllCashIncomes?idcorte=</value>
+    <comment>Get All Cash Incomes</comment>
+  </data>
+  <data name="GetProductObjectByPLU" xml:space="preserve">
+    <value>GetProductObjectByPLU?plu=</value>
+    <comment>Get product entity for CRUD methods</comment>
+  </data>
+  <data name="CancelaVenta" xml:space="preserve">
+    <value>CancelaVenta</value>
+    <comment>Cancel sales</comment>
+  </data>
+  <data name="DeleteProductoProveedorById" xml:space="preserve">
+    <value>DeleteProductoProveedorById?idProductoProveedor=</value>
+    <comment>Delete product supplier by id</comment>
+  </data>
+  <data name="DeleteImpuestoProductoById" xml:space="preserve">
+    <value>DeleteImpuestoProductoById?idImpuestoProducto=</value>
+    <comment>Delete product tax</comment>
+  </data>
+  <data name="DeletePluProductoById" xml:space="preserve">
+    <value>DeletePluProductoById?idPlu=</value>
+    <comment>Delete plu's products</comment>
+  </data>
+  <data name="GetAllProducts" xml:space="preserve">
+    <value>GetAllProducts</value>
+    <comment>Get all products list</comment>
+  </data>
+  <data name="GetUserAdmin" xml:space="preserve">
+    <value>GetUserAdmin</value>
+    <comment>Get User Admin</comment>
+  </data>
+</root>

@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>0f056ec3-0825-4ca9-93bb-ff4673434285</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bearer.Tokens.Security\Bearer.Tokens.Security.csproj" />
+    <ProjectReference Include="..\Pos.BAL.Interface\Pos.BAL.Interface.csproj" />
+    <ProjectReference Include="..\Pos.Business\Pos.Business.csproj" />
+    <ProjectReference Include="..\Pos.DAL.Repository\Pos.DAL.Repository.csproj" />
+    <ProjectReference Include="..\Pos.EntityFramework\Pos.EntityFramework.csproj" />
+    <ProjectReference Include="..\Security.BAL.Interface\Security.BAL.Interface.csproj" />
+    <ProjectReference Include="..\Security.DAL.Repository\Security.DAL.Repository.csproj" />
+    <ProjectReference Include="..\Security.EntityFramework\Security.EntityFramework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="USLib">
+      <HintPath>..\..\..\USLib-Install-dotnet-20201021\USLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
+</Project>

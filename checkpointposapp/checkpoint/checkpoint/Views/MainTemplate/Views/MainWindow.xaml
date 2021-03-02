@@ -1,0 +1,102 @@
+﻿<Window x:Class="checkpoint.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:fa5="http://schemas.fontawesome.com/icons/"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Ventas" 
+        Height="720"
+        Width="1200"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="{x:Type TabControl}">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" 
+              Grid.Column="0" 
+              Grid.ColumnSpan="2"
+              Background="#f44336">
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="0"
+              Name="leftPanel"
+              Background="#0069c0">
+            <StackPanel>
+                <Grid Height="50"
+                      Name="companieLogo"
+                      Background="#2196f3">
+                    <Image Width="100" Source="../../../Assets/img/logo-check.png" />
+                </Grid>
+                <ListView Background="Transparent" 
+                          Name="screenList"
+                          BorderThickness="0">
+                </ListView>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Border BorderBrush="#FFD4D4D4"  
+                        BorderThickness="0 0 0 1"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Caja 1"
+                           Foreground="#FF838383"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="20 0 0 0"/>
+                    <TextBlock Text="Truck Stop Constitución"
+                           Foreground="#FF838383"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="20 0 0 0"/>
+                    <TextBlock Text="Fecha"
+                           Name="txtDateNow"
+                           Foreground="#FF838383"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="20 0 0 0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <fa5:SvgAwesome Icon="Regular_UserCircle"   
+                                    Width="20"
+                                    Margin="30 0 10 0" 
+                                    Foreground="#FF838383"/>
+                    <TextBlock Text="currentUser" 
+                               Name="txtCurrentUser"
+                               VerticalAlignment="Center"  
+                               HorizontalAlignment="Right" 
+                               Margin="0 0 20 0"
+                               Foreground="#FF838383"/>
+                    <TextBlock MouseUp="SvgAwesome_MouseUp">
+                        <fa5:SvgAwesome Icon="Solid_PowerOff"   
+                                            Width="20"
+                                            Margin="20 15 25 0" 
+                                            Foreground="#FF838383"/>
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1">
+                <TabControl x:Name="ViewsTab">
+                </TabControl>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
