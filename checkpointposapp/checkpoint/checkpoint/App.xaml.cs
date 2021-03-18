@@ -45,7 +45,7 @@ namespace checkpoint
             {
                 WebApiUrl = ConfigurationManager.AppSettings["webapiurl"],
                 UserName = "hiac0493",
-                PassWord = "patito"
+                PassWord = "123"
             };
         }
 

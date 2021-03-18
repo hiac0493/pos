@@ -29,17 +29,35 @@ namespace CheckPoint.WebApi.Controllers.POS
                 {
                     foreach (ProductosCompra item in compra.ProductosCompra)
                     {
+
+                        ProductoAlmacen productoAlmacen = PosUoW.ProductoAlmacenRepository.GetSingleByCriteria(x => x.idProducto.Equals(item.idProducto) && x.idAlmacen.Equals(compra.idAlmacen));
+                        List<ProductoAlmacen> existenciaProducto = PosUoW.ProductoAlmacenRepository.GetAllByCriteria(x => x.idProducto.Equals(item.idProducto), x => x.idProductoAlmacen).ToList();
+                        float existencia = existenciaProducto.Sum(x => x.Existencia);
                         Productos producto = PosUoW.ProductosRepository.GetById(a => a.idProducto.Equals(item.idProducto));
-                        float dif = producto.Existencia < 0 ? producto.Existencia : 0;
-                        producto.Existencia += item.Cantidad;
+                        float dif = existencia < 0 ? existencia : 0;
                         item.Restante = item.Cantidad + dif;
                         item.Costo = item.Monto / item.Cantidad;
-                        if(item.Costo != producto.PrecioCosto)
+                        if (productoAlmacen != null)
+                        {
+                            productoAlmacen.Existencia += item.Cantidad;
+                            PosUoW.ProductoAlmacenRepository.Update(productoAlmacen);
+                        }
+                        else
+                        {
+                            productoAlmacen = new ProductoAlmacen
+                            {
+                                Existencia = item.Cantidad,
+                                idAlmacen = compra.idAlmacen,
+                                idProducto = producto.idProducto
+                            };
+                            PosUoW.ProductoAlmacenRepository.Add(productoAlmacen);
+                        }
+
+                        if (item.Costo != producto.PrecioCosto)
                         {
                             producto.PrecioCosto = item.Costo;
                             PosUoW.ProductosRepository.Update(producto);
                         }    
-                        PosUoW.ProductosRepository.Update(producto);
                     }
                     Ordenes ordenResult = PosUoW.OrdenesRepository.GetById(x => x.idOrden.Equals(orden));
                     PosUoW.ComprasRepository.Add(compra);

@@ -14,5 +14,6 @@ namespace Pos.Business.Model
         [Required]
         public int idProducto { get; set; }
         public Productos Producto { get; set; }
+        public bool Desglosado { get; set; }
     }
 }

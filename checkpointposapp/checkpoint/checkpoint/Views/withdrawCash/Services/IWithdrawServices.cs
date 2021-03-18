@@ -13,5 +13,6 @@ namespace checkpoint.Views.withdrawCash.Services
         Cortes GetCurrentCashClose(int idUsuario);
         List<Retiros> GetAllRetiros(long idcorte);
         List<Retiros> GetAllCashIncomes(long idcorte);
+        bool GetUserAdmin(string user, string pass);
     }
 }

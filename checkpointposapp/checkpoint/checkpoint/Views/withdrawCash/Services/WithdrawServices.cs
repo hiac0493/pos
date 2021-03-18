@@ -62,5 +62,17 @@ namespace checkpoint.Views.withdrawCash.Services
                 return null;
             }
         }
+
+        public bool GetUserAdmin(string user, string pass)
+        {
+            string webApiUrl = WebApiMethods.GetUserAdmin + $"?user={user}&pass={pass}";
+            bool flag = false;
+            var response = App.HttpTools.HttpGetSingle(webApiUrl, ref flag, "Hubo un error al obtener el folio");
+            if (response == HttpStatusCode.OK)
+                return flag;
+            else
+                return false;
+        }
+
     }
 }

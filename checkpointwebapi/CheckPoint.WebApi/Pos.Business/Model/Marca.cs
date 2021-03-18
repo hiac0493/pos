@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Pos.Business.Model
 {
@@ -10,6 +8,7 @@ namespace Pos.Business.Model
         public Marca()
         {
             this.Productos = new List<Productos>();
+            this.Promociones = new List<Promociones>();
         }
         public int idMarca { get; set; }
         [Required]
@@ -18,5 +17,6 @@ namespace Pos.Business.Model
         public bool Activo { get; set; }
 
         public ICollection<Productos> Productos { get; set; }
+        public ICollection<Promociones> Promociones { get; set; }
     }
 }

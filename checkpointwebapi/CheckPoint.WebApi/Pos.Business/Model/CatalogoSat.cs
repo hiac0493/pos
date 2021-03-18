@@ -9,9 +9,7 @@ namespace Pos.Business.Model
     {
         public int idCatalogoSat { get; set; }
         [Required]
-        public int idUnidadSat { get; set; }
-        public UnidadSat unidadSat { get; set; }
-        [Required]
+
         public string Clave { get; set; }
         [Required]
         public string Descripcion { get; set; }

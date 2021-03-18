@@ -10,10 +10,10 @@ namespace checkpoint.Sales.Services
 {
     public class SalesServices : ISalesServices
     {
-        public async Task<Ventas> AddVenta(Ventas venta)
+        public async Task<SaleResult> AddVenta(Ventas venta)
         {
             string webApiUrl = WebApiMethods.AddVenta;
-            Ventas ventaResult = await App.HttpTools.HttpPostObjectWithResponseDataAsync<Ventas, Ventas>(webApiUrl, venta, "Hubo un error en el guardado de la venta").ConfigureAwait(false);
+            SaleResult ventaResult = await App.HttpTools.HttpPostObjectWithResponseDataAsync<Ventas, SaleResult>(webApiUrl, venta, "Hubo un error en el guardado de la venta").ConfigureAwait(false);
             return ventaResult;
         }
 
@@ -54,6 +54,17 @@ namespace checkpoint.Sales.Services
             string webApiUrl = WebApiMethods.CancelaVenta;
             Ventas venta = App.HttpTools.HttpPostObjectWithResponseDataAsync<CancelacionDto, Ventas>(webApiUrl, cancelacion, $"Error en la cancelación de la venta {cancelacion.folioVenta}").Result;
             return venta;
+        }
+
+        public double GetTotalEfectivo(int idUsuario)
+        {
+            string webApiUrl = WebApiMethods.GetTotalEfectivo + idUsuario;
+            double sale = 0;
+            var response = App.HttpTools.HttpGetSingle(webApiUrl, ref sale, "Hubo un error al obtener el folio");
+            if (response == HttpStatusCode.OK)
+                return sale;
+            else
+                return 0;
         }
     }
 }

@@ -406,4 +406,60 @@
     <value>GetUserAdmin</value>
     <comment>Get User Admin</comment>
   </data>
+  <data name="GetTotalEfectivo" xml:space="preserve">
+    <value>GetTotalEfectivo?idUsuario=</value>
+    <comment>Get Total Efectivo</comment>
+  </data>
+  <data name="GetVentaByFolioVenta" xml:space="preserve">
+    <value>GetVentaByFolioVenta?folioVenta=</value>
+    <comment>Get venta by folio</comment>
+  </data>
+  <data name="GetPantallasByUserId" xml:space="preserve">
+    <value>GetPantallasByUserId?userId=</value>
+    <comment>Get all pantallas by user id</comment>
+  </data>
+  <data name="GetAllUsuariosWithPermissions" xml:space="preserve">
+    <value>GetAllUsuariosWithPermissions</value>
+    <comment>get all users with screen permissions</comment>
+  </data>
+  <data name="GetAllAlmacenes" xml:space="preserve">
+    <value>GetAllAlmacenes</value>
+    <comment>GetAllAlmacenes</comment>
+  </data>
+  <data name="DeletePantallaUsuario" xml:space="preserve">
+    <value>DeletePantallaUsuario?idPantallaUsuario=</value>
+    <comment>Delete screen for user</comment>
+  </data>
+  <data name="UpdateUserPermissionsScreens" xml:space="preserve">
+    <value>UpdateUserPermissionsScreens</value>
+    <comment>update permissions user screens</comment>
+  </data>
+  <data name="GetAllPantallasByUser" xml:space="preserve">
+    <value>GetAllPantallasByUser?idUsuario=</value>
+    <comment>Get all pantallas by user id</comment>
+  </data>
+  <data name="GetAllPrincipalPantallasByUser" xml:space="preserve">
+    <value>GetAllPrincipalPantallasByUser?idUsuario=</value>
+    <comment>Get all principal pantallas by user id</comment>
+  </data>
+  <data name="SaveProducts" xml:space="preserve">
+    <value>SaveProducts</value>
+    <comment>Save Products</comment>
+  </data>
+  <data name="GetAllPromociones" xml:space="preserve">
+    <value>GetAllPromociones</value>
+    <comment>get all active promotions</comment>
+  </data>
+  <data name="SavePromocion" xml:space="preserve">
+    <value>SavePromocion</value>
+    <comment>Add or update promotion</comment>
+  </data>
+  <data name="GetProductosByAlmacen" xml:space="preserve">
+    <value>GetProductosByAlmacen?idAlmacen=</value>
+    <comment>get all productos by almacen</comment>
+  </data>
+  <data name="GetCatalogByClave" xml:space="preserve">
+    <value>GetCatalogByClave?claveCatalogo=</value>
+    <comment>GetCatalogByClave</comment>
+  </data>
 </root>

@@ -1,9 +1,7 @@
 ﻿using checkpoint.OrderPurcharse.Models;
 using checkpoint.Views.OrderPurcharse.Models;
 using checkpoint.Views.OrderPurchase.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace checkpoint.OrderPurcharse.Services
@@ -24,5 +22,6 @@ namespace checkpoint.OrderPurcharse.Services
         void DeleteProductoProveedor(ProductosProveedor productoProveedor);
         void UpdateOrder(Ordenes orden);
         IEnumerable<ProductToBuy> GetProductsSuggestToBuy(int supplier);
+        IEnumerable<Almacenes> GetAllAlmacenes();
     }
 }

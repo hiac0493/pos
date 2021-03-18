@@ -55,8 +55,11 @@ namespace checkpoint.Views.OrderPurchase.Views
             productsToBuyList.ListChanged += ProductsToBuyList_ListChanged;
             ordersList.AddRange(_orderPurchasePresenter.GetAllOrders());
             IEnumerable<ProveedorEntity> proveedores = _orderPurchasePresenter.GetSuppliersWithProducts();
+            IEnumerable<Almacenes> almacenes = _orderPurchasePresenter.GetAllAlmacenes();
             suppliersList.AddRange(proveedores);
             suppliersGrid.ItemsSource = suppliersList;
+            ComboWarehouse.ItemsSource = almacenes.ToList();
+            ComboWarehouse.SelectedIndex = 0;
             comboSuppliersGral.ItemsSource = proveedores.ToList();
             Order.ItemsSource = productsToBuyList;
             OrdersHome.ItemsSource = ordersList;
@@ -285,6 +288,7 @@ namespace checkpoint.Views.OrderPurchase.Views
                     idUsuario = App._userApplication.idUsuario,
                     Estatus = 'A',
                     Fecha = DateTime.Now,
+                    idAlmacen = (int)ComboWarehouse.SelectedValue,
                     ProductosCompra = (from producto in productsToBuyList select new ProductosCompra { idProducto = producto.idProducto, Cantidad = producto.quantity, Monto = producto.total }).ToList()
                 };
                 compra = _orderPurchasePresenter.AddCompra(idCurrentOrder, compra).Result;
@@ -293,7 +297,7 @@ namespace checkpoint.Views.OrderPurchase.Views
                 generateOrderButton.Content = "GENERAR \nORDEN(ES)";
                 cancelOrder = false;
             }
-         }
+        }
 
         private void buttonOrder_Click(object sender, RoutedEventArgs e) 
         {
@@ -546,5 +550,10 @@ namespace checkpoint.Views.OrderPurchase.Views
             }
         }
         #endregion
+
+        private void ComboWarehouse_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

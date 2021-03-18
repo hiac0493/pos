@@ -12,7 +12,7 @@ namespace checkpoint.Views.CashClose.Models
         public Turnos Turno { get; set; }
         public int IdUsuario { get; set; }
         public long FolioVentaInicio { get; set; }
-        public long FolioVentaFin { get; set; }
+        public long? FolioVentaFin { get; set; }
         public double FondoCaja { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFinal { get; set; }

@@ -20,7 +20,7 @@ namespace Pos.Business.Model
         public int IdUsuario { get; set; }
         public Usuarios Usuario { get; set; }
         public long FolioVentaInicio { get; set; }
-        public long FolioVentaFin { get; set; }
+        public long? FolioVentaFin { get; set; }
         public double FondoCaja { get; set; }
         public DateTime FechaInicio { get; set; }
 

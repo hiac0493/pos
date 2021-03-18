@@ -1,8 +1,10 @@
-﻿using Pos.BAL.Interface.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using Pos.BAL.Interface.Domain;
 using Pos.Business.Model;
 using Pos.EntityFramework.Edbm;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Pos.DAL.Repository.Domain
@@ -14,5 +16,6 @@ namespace Pos.DAL.Repository.Domain
         {
             get { return _context as PosDbContext; }
         }
+
     }
 }

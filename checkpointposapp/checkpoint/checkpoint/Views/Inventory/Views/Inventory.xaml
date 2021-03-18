@@ -52,63 +52,186 @@
         </Style>
     </UserControl.Resources>
     <Grid Margin="15" Background="white">
-        <StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
             <TextBlock Text="AJUSTE DE INVENTARIO"
 					   FontSize="40"
                        FontWeight="Bold"
                        x:Name="titleRetiro"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <StackPanel Orientation="Horizontal">
+                <Button Padding="5"
+					    Margin="0 10 30 0"
+						Background="#0069c0"
+						BorderThickness="0"
+                        Width="120"
+                        Height="70">
+                    <StackPanel>
+                        <fa5:SvgAwesome Icon="Solid_Home"   
+								        Width="20"
+									    Foreground="White"/>
+
+                        <TextBlock Text="Inicio"
+								   Foreground="white"
+								   FontSize="15"/>
+                    </StackPanel>
+                </Button>
+                <Button Padding="5"
+					    Margin="0 10 30 0"
+						Background="#0069c0"
+						BorderThickness="0"
+                        Width="120"
+                        Height="70">
+                    <StackPanel>
+                        <fa5:SvgAwesome Icon="Solid_File"   
+								        Width="20"
+									    Foreground="White"/>
+
+                        <TextBlock Text="Ajuste"
+								   Foreground="white"
+								   FontSize="15"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2">
             <TabControl>
                 <TabItem>
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
-                            <RowDefinition/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Grid Grid.Row="0"
-                              Grid.ColumnSpan="3">
-                            <StackPanel Orientation="Horizontal"
-                                        Margin="0 30 0 0">
-                                <StackPanel Orientation="Horizontal"
-                                            Margin="0 0 30 0">
-                                    <TextBlock Text="ALMACEN:"
-							                   FontSize="20"
-							                   VerticalAlignment="Center"
-                                               FontWeight="Bold"
-                                               Foreground="#495057"/>
-                                    <ComboBox Padding="5"
-                                              x:Name="departmentComboBox"
-							                  Foreground="#495057"
-							                  FontSize="15"
-							                  HorizontalAlignment="Left"
-							                  MinWidth="300"
-							                  MaxHeight="30"
-							                  Margin="10 0 0 0"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="DESCRIPCIÓN:"
-							                   FontSize="20"
-							                   VerticalAlignment="Center"
-                                               FontWeight="Bold"
-                                               Foreground="#495057"/>
+                        <Grid Grid.Row="0">
+                            <DockPanel Margin="0 30 0 0">
+                                <StackPanel Margin="0 0 30 0"
+                                            Orientation="Horizontal">
                                     <TextBox   Padding="5"
 							                   Foreground="#495057"
 							                   FontSize="15"
-                                               x:Name="descriptionTextBox"
 							                   HorizontalAlignment="Left"
 							                   MinWidth="300"
-							                   MaxHeight="30"
-							                   Margin="10 0 0 0"/>
+							                   MaxHeight="30"/>
+                                    <Button Padding="5"
+					                        Margin="10 0 0 0"
+							                Background="#0069c0"
+							                BorderThickness="0"
+                                            Width="100"
+                                            Height="30">
+                                        <StackPanel Orientation="Horizontal" >
+                                            <fa5:SvgAwesome Icon="Solid_Search"   
+								                            Width="15"
+											                Foreground="White"
+                                                            Margin="0 0 10 0"/>
+                                            <TextBlock Text="BUSCAR"
+									                   Foreground="white"
+									                   FontSize="12"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="ALMACEN:"
+							           FontSize="20"
+							           VerticalAlignment="Center"
+                                       FontWeight="Bold"
+                                       Foreground="#495057"/>
+                                    <ComboBox Padding="5"
+                                      Name="almacenComboBox"
+                                      DisplayMemberPath="Nombre"
+							          Foreground="#495057"
+                                      SelectedValue="idAlmacen"
+                                      SelectionChanged="almacenComboBox_SelectionChanged"
+							          FontSize="15"
+							          HorizontalAlignment="Left"
+							          MinWidth="300"
+							          MaxHeight="30"
+							          Margin="10 0 0 0"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <DataGrid CanUserAddRows="False"
+                                      Name="productosAlmacenGrid"
+                                      AlternatingRowBackground="#bae4ff"
+                                      Margin="0 10 0 0"     
+                                      AutoGenerateColumns="false"
+                                      HorizontalAlignment="Left"
+                                      GridLinesVisibility="None"
+                                      RowHeaderWidth="0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Nombre" 
+                                                        Binding="{Binding NombreProducto}"
+                                                        IsReadOnly="True"
+                                                        Width="100"/>
+                                    <DataGridTextColumn Header="Existencia" 
+                                                        Binding="{Binding Existencia}"
+                                                        IsReadOnly="True"
+                                                        Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                        <StackPanel>
+
+                            
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" Grid.ColumnSpan="3">
+                            <StackPanel Orientation="Horizontal"
+                                Margin="0 30 0 30">
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="0 0 30 0">
+                                    <TextBlock Text="ALMACEN:"
+							           FontSize="20"
+							           VerticalAlignment="Center"
+                                       FontWeight="Bold"
+                                       Foreground="#495057"/>
+                                    <TextBlock Text=""
+                                               Name="almacenName"
+							           FontSize="20"
+							           VerticalAlignment="Center"
+                                       Foreground="#495057"/>
+
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="DESCRIPCIÓN:"
+							           FontSize="20"
+							           VerticalAlignment="Center"
+                                       FontWeight="Bold"
+                                       Foreground="#495057"/>
+                                    <TextBox   Padding="5"
+							           Foreground="#495057"
+							           FontSize="15"
+                                       x:Name="descriptionTextBox"
+							           HorizontalAlignment="Left"
+							           MinWidth="300"
+							           MaxHeight="30"
+							           Margin="10 0 0 0"/>
                                 </StackPanel>
                             </StackPanel>
                         </Grid>
-                        <Grid Grid.Column="0"
-                              Grid.Row="1">
-                            <Border Margin="0 30 0 0">
+                        <Grid Grid.Row="1" Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
                                 <StackPanel>
                                     <StackPanel>
                                         <TextBlock Text="LISTA DE PRODUCTOS"
@@ -142,40 +265,41 @@
                                             </StackPanel>
                                         </Button>
                                     </StackPanel>
-                                    <DataGrid AlternatingRowBackground="#bae4ff"
-                                          Margin="0 15 0 0"                     
-                                          AutoGenerateColumns="false"
-                                          MaxHeight="200"
-                                          HorizontalAlignment="Left"
-                                          GridLinesVisibility="None"
-                                          RowHeaderWidth="0"
-                                          MinHeight="200">
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn Header="PLU" 
+                                </StackPanel>
+                            </Grid>
+                            <Grid Grid.Row="1">
+                                <DataGrid AlternatingRowBackground="#bae4ff"
+                                  Margin="0 15 0 0"                     
+                                  AutoGenerateColumns="false"
+                                  GridLinesVisibility="None"
+                                  RowHeaderWidth="0">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="PLU" 
                                                             Width="200"
                                                             Binding="{Binding PLU}"/>
-                                            <DataGridTextColumn Header="Nombre" 
+                                        <DataGridTextColumn Header="Nombre" 
                                                             Width="*"
                                                             Binding="{Binding Name}"/>
-                                            <DataGridTextColumn Header="Existencia" 
+                                        <DataGridTextColumn Header="Existencia" 
                                                             Width="100"
                                                             Binding="{Binding Name}"/>
-                                        </DataGrid.Columns>
-                                    </DataGrid>
-                                </StackPanel>
-                            </Border>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
                         </Grid>
-                        <Grid Grid.Column="1"
-                              Grid.Row="1">
+                        <Grid Grid.Row="1" Grid.Column="1">
                             <fa5:SvgAwesome Icon="Solid_LongArrowAltRight"
 								        Width="40"
 										Foreground="black"
                                         HorizontalAlignment="Center"
                                         Margin="15 0"/>
                         </Grid>
-                        <Grid Grid.Column="2"
-                              Grid.Row="1">
-                            <Border Margin="0 30 0 0">
+                        <Grid  Grid.Row="1" Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
                                 <StackPanel>
                                     <StackPanel>
                                         <TextBlock Text="PRODUCTOS EN AJUSTE"
@@ -185,7 +309,7 @@
                                                Foreground="#495057"/>
                                     </StackPanel>
                                     <StackPanel Margin="0 10 0 0"
-                                    Orientation="Horizontal">
+                                                Orientation="Horizontal">
                                         <TextBox   Padding="5"
 							                   Foreground="#495057"
 							                   FontSize="15"
@@ -193,11 +317,11 @@
 							                   MinWidth="300"
 							                   MaxHeight="30"/>
                                         <Button Padding="5"
-					                        Margin="10 0 0 0"
-							                Background="#0069c0"
-							                BorderThickness="0"
-                                            Width="100"
-                                            Height="30">
+					                            Margin="10 0 0 0"
+							                    Background="#0069c0"
+							                    BorderThickness="0"
+                                                Width="100"
+                                                Height="30">
                                             <StackPanel Orientation="Horizontal" >
                                                 <fa5:SvgAwesome Icon="Solid_Search"   
 								                            Width="15"
@@ -221,86 +345,56 @@
                                             </StackPanel>
                                         </Button>
                                     </StackPanel>
-                                    <DataGrid AlternatingRowBackground="#bae4ff"
+                                </StackPanel>
+                            </Grid>
+                            <Grid Grid.Row="1">
+                                <DataGrid AlternatingRowBackground="#bae4ff"
                                           Margin="0 15 0 0"                     
                                           AutoGenerateColumns="false"
-                                          MaxHeight="200"
                                           HorizontalAlignment="Left"
                                           GridLinesVisibility="None"
-                                          RowHeaderWidth="0"
-                                          MinHeight="200">
-                                        <DataGrid.Columns>
-                                            <DataGridTemplateColumn  Width="80">
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <Button Padding="5"
+                                          RowHeaderWidth="0">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn  Width="80">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Padding="5"
 							                                Background="#0069C0"
 							                                BorderThickness="0"
                                                             Width="30"
                                                             Height="30"
                                                             HorizontalAlignment="Center">
-                                                            <StackPanel Orientation="Horizontal" >
-                                                                <fa5:SvgAwesome Icon="Solid_Trash"
+                                                        <StackPanel Orientation="Horizontal" >
+                                                            <fa5:SvgAwesome Icon="Solid_Trash"
 								                                            Width="12"
 											                                Foreground="White"
                                                                             HorizontalAlignment="Center"/>
-                                                            </StackPanel>
-                                                        </Button>
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
-                                            <DataGridTextColumn Header="PLU" 
+                                                        </StackPanel>
+                                                    </Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn Header="PLU" 
                                                             Width="200"
                                                             Binding="{Binding PLU}"/>
-                                            <DataGridTextColumn Header="Nombre" 
+                                        <DataGridTextColumn Header="Nombre" 
                                                             Width="*"
                                                             Binding="{Binding Name}"/>
-                                            <DataGridTextColumn Header="Existencia" 
-                                                            Width="100"
-                                                            Binding="{Binding Existencia}"/>
-                                        </DataGrid.Columns>
-                                    </DataGrid>
-                                </StackPanel>
-                            </Border>
+                                        <DataGridTemplateColumn  Header="Existencia" 
+                                                 Width="100">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Text="{Binding quantity, StringFormat={}{0:N3}}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </TabItem>
-                <TabItem>
-                    <DataGrid AlternatingRowBackground="#bae4ff"
-                                          Margin="0 15 0 0"                     
-                                          AutoGenerateColumns="false"
-                                          MaxHeight="200"
-                                          HorizontalAlignment="Left"
-                                          GridLinesVisibility="None"
-                                          RowHeaderWidth="0"
-                                          MinHeight="200">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="PLU" 
-                                                            Width="200"
-                                                            Binding="{Binding PLU}"/>
-                            <DataGridTextColumn Header="Nombre" 
-                                                            Width="*"
-                                                            Binding="{Binding Name}"/>
-                            <DataGridTextColumn Header="Existencia ant" 
-                                                            Width="150"
-                                                            Binding="{Binding Name}"/>
-                            <DataGridTextColumn Header="Existencia act" 
-                                                            Width="150"
-                                                            Binding="{Binding Name}"/>
-                            <DataGridTextColumn Header="Costo" 
-                                                            Width="150"
-                                                            Binding="{Binding Name}"/>
-                            <DataGridTextColumn Header="Ajuste +" 
-                                                            Width="150"
-                                                            Binding="{Binding Name}"/>
-                            <DataGridTextColumn Header="Ajuste -" 
-                                                            Width="150"
-                                                            Binding="{Binding Name}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-
-                </TabItem>
             </TabControl>
-        </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

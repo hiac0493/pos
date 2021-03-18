@@ -38,6 +38,44 @@ namespace CheckPoint.WebApi.Controllers.UserSecurity
         }
 
         [HttpGet]
+        [Route("GetAllPantallasByUser")]
+        public IActionResult GetAllPantallasByUser(int idUsuario)
+        {
+            try
+            {
+                List<Pantallas> screensUser = SecurityUoW.PantallasRepository.GetPantallasByUserId(idUsuario).ToList();
+                if (screensUser != null)
+                {
+                    return Ok(screensUser);
+                }
+                else
+                    return NotFound();
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetAllPrincipalPantallasByUser")]
+        public IActionResult GetAllPrincipalPantallasByUser(int idUsuario)
+        {
+            try
+            {
+                List<Pantallas> screensResult = SecurityUoW.PantallasRepository.GetAllPrincipalPantallasByUser(idUsuario).ToList();
+                if (screensResult != null)
+                    return Ok(screensResult);
+                else
+                    return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
+        [HttpGet]
         [Route("GetAllPrincipalPantallas")]
         public IActionResult GetAllPrincipalPantallas()
         {

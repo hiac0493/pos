@@ -1,10 +1,12 @@
-﻿using CheckPoint.WebApi.Metadata;
+﻿using CheckPoint.WebApi.Dtos;
+using CheckPoint.WebApi.Metadata;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Pos.Business.Model;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CheckPoint.WebApi.Controllers.POS
@@ -61,6 +63,52 @@ namespace CheckPoint.WebApi.Controllers.POS
             }
         }
 
+        [HttpGet]
+        [Route("GetAllUsuariosWithPermissions")]
+        public IActionResult GetAllUsuariosWithPermissions()
+        {
+            try
+            {
+                List<Usuarios> users = PosUoW.UsuariosRepository.GetAllUsuariosWithPermissions().ToList();
+                if (users != null)
+                {
+                    return Ok(users);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
+        [HttpPost]
+        [Route("UpdateUserPermissionsScreens")]
+        public IActionResult UpdateUserPermissionsScreens([FromBody] PermissionsUserDto usuario)
+        {
+            try
+            {
+                Usuarios usuarioUpdate = PosUoW.UsuariosRepository.GetById(x => x.idUsuario == usuario.idUsuario);
+                if(usuarioUpdate!= null)
+                {
+                    usuarioUpdate.PantallasUsuario = usuario.pantallasUsuario;
+                    PosUoW.UsuariosRepository.Update(usuarioUpdate);
+                    PosUoW.Save();
+                    return Ok(usuarioUpdate);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
 
         [HttpPost]
         [Route("SaveUser")]

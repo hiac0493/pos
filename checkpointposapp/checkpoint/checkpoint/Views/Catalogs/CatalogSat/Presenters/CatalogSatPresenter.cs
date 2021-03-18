@@ -26,9 +26,14 @@ namespace checkpoint.Views.Catalogs.CatalogSat.Presenters
             return _CatalogSatServices.GetCatalogSatByName(name);
         }
 
-        public Task<catalogoSat> SaveCatalogSat(catalogoSat catalogSat)
+        public catalogoSat SaveCatalogSat(catalogoSat catalogSat)
         {
-            return _CatalogSatServices.SaveCatalogSat(catalogSat);
+            return _CatalogSatServices.SaveCatalogSat(catalogSat).Result;
+        }
+
+        public catalogoSat GetCatalogByClave(string claveCatalogo)
+        {
+            return _CatalogSatServices.GetCatalogByClave(claveCatalogo);
         }
     }
 }

@@ -13,9 +13,9 @@ namespace checkpoint.Views.MainTemplate.Presenters
         {
             _mainTemplateServices = mainTemplateServices;
         }
-        public List<Pantallas> GetAllPrincipalPantallas()
+        public List<Pantallas> GetAllPrincipalPantallasByUserId(int idUsuario)
         {
-            return _mainTemplateServices.GetAllPrincipalPantallas();
+            return _mainTemplateServices.GetAllPrincipalPantallasByUserId(idUsuario);
         }
 
         public SystemConfig cashConfig()

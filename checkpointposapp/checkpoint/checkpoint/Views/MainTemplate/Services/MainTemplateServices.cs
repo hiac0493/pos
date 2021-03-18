@@ -14,9 +14,9 @@ namespace checkpoint.Views.MainTemplate.Services
 {
     public class MainTemplateServices : IMainTemplateServices
     {
-        public List<Pantallas> GetAllPrincipalPantallas()
+        public List<Pantallas> GetAllPrincipalPantallasByUserId(int idUsuario)
         {
-            string webApiUrl = WebApiMethods.GetAllPrincipalPantallas;
+            string webApiUrl = WebApiMethods.GetAllPrincipalPantallasByUser + idUsuario;
             IList<Pantallas> screensResult = new List<Pantallas>();
             var result = App.HttpTools.HttpGetList<Pantallas>(webApiUrl, ref screensResult, "Hubo un error en la lectura de las pantallas de la aplicación");
             if (result == HttpStatusCode.OK)
@@ -30,6 +30,6 @@ namespace checkpoint.Views.MainTemplate.Services
             XmlSerializer deSerializer = new XmlSerializer(typeof(SystemConfig));
             SystemConfig systemConfig = (SystemConfig)deSerializer.Deserialize(new MemoryStream(Encoding.UTF8.GetBytes(StringResources.CabeceraXml + XDocument.Load(StringResources.XmlFilePath).ToString())));   
             return systemConfig;
-        }    
+        }
     }
 }

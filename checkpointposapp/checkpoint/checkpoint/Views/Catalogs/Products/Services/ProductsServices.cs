@@ -118,6 +118,13 @@ namespace checkpoint.Views.Catalogs.Products.Services
             return productResult;
         }
 
+        public async Task<List<Productos>> SaveProducts(List<Productos> productlist)
+        {
+            string webApiUrl = WebApiMethods.SaveProducts;
+            var productsResult =  await App.HttpTools.HttpPostObjectWithResponseDataAsync<List<Productos>, List<Productos>>(webApiUrl, productlist, "Hubo un error en el guardado del producto").ConfigureAwait(false); ;
+            return productsResult;
+        }
+
         public Productos GetProductObjectByPLU(string plu)
         {
             string webApiUrl = WebApiMethods.GetProductObjectByPLU + plu;

@@ -354,22 +354,6 @@
                                         BorderBrush="#495057"
                                         Padding="30">
                                     <StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="EXISTENCIA:"
-							                           FontSize="20"
-							                           VerticalAlignment="Center"
-                                                       FontWeight="Bold"
-                                                       Foreground="#495057"
-                                                       Width="190"/>
-                                            <TextBox   Padding="5"
-							                           Foreground="#495057"
-							                           FontSize="15"
-                                                       x:Name="existTextBox"
-							                           HorizontalAlignment="Left"
-							                           MinWidth="270"
-							                           MaxHeight="30"
-							                           Margin="10 0 0 0"/>
-                                        </StackPanel>
                                         <StackPanel Margin=" 0 15 0 0"
                                                     Orientation="Horizontal">
                                             <TextBlock Text="MINIMO:"

@@ -1,22 +1,11 @@
 ﻿using checkpoint.CheckPrices.Models;
 using checkpoint.CheckPrices.Presenters;
 using checkpoint.CheckPrices.Services;
-using checkpoint.Sales.Models;
-using checkpoint.Sales.Presenters;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace checkpoint.Views.Sales.Views
 {
@@ -25,19 +14,35 @@ namespace checkpoint.Views.Sales.Views
     /// </summary>
     public partial class CheckPrices : Window
     {
+        #region Properties
+        //**************************************************
+        //*             PROPERTIES
+        //**************************************************
         private CheckPresenter _checkPresenter;
         PLUProductCheck product;
         private string _ProductPLU;
-        public string productoPLU
-        {
-            get { return _ProductPLU; }
-        }
+        #endregion
+        #region Constructor
+
+        //**************************************************
+        //*             CONSTRUCTOR
+        //**************************************************
         public CheckPrices()
         {
             InitializeComponent();
             this.KeyDown += OnKeyDownHandler;
             _checkPresenter = new CheckPresenter(new ProductsCheckServices());
         }
+        #endregion
+        #region Write data
+
+        #endregion
+        #region Methods form
+        public string productoPLU
+        {
+            get { return _ProductPLU; }
+        }
+
 
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
         {
@@ -143,8 +148,8 @@ namespace checkpoint.Views.Sales.Views
 
         private void buttonOrder_Click(object sender, RoutedEventArgs e)
         {
-            if(product != null)
-            returnProductPLU();
+            if (product != null)
+                returnProductPLU();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -161,5 +166,7 @@ namespace checkpoint.Views.Sales.Views
             _ProductPLU = product.pluProducto;
             DialogResult = true;
         }
+        #endregion
+
     }
 }

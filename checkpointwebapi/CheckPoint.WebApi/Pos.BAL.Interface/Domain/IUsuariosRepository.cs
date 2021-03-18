@@ -8,5 +8,6 @@ namespace Pos.BAL.Interface.Domain
         Usuarios GetUsuarioByUserName(string userName);
         IEnumerable<object> GetUsuarioByName(string name);
         bool GetUsuarioAdmin(string user, string pass);
+        IEnumerable<Usuarios> GetAllUsuariosWithPermissions();
     }
 }

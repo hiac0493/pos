@@ -13,6 +13,7 @@ namespace checkpoint.Views.OrderPurcharse.Models
         public int idUsuario { get; set; }
         public char Estatus { get; set; }
         public int? idUsuarioCancela { get; set; }
+        public int idAlmacen { get; set; }
         public DateTime Fecha { get; set; }
         public ICollection<ProductosCompra> ProductosCompra { get; set; }
     }

@@ -65,7 +65,7 @@ namespace CheckPoint.WebApi.Controllers.POS
 
         [HttpGet]
         [Route("GetVentaByFolioVenta")]
-        public IActionResult GetVentaByFolioVenta(int folioVenta)
+        public IActionResult GetVentaByFolioVenta(long folioVenta)
         {
             try
             {
@@ -96,6 +96,7 @@ namespace CheckPoint.WebApi.Controllers.POS
                     float utilidad = 0;
                     foreach (ProductosVenta item in venta.Productos)
                     {
+                        item.Estatus = true;
                         Productos producto = PosUoW.ProductosRepository.GetById(a => a.idProducto.Equals(item.idProducto));
                         List<ProductosCompra> productosCompra = PosUoW.ProductosCompraRepository.GetAllByCriteria(x => x.idProducto.Equals(producto.idProducto) && x.Restante > 0, x => x.idCompraProducto).ToList();
                         float restante = item.Cantidad;
@@ -140,14 +141,27 @@ namespace CheckPoint.WebApi.Controllers.POS
                         }
                         if (restante > 0)
                             utilidad += restante * producto.PrecioCosto;
-                        producto.Existencia -= item.Cantidad;
+                        Almacenes principalWarehouse = PosUoW.AlmacenesRepository.GetSingleByCriteria(x => x.Principal);
+                        ProductoAlmacen almacen = PosUoW.ProductoAlmacenRepository.GetSingleByCriteria(x => x.idProducto.Equals(item.idProducto) && x.idAlmacen.Equals(principalWarehouse.idAlmacen));
+                        if(almacen == null)
+                        {
+                            almacen = new ProductoAlmacen
+                            {
+                                 idAlmacen = principalWarehouse.idAlmacen,
+                                  idProducto = producto.idProducto,
+                                   Existencia = 0
+                            };
+                            PosUoW.ProductoAlmacenRepository.Add(almacen);
+                            PosUoW.Save();
+                        }
+                        almacen.Existencia -= item.Cantidad;
                         PosUoW.ProductosRepository.Update(producto);
                     }
                     utilidad = (float)Math.Round((venta.Total - venta.Impuestos) - utilidad, 2);
                     venta.Utilidad = utilidad;
                     PosUoW.VentasRepository.Add(venta);
                     PosUoW.Save();
-                    return Ok(venta);
+                    return Ok(new { venta = venta, totalEfectivo = totalEfectivo(venta.idUsuario) });
                 }
                 else
                 {
@@ -159,6 +173,50 @@ namespace CheckPoint.WebApi.Controllers.POS
                 return StatusCode(StatusCodes.Status500InternalServerError, ex);
             }
         }
+
+        [HttpGet]
+        [Route("GetTotalEfectivo")]
+        public IActionResult GetTotalEfectivo(int idUsuario)
+        {
+            try 
+            {
+                return Ok(totalEfectivo(idUsuario));
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
+        private double totalEfectivo(int idUsuario)
+        {
+            Cortes corte = PosUoW.CortesRepository.GetCurrentCashClose(idUsuario);
+            var lastFolio = PosUoW.VentasRepository.GetLastFolio();
+            double efectivo = 0;
+            double retiros = 0;
+            double totalEfec = 0;
+            IEnumerable<object> pagosResult;
+            if (corte != null && lastFolio != 0)
+            {
+                pagosResult = PosUoW.VentasRepository.GetAllPagosCorte(corte.FolioVentaInicio, lastFolio, idUsuario);
+                retiros = PosUoW.RetirosRepository.GetAllByCriteria(x => x.IdCorte.Equals(corte.IdCorte) && x.Estatus, x => x.IdRetiro).Sum(x => x.Cantidad);
+                var list = pagosResult.ToList();
+                if (pagosResult != null)
+                {
+                    for (int i = 0; i < pagosResult.Count(); i++)
+                    {
+                        int pago = (int)list[i].GetType().GetProperty("IdTipoPago").GetValue(list[i], null);
+                        if (pago == 1)
+                        {
+                            efectivo = Convert.ToDouble(list[i].GetType().GetProperty("Total").GetValue(list[i], null).ToString());
+                            totalEfec = efectivo - retiros;
+                        }
+                    }
+                }
+            }
+            return totalEfec;
+        }
+        
 
         [HttpPost]
         [Route("CancelaVenta")]
@@ -180,8 +238,11 @@ namespace CheckPoint.WebApi.Controllers.POS
                     }
                     foreach (ProductosVenta producto in venta.Productos)
                     {
+                        producto.Estatus = false;
                         Productos currentProduct = PosUoW.ProductosRepository.GetById(x => x.idProducto.Equals(producto.idProducto));
-                        currentProduct.Existencia += producto.Cantidad;
+                        Almacenes principalWarehouse = PosUoW.AlmacenesRepository.GetSingleByCriteria(x => x.Principal);
+                        ProductoAlmacen almacen = PosUoW.ProductoAlmacenRepository.GetSingleByCriteria(x => x.idProducto.Equals(currentProduct.idProducto) && x.idAlmacen.Equals(principalWarehouse.idAlmacen));
+                        almacen.Existencia += producto.Cantidad;
                     }
                     PosUoW.Save();
                     return Ok(venta);

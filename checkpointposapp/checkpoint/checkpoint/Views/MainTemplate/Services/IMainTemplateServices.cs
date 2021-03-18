@@ -8,7 +8,7 @@ namespace checkpoint.Views.MainTemplate.Services
 {
     public interface IMainTemplateServices
     {
-        List<Pantallas> GetAllPrincipalPantallas();
+        List<Pantallas> GetAllPrincipalPantallasByUserId(int idUsuario);
         SystemConfig cashConfig();
     }
 }

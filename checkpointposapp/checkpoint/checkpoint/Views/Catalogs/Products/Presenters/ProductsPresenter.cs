@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace checkpoint.Views.Catalogs.Products.Presenters
 {
-    public class ProductsPresenter : IProductsServices
+    public class ProductsPresenter
     {
         private readonly IProductsServices _productsServices;
         public ProductsPresenter(IProductsServices productsServices)
@@ -76,6 +76,10 @@ namespace checkpoint.Views.Catalogs.Products.Presenters
         public List<Productos> GetAllProductos()
         {
             return _productsServices.GetAllProductos();
+        }
+        public  List<Productos> SaveProducts(List<Productos> productlist)
+        {
+            return  _productsServices.SaveProducts(productlist).Result;
         }
     }
 }

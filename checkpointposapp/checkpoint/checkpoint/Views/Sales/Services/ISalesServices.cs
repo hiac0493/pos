@@ -10,8 +10,9 @@ namespace checkpoint.Sales.Services
     public interface ISalesServices
     {
         ProductSale GetProductByPLU(string PLU);
-        Task<Ventas> AddVenta(Ventas venta);
+        Task<SaleResult> AddVenta(Ventas venta);
         List<TipoPago> GetAllTipoPago();
         Ventas CancelaVenta(CancelacionDto cancelacion);
+        public double GetTotalEfectivo(int idUsuario);
     }
 }

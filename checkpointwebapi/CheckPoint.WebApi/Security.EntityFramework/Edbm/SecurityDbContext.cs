@@ -20,10 +20,12 @@ namespace Security.EntityFramework.Edbm
         }
 
         public DbSet<Usuarios> Usuarios { get; set; }
+        public DbSet<Pantallas> Pantallas { get; set; }
+        public DbSet<PantallasUsuario> PantallasUsuario { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // ------------- Pantallas -------------------------------
+            // ------------- Pantallas ---------------------------------
 
             // Fields
             modelBuilder.Entity<Pantallas>().ToTable("Pantallas");
@@ -33,8 +35,24 @@ namespace Security.EntityFramework.Edbm
             modelBuilder.Entity<Pantallas>().Property(t => t.TextoPanel).HasColumnName("TextoPanel");
             modelBuilder.Entity<Pantallas>().Property(t => t.Url).HasColumnName("Url");
             modelBuilder.Entity<Pantallas>().Property(t => t.Icono).HasColumnName("Icono");
-            modelBuilder.Entity<Pantallas>().Property(t => t.SubPantalla).HasColumnName("SubPantalla");
+            modelBuilder.Entity<Pantallas>().Property(t => t.Nivel).HasColumnName("Nivel");
             modelBuilder.Entity<Pantallas>().Property(t => t.Activo).HasColumnName("Activo");
+            modelBuilder.Entity<Pantallas>().Property(t => t.SubPantalla).HasColumnName("SubPantalla");
+
+            //Navigation
+            modelBuilder.Entity<Pantallas>().HasMany(t => t.PantallasUsuarios).WithOne(t => t.Pantalla);
+
+            // ------------- PantallasUsuario ---------------------------------
+            // Fields
+            modelBuilder.Entity<PantallasUsuario>().ToTable("PantallasUsuario");
+            modelBuilder.Entity<PantallasUsuario>().HasKey(c => new { c.idPantallasUsuario });
+            modelBuilder.Entity<PantallasUsuario>().Property(t => t.idPantallasUsuario).HasColumnName("idPantallasUsuario");
+            modelBuilder.Entity<PantallasUsuario>().Property(t => t.idUsuario).HasColumnName("idUsuario");
+            modelBuilder.Entity<PantallasUsuario>().Property(t => t.idPantalla).HasColumnName("idPantalla");
+
+            // Navigation
+            modelBuilder.Entity<PantallasUsuario>().HasOne(t => t.Usuario).WithMany(p => p.PantallasUsuario).HasForeignKey(t => t.idUsuario);
+            modelBuilder.Entity<PantallasUsuario>().HasOne(t => t.Pantalla).WithMany(t => t.PantallasUsuarios).HasForeignKey(t => t.idPantalla);
 
             // ------------- Usuarios --------------------------------
 

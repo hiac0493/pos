@@ -7,6 +7,7 @@
         public string TextoPanel { get; set; }
         public string Url { get; set; }
         public string Icono { get; set; }
+        public int Nivel { get; set; }
         public bool Activo { get; set; }
         public bool SubPantalla { get; set; }
     }

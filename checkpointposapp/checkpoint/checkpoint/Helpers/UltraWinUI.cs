@@ -29,8 +29,7 @@ namespace checkpoint.Helpers
         /// <returns>if the text entered is valid</returns>
 
         static string[] Scopes = { DriveService.Scope.DriveReadonly };
-        static string ApplicationName = "CheckPoint";
-
+        static string ApplicationName = "CheckPoint"; 
         public static void NumberValidationTextBox(this TextBox text, object sender, TextCompositionEventArgs e)
         {
             TextBox txt = (TextBox)sender;

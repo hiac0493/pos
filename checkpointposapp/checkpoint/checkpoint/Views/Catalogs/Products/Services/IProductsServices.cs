@@ -16,6 +16,7 @@ namespace checkpoint.Views.Catalogs.Products.Services
         Task<Productos> SaveProduct(Productos productos);
         Productos GetProductObjectByPLU(string plu);
         List<Proveedores> GetAllSuppliers();
+        Task<List<Productos>> SaveProducts(List<Productos> productlist);
         void DeleteProductoProveedorById(int idProductoProveedor);
         void DeleteImpuestoProductoById(int idImpuestoProducto);
         void DeletePluProductoById(int idPlu);

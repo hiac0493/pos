@@ -86,5 +86,10 @@ namespace checkpoint.OrderPurcharse.Presenters
         {
             return _orderPurchaseServices.GetProductsSuggestToBuy(supplier);
         }
+
+        public IEnumerable<Almacenes> GetAllAlmacenes()
+        {
+            return _orderPurchaseServices.GetAllAlmacenes();
+        }
     }
 }

@@ -7,6 +7,6 @@ namespace Pos.BAL.Interface.Domain
 {
     public interface IAlmacenesRepository : IGenericRepository<Almacenes>
     {
-        IEnumerable<object> GetAllAlmacenes();
+        IEnumerable<object> GetProductosByAlmacen(int idAlmacen);
     }
 }

@@ -302,6 +302,24 @@
                                            Margin="10 0 0 0"
                                            Name="txtIcon"/>
                             </StackPanel>
+
+                            <StackPanel Margin=" 0 15 0 15"
+                                        Orientation="Horizontal">
+                                <TextBlock Text="NIVEL:"
+                                           FontSize="15"
+                                           VerticalAlignment="Center"
+                                           FontWeight="Bold"
+                                           Foreground="#495057"
+                                           Width="150"/>
+                                <TextBox   Padding="5"
+                                           Foreground="#495057"
+                                           FontSize="15"
+                                           HorizontalAlignment="Left"
+                                           MinWidth="300"
+                                           MaxHeight="30"
+                                           Margin="10 0 0 0"
+                                           Name="txtNivel"/>
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
                 </TabItem>

@@ -1,4 +1,5 @@
-﻿using Pos.BAL.Interface.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using Pos.BAL.Interface.Domain;
 using Pos.Business.Model;
 using Pos.EntityFramework.Edbm;
 using System;
@@ -16,9 +17,15 @@ namespace Pos.DAL.Repository.Domain
             get { return _context as PosDbContext; }
         }
 
-        public IEnumerable<object> GetAllAlmacenes()
+        public IEnumerable<object> GetProductosByAlmacen(int idAlmacen)
         {
-            return dbContext.Almacenes.ToList();
+            return dbContext.ProductoAlmacen.Include(x => x.Producto)
+                .Where(x => x.idAlmacen.Equals(idAlmacen))
+                .Select(a => new
+                {
+                    NombreProducto = a.Producto.NombreProducto,
+                    Existencia = a.Existencia
+                }).ToList();
         }
     }
 }

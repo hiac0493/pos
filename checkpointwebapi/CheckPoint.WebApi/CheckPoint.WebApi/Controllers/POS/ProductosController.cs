@@ -224,6 +224,29 @@ namespace CheckPoint.WebApi.Controllers.POS
         }
 
         [HttpPost]
+        [Route("SaveProducts")]
+        public IActionResult SaveProducts([FromBody] List<Productos> producto)
+        {
+            try
+            {
+                if (producto != null && producto.Count() > 0)
+                {
+                    PosUoW.ProductosRepository.AddRange(producto);
+                    PosUoW.Save();
+                    return Ok(producto);
+                }
+                else
+                {
+                    return BadRequest("Los datos del producto son incorrectos");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
+        [HttpPost]
         [Route("GetProductsByList")]
         public IActionResult GetProductsByList([FromBody] List<ProductosOrden> productsList)
         {

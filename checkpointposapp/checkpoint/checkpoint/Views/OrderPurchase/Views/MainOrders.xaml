@@ -293,6 +293,23 @@
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal"
                                                     Margin="0 15 0 0">
+                                            <TextBlock Text="ALMACEN:"
+							                           FontSize="15"
+							                           VerticalAlignment="Center"
+                                                       Width="140"/>
+                                            <ComboBox   Padding="5"
+                                               Name="ComboWarehouse"
+                                               DisplayMemberPath="Nombre" SelectedValuePath="idAlmacen" SelectionChanged="ComboWarehouse_SelectionChanged"
+							                   Foreground="#495057"
+							                   FontSize="15"
+							                   HorizontalAlignment="Left"
+                                               KeyDown="textPago_KeyDown"
+							                   MinWidth="300"
+							                   MaxHeight="30"
+							                   Margin="30 0 0 0"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal"
+                                                    Margin="0 15 0 0">
                                             <TextBlock Text="PROVEEDORES:"
 							                           FontSize="15"
 							                           VerticalAlignment="Center"
@@ -308,7 +325,7 @@
 							                   MaxHeight="30"
                                                IsEnabled="False"
 							                   Margin="30 0 0 0"/>
-                                        </StackPanel>
+                                        </StackPanel>                                        
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal"
                                                 HorizontalAlignment="Right">
@@ -361,7 +378,7 @@
 
                                         <StackPanel Orientation="Horizontal"
                                                     HorizontalAlignment="Right">
-                                            <TextBlock Text="SUB: $"
+                                            <TextBlock Text="SUBTOTAL: $"
 							                           FontSize="30"
 							                           VerticalAlignment="Center"
                                                        HorizontalAlignment="Right"
@@ -375,7 +392,7 @@
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal"
                                                     HorizontalAlignment="Right">
-                                            <TextBlock Text="IMP: $"
+                                            <TextBlock Text="IMPUESTOS: $"
 							                           FontSize="30"
 							                           VerticalAlignment="Center"
                                                        HorizontalAlignment="Right"

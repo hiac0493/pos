@@ -15,18 +15,20 @@ namespace Pos.DAL.Repository.Domain
 
         public object GetProductoVenta(string PLU)
         {
+            long localTime = DateTime.Now.Ticks;
             return dbContext.PLUProductos
                 .Include(b => b.Producto).ThenInclude(b => b.Impuestos).ThenInclude(b => b.Impuesto)
+                .Include(b => b.Producto).ThenInclude(b => b.Promociones).ThenInclude(b => b.Promocion)
                 .Where(a => a.PLU.Equals(PLU))
                 .Select(a => new
                 {
                     idProducto = a.idProducto,
                     pluProducto = a.PLU,
                     nombre = a.Producto.NombreProducto,
-                    existencia = a.Producto.Existencia,
                     precioVenta = a.Producto.PrecioVenta,
                     imagenId = a.Producto.ImagenId,
-                    impuestos = a.Producto.Impuestos.Select(b => new { idImpuesto = b.idImpuesto, descripcion = b.Impuesto.Descripcion, porcentaje = b.Impuesto.Porcentaje }).ToList()
+                    impuestos = a.Producto.Impuestos.Select(b => new { idImpuesto = b.idImpuesto, descripcion = b.Impuesto.Descripcion, porcentaje = b.Impuesto.Porcentaje }).ToList(),
+                    promociones = a.Producto.Promociones.Where(x => x.Promocion.Inicio <= localTime && x.Promocion.Fin >= localTime).Select(x => x.Promocion).ToList()
                 }).SingleOrDefault();
         }
 

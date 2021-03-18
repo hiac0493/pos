@@ -56,6 +56,7 @@ namespace checkpoint.Sales.Views
             totalLabel.Content = _products.Sum(x => x.Price * x.Quantity).ToString("C2");
             cambioLabel.Content = ((_products.Sum(x => x.Price * x.Quantity)) - pagos.Sum(x => x.cantidad)).ToString("C2");
             tabPay.SelectedIndex = 0;
+          
         }
 
         private void Pagos_ListChanged(object sender, ListChangedEventArgs e)

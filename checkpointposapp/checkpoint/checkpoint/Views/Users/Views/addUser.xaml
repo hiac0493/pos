@@ -131,7 +131,7 @@
 							   Foreground="#495057"
 							   FontSize="15"
                                TextChanged="searchUserTxtBox_TextChanged"
-                               x:Name="searchUserTxtBox"
+                               Name="searchUserTxtBox"
                                KeyUp="SearchUserHandler"
 							   HorizontalAlignment="Left"
 							   MinWidth="300"

@@ -16,15 +16,15 @@ namespace Pos.DAL.Repository.Domain
         {
             get { return _context as PosDbContext; }
         }
- 
+
         public Ventas GetVentaByFolio(long folioVenta)
         {
             return dbContext.Ventas
-                .Include(t => t.Pagos).ThenInclude(x=>x.TipoPago)
-                .Include(t => t.Productos).ThenInclude(x=>x.Productos)
-                .Include(t=>t.Lotes)
+                .Include(t => t.Pagos).ThenInclude(x => x.TipoPago)
+                .Include(t => t.Productos).ThenInclude(x => x.Productos)
+                .Include(t => t.Lotes)
                 .Where(t => t.FolioVenta.Equals(folioVenta))
-                .SingleOrDefault();
+                .FirstOrDefault();
         }
 
         public double GetTotalSale(int idUsuario, long folioInicio, long folioFin)

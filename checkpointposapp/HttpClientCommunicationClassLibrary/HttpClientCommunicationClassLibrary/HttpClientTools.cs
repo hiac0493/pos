@@ -687,6 +687,41 @@ namespace HttpClientCommunicationClassLibrary
             return HttpStatusCode.NotFound;
         }
 
+        public async Task<HttpStatusCode> HttpDeleteAsync(string url, long entityId, string errorMessage)
+        {
+            var apiEndPoint = string.Empty;
+
+            if (!string.IsNullOrEmpty(url) && url.EndsWith("="))
+            {
+                apiEndPoint = WebApiUrl + url + entityId;
+
+                try
+                {
+                    if (_httpClientPost == null)
+                    {
+                        // Creating and Setting up request header with Basic Authentication
+                        _httpClientPost = new HttpClient();
+                        //SetupAuthorization(httpClientPost);
+                    }
+
+                    SetupAuthorization(_httpClientPost);
+                    var response = await _httpClientPost.DeleteAsync(apiEndPoint);
+
+                    return response.StatusCode;
+                }
+                catch (Exception ex)
+                {
+                    LogErrorMessage(apiEndPoint, ex);
+                }
+            }
+            else
+            {
+                throw new ArgumentException("The provided webapi url is not valid");
+            }
+
+            return HttpStatusCode.NotFound;
+        }
+
         public async Task<HttpStatusCode> HttpDeleteAsync(string url, object data, string errorMessage)
         {
             var apiEndPoint = string.Empty;

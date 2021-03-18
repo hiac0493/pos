@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace checkpoint.Views.CashClose.Presenters
 {
-    class CashClosePresenter
+    public class CashClosePresenter
     {
         private readonly ICashCloseServices _cashCloseServices;
         public CashClosePresenter(ICashCloseServices cashCloseServices)
@@ -30,46 +30,46 @@ namespace checkpoint.Views.CashClose.Presenters
             return _cashCloseServices.GetCurrentCashClose(idUsuario);
         }
 
-        public double GetTotalSale(int idUsuario, long folioInicio, long folioFin)
+        public double GetTotalSale(int idUsuario, long folioInicio, long? folioFin)
         {
-            return _cashCloseServices.GetTotalSale(idUsuario, folioInicio, folioFin);
+            return _cashCloseServices.GetTotalSale(idUsuario, folioInicio, (long)folioFin);
         }
 
-        public IEnumerable<CortePagos> GetAllPagosCorte(long folioInicio, long folioFinal, int IdUsuario)
+        public IEnumerable<CortePagos> GetAllPagosCorte(long folioInicio, long? folioFinal, int IdUsuario)
         {
-            return _cashCloseServices.GetAllPagosCorte(folioInicio, folioFinal, IdUsuario);
+            return _cashCloseServices.GetAllPagosCorte(folioInicio, (long)folioFinal, IdUsuario);
         }
 
-        public IEnumerable<VentaImpuestos> GetAllTaxes(long folioInicio, long folioFinal, int IdUsuario)
+        public IEnumerable<VentaImpuestos> GetAllTaxes(long folioInicio, long? folioFinal, int IdUsuario)
         {
-            return _cashCloseServices.GetAllTaxes(folioInicio, folioFinal, IdUsuario);
+            return _cashCloseServices.GetAllTaxes(folioInicio, (long)folioFinal, IdUsuario);
         }
 
-        public double GetTotalTaxes(long folioInicio, long folioFinal, int IdUsuario)
+        public double GetTotalTaxes(long folioInicio, long? folioFinal, int IdUsuario)
         {
-            return _cashCloseServices.GetTotalTaxes(folioInicio, folioFinal, IdUsuario);
+            return _cashCloseServices.GetTotalTaxes(folioInicio, (long)folioFinal, IdUsuario);
         }
-        public IEnumerable<TasaImpuesto> GetTotalWithTaxes(long folioInicio, long folioFinal, int IdUsuario)
+        public IEnumerable<TasaImpuesto> GetTotalWithTaxes(long folioInicio, long? folioFinal, int IdUsuario)
         {
-            return _cashCloseServices.GetTotalWithTaxes(folioInicio, folioFinal, IdUsuario);
+            return _cashCloseServices.GetTotalWithTaxes(folioInicio, (long)folioFinal, IdUsuario);
         }
-        public IEnumerable<TasaImpuesto> GetReturnsWithTaxes(long folioInicio, long folioFinal, int IdUsuario)
+        public IEnumerable<TasaImpuesto> GetReturnsWithTaxes(long folioInicio, long? folioFinal, int IdUsuario)
         {
-            return _cashCloseServices.GetReturnsWithTaxes(folioInicio, folioFinal, IdUsuario);
+            return _cashCloseServices.GetReturnsWithTaxes(folioInicio, (long)folioFinal, IdUsuario);
         }
-        public double GetTotalReturns(long folioInicio, long folioFinal, int IdUsuario)
+        public double GetTotalReturns(long folioInicio, long? folioFinal, int IdUsuario)
         {
-            return _cashCloseServices.GetTotalReturns(folioInicio, folioFinal, IdUsuario);
-        }
-
-        public double CalcIvaTasa(int IdUsuario, long folioInicio, long folioFinal)
-        {
-            return _cashCloseServices.CalcIvaTasa(IdUsuario, folioInicio, folioFinal);
+            return _cashCloseServices.GetTotalReturns(folioInicio, (long)folioFinal, IdUsuario);
         }
 
-        public double CalcIvaReturn(int IdUsuario, long folioInicio, long folioFinal)
+        public double CalcIvaTasa(int IdUsuario, long folioInicio, long? folioFinal)
         {
-            return _cashCloseServices.CalcIvaReturn(IdUsuario, folioInicio, folioFinal);
+            return _cashCloseServices.CalcIvaTasa(IdUsuario, folioInicio, (long)folioFinal);
+        }
+
+        public double CalcIvaReturn(int IdUsuario, long folioInicio, long? folioFinal)
+        {
+            return _cashCloseServices.CalcIvaReturn(IdUsuario, folioInicio, (long)folioFinal);
         }
     }
 }

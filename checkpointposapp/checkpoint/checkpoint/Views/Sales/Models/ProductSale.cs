@@ -12,5 +12,6 @@ namespace checkpoint.Sales.Models
         public float precioVenta { get; set; }
         public string imagenId { get; set; }
         public List<Impuestos> impuestos { get; set; }
+        public List<Promociones> promociones { get; set; }
     }
 }

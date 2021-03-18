@@ -24,6 +24,7 @@ namespace checkpoint
         private MainTemplatePresenter _mainTemplatePresenter;
         public delegate void InUseDelegate(bool IsActive);
         public static event InUseDelegate InUseEvent;
+        private bool InUse;
         //Config xml = new Config();
 
         public MainWindow()
@@ -40,12 +41,12 @@ namespace checkpoint
 
         public void OnUseChanged(bool IsActive)
         {
-            leftPanel.IsEnabled = IsActive;
+            InUse = IsActive;
         }
 
         private void InitializeApplicationScreens()
         {
-            List<Pantallas> screensResult = _mainTemplatePresenter.GetAllPrincipalPantallas();
+            List<Pantallas> screensResult = _mainTemplatePresenter.GetAllPrincipalPantallasByUserId(App._userApplication.idUsuario);
             if (screensResult != null)
             {
                 foreach (Pantallas screen in screensResult)
@@ -60,14 +61,17 @@ namespace checkpoint
 
         private void ScreenAdd_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            ListViewItem itemClick = (ListViewItem)sender;
-            ViewsTab.Items.Clear();
-            Pantallas currentScreen = itemClick.Tag as Pantallas;
-            var userControls = App.LoadComponent(new Uri(currentScreen.Url, UriKind.Relative));
-            _tabUserPage = new TabItem { Content = userControls };
-            _tabUserPage.Tag = this;
-            ViewsTab.Items.Add(_tabUserPage); 
-            ViewsTab.Items.Refresh();
+            if (!InUse)
+            {
+                ListViewItem itemClick = (ListViewItem)sender;
+                ViewsTab.Items.Clear();
+                Pantallas currentScreen = itemClick.Tag as Pantallas;
+                var userControls = App.LoadComponent(new Uri(currentScreen.Url, UriKind.Relative));
+                _tabUserPage = new TabItem { Content = userControls };
+                _tabUserPage.Tag = this;
+                ViewsTab.Items.Add(_tabUserPage);
+                ViewsTab.Items.Refresh();
+            }
         }
 
         private void SvgAwesome_MouseUp(object sender, MouseButtonEventArgs e)

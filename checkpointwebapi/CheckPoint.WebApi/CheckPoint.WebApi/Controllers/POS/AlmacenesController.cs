@@ -1,4 +1,5 @@
-﻿using CheckPoint.WebApi.Metadata;
+﻿using checkpoint.Views.Inventory.Models;
+using CheckPoint.WebApi.Metadata;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,6 @@ using Pos.Business.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CheckPoint.WebApi.Controllers.POS
 {
@@ -25,7 +25,7 @@ namespace CheckPoint.WebApi.Controllers.POS
         {
             try
             {
-                List<Almacenes> almacenesList = PosUoW.AlmacenesRepository.GetAllByCriteria(x => x.Activo, x => x.IdAlmacen).ToList();
+                List<Almacenes> almacenesList = PosUoW.AlmacenesRepository.GetAllByCriteria(x => x.Activo, x => x.idAlmacen).ToList();
                 if (almacenesList != null)
                 {
                     return Ok(almacenesList);
@@ -40,6 +40,29 @@ namespace CheckPoint.WebApi.Controllers.POS
                 return StatusCode(StatusCodes.Status500InternalServerError, ex);
             }
         }
+
+        [HttpGet]
+        [Route("GetProductosByAlmacen")]
+        public IActionResult GetProductosByAlmacen(int idAlmacen)
+        {
+            try
+            {
+                var productosAlmacen = PosUoW.AlmacenesRepository.GetProductosByAlmacen(idAlmacen).ToList();
+                if (productosAlmacen != null)
+                {
+                    return Ok(productosAlmacen);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
         [HttpPost]
         [Route("SaveAlmacenes")]
         public IActionResult SaveAlmacenes([FromBody] Almacenes almacen)
@@ -48,7 +71,7 @@ namespace CheckPoint.WebApi.Controllers.POS
             {
                 if (ModelState.IsValid)
                 {
-                    if (almacen.IdAlmacen == 0)
+                    if (almacen.idAlmacen == 0)
                     {
                         PosUoW.AlmacenesRepository.Add(almacen);
                     }

@@ -31,5 +31,11 @@ namespace checkpoint.Views.withdrawCash.Presenters
         {
             return _withdrawServices.GetAllCashIncomes(idusuario);
         }
+
+        public bool GetUserAdmin(string user, string pass)
+        {
+            return _withdrawServices.GetUserAdmin(user, pass);
+        }
+
     }
 }

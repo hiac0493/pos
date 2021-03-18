@@ -22,7 +22,7 @@ namespace checkpoint.Sales.Presenters
             return _salesServices.GetProductByPLU(PLU);
         }
 
-        public Task<Ventas> AddVenta(Ventas venta)
+        public Task<SaleResult> AddVenta(Ventas venta)
         {
             return _salesServices.AddVenta(venta);
         }
@@ -35,6 +35,10 @@ namespace checkpoint.Sales.Presenters
         public Ventas CancelaVenta(CancelacionDto cancelacion)
         {
             return _salesServices.CancelaVenta(cancelacion);
+        }
+        public double GetTotalEfectivo(int idUsuario)
+        {
+            return _salesServices.GetTotalEfectivo(idUsuario);
         }
     }
 }

@@ -40,7 +40,6 @@ namespace checkpoint.Views.Catalogs.Products.Views
             impuestosList = new BindingList<ImpuestoProducto>();
             productCodeTxtBox.PreviewTextInput += productCodeTxtBox.OnlyNumbersValidationTextBox;
             descriptionTextBox.PreviewTextInput += descriptionTextBox.LettersAndNumbersValidationTextBox;
-            existTextBox.PreviewTextInput += existTextBox.OnlyNumbersValidationTextBox;
             minTextBox.PreviewTextInput += minTextBox.OnlyNumbersValidationTextBox;
             maxTextBox.PreviewTextInput += maxTextBox.OnlyNumbersValidationTextBox;
             minBuyTextBox.PreviewTextInput += minBuyTextBox.OnlyNumbersValidationTextBox;
@@ -156,7 +155,6 @@ namespace checkpoint.Views.Catalogs.Products.Views
                 && departmentComboBox.SelectedIndex != -1
                 && unitComboBox.SelectedIndex != -1
                 && brandComboBox.SelectedIndex != -1
-                && !string.IsNullOrEmpty(existTextBox.Text)
                 && !string.IsNullOrEmpty(minTextBox.Text)
                 && !string.IsNullOrEmpty(maxTextBox.Text)
                 && !string.IsNullOrEmpty(minBuyTextBox.Text)
@@ -167,7 +165,6 @@ namespace checkpoint.Views.Catalogs.Products.Views
                 && unidadSatComboBox.SelectedIndex != -1)
             {
                 productos.NombreProducto = descriptionTextBox.Text;
-                productos.Existencia = float.Parse(existTextBox.Text);
                 productos.Minimo = float.Parse(minTextBox.Text);
                 productos.Maximo = float.Parse(maxTextBox.Text);
                 productos.MinimoCompra = float.Parse(minBuyTextBox.Text);
@@ -190,7 +187,7 @@ namespace checkpoint.Views.Catalogs.Products.Views
 
         private void cleanView()
         {
-            descriptionTextBox.Text = existTextBox.Text = minTextBox.Text = maxTextBox.Text = minBuyTextBox.Text = priceTextBox.Text = sellPriceTextBox.Text = gainTextBox.Text = sellPriceWOTaxText.Text = productCodeTxtBox.Text = string.Empty;
+            descriptionTextBox.Text = minTextBox.Text = maxTextBox.Text = minBuyTextBox.Text = priceTextBox.Text = sellPriceTextBox.Text = gainTextBox.Text = sellPriceWOTaxText.Text = productCodeTxtBox.Text = string.Empty;
             departmentComboBox.SelectedIndex = unitComboBox.SelectedIndex = brandComboBox.SelectedIndex = claveComboBox.SelectedIndex = unidadSatComboBox.SelectedIndex = ComboTaxes.SelectedIndex = suppliersCombo.SelectedIndex = -1;
             impuestosList.Clear(); plusList.Clear(); sellPriceTextBox.Text = string.Empty; supplierProductList.Clear(); pluAddText.Text = string.Empty;
             productos = new Productos();
@@ -262,7 +259,6 @@ namespace checkpoint.Views.Catalogs.Products.Views
             impuestosList.Clear();
             plusList.Clear();
             descriptionTextBox.Text = product.NombreProducto;
-            existTextBox.Text = product.Existencia.ToString();
             minTextBox.Text = product.Minimo.ToString();
             maxTextBox.Text = product.Maximo.ToString();
             minBuyTextBox.Text = product.MinimoCompra.ToString();
@@ -276,7 +272,7 @@ namespace checkpoint.Views.Catalogs.Products.Views
             supplierProductList.AddRange(product.Proveedores);
             impuestosList.AddRange(product.Impuestos);
             plusList.AddRange(product.PLUs);
-            imageProduct.GetGoogleImageById(product.ImagenId);
+            //imageProduct.GetGoogleImageById(product.ImagenId);
         }
 
         private void deleteSupplier_Click(object sender, RoutedEventArgs e)

@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <StartupObject>checkpoint.App</StartupObject>
-    <ApplicationIcon>checkPointLogo.ico</ApplicationIcon>
+    <ApplicationIcon>cali-favi.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -35,6 +35,7 @@
     <None Remove="Assets\img\card.png" />
     <None Remove="Assets\img\coca.png" />
     <None Remove="Assets\img\logo-check.png" />
+    <None Remove="Resources\caliventa-logo.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,8 +51,10 @@
 
   <ItemGroup>
     <PackageReference Include="ESC-POS-USB-NET" Version="1.1.3" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.0.2" />
     <PackageReference Include="FontAwesome5" Version="2.0.8" />
     <PackageReference Include="Google.Apis.Drive.v3" Version="1.50.0.2236" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="NPOI" Version="2.5.2" />
     <PackageReference Include="PrinterUtility" Version="1.2.0" />
     <PackageReference Include="RestSharp" Version="106.11.7" />
@@ -66,6 +69,7 @@
     <Resource Include="Assets\img\card.png" />
     <Resource Include="Assets\img\coca.png" />
     <Resource Include="Assets\img\logo-check.png" />
+    <Resource Include="Resources\caliventa-logo.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -103,9 +107,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Catalogs\Config\Models\" />
-    <Folder Include="Views\Promotions\Models\" />
-    <Folder Include="Views\Promotions\Services\" />
-    <Folder Include="Views\Promotions\Presenters\" />
   </ItemGroup>
 
 </Project>

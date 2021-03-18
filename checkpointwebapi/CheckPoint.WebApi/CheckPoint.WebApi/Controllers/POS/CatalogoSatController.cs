@@ -68,6 +68,28 @@ namespace CheckPoint.WebApi.Controllers.POS
             }
         }
 
+        [HttpGet]
+        [Route("GetCatalogByClave")]
+        public IActionResult GetCatalogByClave(string claveCatalogo)
+        {
+            try
+            {
+                CatalogoSat catalogResult = PosUoW.CatalogoSatRepository.GetAllByCriteria(x => x.Clave.Equals(claveCatalogo), x => x.idCatalogoSat).FirstOrDefault();
+                if (catalogResult != null)
+                {
+                    return Ok(catalogResult);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
         [HttpPost]
         [Route("SaveCatalogSat")]
         public IActionResult SaveCatalogSat([FromBody] CatalogoSat catalog)

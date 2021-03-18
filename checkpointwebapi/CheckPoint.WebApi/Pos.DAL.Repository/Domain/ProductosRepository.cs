@@ -61,7 +61,6 @@ namespace Pos.DAL.Repository.Domain
                     idProducto = a.idProducto,
                     pluProducto = a.PLUs.FirstOrDefault().PLU,
                     nombre = a.NombreProducto,
-                    existencia = a.Existencia,
                     precioVenta = a.PrecioVenta
                 })
                 .Take(5)
@@ -86,32 +85,32 @@ namespace Pos.DAL.Repository.Domain
         {
             List<int> productosSupplier = dbContext.ProductosProveedor.Where(x => x.idProveedor.Equals(supplier)).Select(x => x.idProducto).ToList();
             return dbContext.Productos.Include(x => x.Impuestos).ThenInclude(i => i.Impuesto).Include(x => x.Proveedores).ThenInclude(a => a.Proveedor)
-                .Where(x => productosSupplier.Contains(x.idProducto) && x.Existencia <= x.Maximo - x.MinimoCompra)
+                .Where(x => productosSupplier.Contains(x.idProducto) && dbContext.ProductoAlmacen.Where(pa=>pa.idProducto.Equals(x.idProducto)).Sum(pa=>pa.Existencia) <= x.Maximo - x.MinimoCompra)
                 .Select(a => new
                 {
-                    quantity = (Math.Floor((a.Maximo - a.Existencia) / a.MinimoCompra)) * a.MinimoCompra,
+                    quantity = (Math.Floor((a.Maximo - dbContext.ProductoAlmacen.Where(pa=>pa.idProducto.Equals(a.idProducto)).Sum(pa=>pa.Existencia)) / a.MinimoCompra)) * a.MinimoCompra,
                     idProducto = a.idProducto,
                     description = a.NombreProducto,
-                    supplier = a.Proveedores.Where(x => x.idProveedor.Equals(supplier)).Select(s => new { idProveedor = s.idProveedor, nombreProveedor = s.Proveedor.Nombre}).ToArray(),
+                    supplier = a.Proveedores.Where(x => x.idProveedor.Equals(supplier)).Select(s => new { idProveedor = s.idProveedor, nombreProveedor = s.Proveedor.Nombre }).ToArray(),
                     impuestos = (from impuesto in a.Impuestos select new { idImpuesto = impuesto.idImpuesto, descripcion = impuesto.Impuesto.Descripcion, porcentaje = impuesto.Impuesto.Porcentaje }).ToList(),
                     price = a.PrecioCosto,
-                    total = (Math.Floor((a.Maximo - a.Existencia) / a.MinimoCompra)) * a.MinimoCompra * a.PrecioCosto
+                    total = (Math.Floor((a.Maximo - dbContext.ProductoAlmacen.Where(pa => pa.idProducto.Equals(a.idProducto)).Sum(pa => pa.Existencia)) / a.MinimoCompra)) * a.MinimoCompra * a.PrecioCosto
                 }).ToList();
         }
 
         public IEnumerable<object> GetProductsSuggestToBuy()
         {
             return dbContext.Productos.Include(x => x.Impuestos).ThenInclude(i => i.Impuesto).Include(x => x.Proveedores).ThenInclude(a => a.Proveedor)
-                .Where(x=> x.Existencia <= x.Maximo - x.MinimoCompra)
+                .Where(x => dbContext.ProductoAlmacen.Where(pa => pa.idProducto.Equals(x.idProducto)).Sum(pa => pa.Existencia) <= x.Maximo - x.MinimoCompra)
                 .Select(a => new
                 {
-                    quantity = (Math.Floor((a.Maximo - a.Existencia) / a.MinimoCompra)) * a.MinimoCompra,
+                    quantity = (Math.Floor((a.Maximo - dbContext.ProductoAlmacen.Where(pa => pa.idProducto.Equals(a.idProducto)).Sum(pa => pa.Existencia)) / a.MinimoCompra)) * a.MinimoCompra,
                     idProducto = a.idProducto,
                     description = a.NombreProducto,
                     supplier = (from proveedor in a.Proveedores where proveedor.Proveedor.Estatus select new { idProveedor = proveedor.Proveedor.idProveedor, nombreProveedor = proveedor.Proveedor.Nombre }).ToArray(),
                     impuestos = (from impuesto in a.Impuestos select new { idImpuesto = impuesto.idImpuesto, descripcion = impuesto.Impuesto.Descripcion, porcentaje = impuesto.Impuesto.Porcentaje }).ToList(),
                     price = a.PrecioCosto,
-                    total = (Math.Floor((a.Maximo - a.Existencia) / a.MinimoCompra)) * a.MinimoCompra * a.PrecioCosto
+                    total = (Math.Floor((a.Maximo - dbContext.ProductoAlmacen.Where(pa => pa.idProducto.Equals(a.idProducto)).Sum(pa => pa.Existencia)) / a.MinimoCompra)) * a.MinimoCompra * a.PrecioCosto
                 }).ToList();
         }
 

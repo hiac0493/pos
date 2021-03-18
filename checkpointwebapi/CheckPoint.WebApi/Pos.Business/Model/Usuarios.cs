@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Pos.Business.Model
 {
@@ -10,6 +8,7 @@ namespace Pos.Business.Model
         public Usuarios()
         {
             this.VentasUsuario = new List<Ventas>();
+            this.PantallasUsuario = new List<PantallasUsuario>();
             this.VentasCanceladas = new List<Ventas>();
             this.ComprasUsuario = new List<Compras>();
             this.ComprasCanceladas = new List<Compras>();
@@ -28,8 +27,10 @@ namespace Pos.Business.Model
         [Required]
         public bool Activo { get; set; }
         [Required]
-        public string Tipo { get; set; }
+        public int idTipoUsuario { get; set; }
+        public virtual TipoUsuario TipoUsuario { get; set; }
         public ICollection<Ventas> VentasUsuario { get; set; }
+        public ICollection<PantallasUsuario> PantallasUsuario { get; set; }
         public ICollection<Ventas> VentasCanceladas { get; set; }
         public ICollection<Compras> ComprasUsuario { get; set; }
         public ICollection<Compras> ComprasCanceladas { get; set; }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pos.Business.Model;
-using System.IO.Compression;
 
 namespace Pos.EntityFramework.Edbm
 {
@@ -25,7 +24,10 @@ namespace Pos.EntityFramework.Edbm
         public DbSet<Impuestos> Impuestos { get; set; }
         public DbSet<Marca> Marca { get; set; }
         public DbSet<Ordenes> Ordenes { get; set; }
+        public DbSet<Pantallas> Pantallas { get; set; }
+        public DbSet<PantallasUsuario> PantallasUsuario { get; set; }
         public DbSet<PLUProductos> PLUProductos { get; set; }
+        public DbSet<ProductoAlmacen> ProductoAlmacen { get; set; }
         public DbSet<Productos> Productos { get; set; }
         public DbSet<ProductosCompra> ProductosCompra { get; set; }
         public DbSet<ProductosProveedor> ProductosProveedor { get; set; }
@@ -42,6 +44,7 @@ namespace Pos.EntityFramework.Edbm
         public DbSet<Ventas> Ventas { get; set; }
         public DbSet<Cajas> Cajas { get; set; }
         public DbSet<Turnos> Turnos { get; set; }
+        public DbSet<TipoUsuario> TipoUsuarios { get; set; }
         public DbSet<CortePagos> CortePagos { get; set; }
         public DbSet<Cortes> Cortes { get; set; }
 
@@ -52,12 +55,18 @@ namespace Pos.EntityFramework.Edbm
 
             //Fields
             modelBuilder.Entity<Almacenes>().ToTable("Almacenes");
-            modelBuilder.Entity<Almacenes>().HasKey(c => new { c.IdAlmacen });
-            modelBuilder.Entity<Almacenes>().Property(t => t.IdAlmacen).HasColumnName("IdAlmacen");
+            modelBuilder.Entity<Almacenes>().HasKey(c => new { c.idAlmacen });
+            modelBuilder.Entity<Almacenes>().Property(t => t.idAlmacen).HasColumnName("idAlmacen");
             modelBuilder.Entity<Almacenes>().Property(t => t.Nombre).HasColumnName("Nombre");
-            modelBuilder.Entity<Almacenes>().Property(t => t.Existencia).HasColumnName("Existencia");
             modelBuilder.Entity<Almacenes>().Property(t => t.Observaciones).HasColumnName("Observaciones");
-            //Navigation
+            modelBuilder.Entity<Almacenes>().Property(t => t.Principal).HasColumnName("Principal");
+            modelBuilder.Entity<Almacenes>().Property(t => t.Activo).HasColumnName("Activo");
+            
+
+            // Navigation
+            modelBuilder.Entity<Almacenes>().HasMany(t => t.Productos).WithOne(p => p.Almacen);
+            modelBuilder.Entity<Almacenes>().HasMany(t => t.Compras).WithOne(a => a.Almacen);
+            
 
             // ------------- Cajas ------------------------------
 
@@ -76,9 +85,9 @@ namespace Pos.EntityFramework.Edbm
             modelBuilder.Entity<CatalogoSat>().ToTable("CatalogoSat");
             modelBuilder.Entity<CatalogoSat>().HasKey(c => new { c.idCatalogoSat });
             modelBuilder.Entity<CatalogoSat>().Property(t => t.idCatalogoSat).HasColumnName("idCatalogoSat");
-            modelBuilder.Entity<CatalogoSat>().Property(t => t.idUnidadSat).HasColumnName("idUnidadSat");
             modelBuilder.Entity<CatalogoSat>().Property(t => t.Clave).HasColumnName("Clave");
             modelBuilder.Entity<CatalogoSat>().Property(t => t.Descripcion).HasColumnName("Descripcion");
+            modelBuilder.Entity<CatalogoSat>().Property(t => t.Activo).HasColumnName("Activo");
 
             // Navigation
             modelBuilder.Entity<CatalogoSat>().HasMany(t => t.Productos).WithOne(t => t.CatalogoSat);
@@ -96,11 +105,14 @@ namespace Pos.EntityFramework.Edbm
             modelBuilder.Entity<Compras>().Property(t => t.Estatus).HasColumnName("Estatus");
             modelBuilder.Entity<Compras>().Property(t => t.idUsuarioCancela).HasColumnName("idUsuarioCancela");
             modelBuilder.Entity<Compras>().Property(t => t.Fecha).HasColumnName("Fecha");
+            modelBuilder.Entity<Compras>().Property(t => t.idAlmacen).HasColumnName("idAlmacen");   
 
             // Navigation
             modelBuilder.Entity<Compras>().HasOne(t => t.Usuario).WithMany(cu => cu.ComprasUsuario).HasForeignKey(t => t.idUsuario);
             modelBuilder.Entity<Compras>().HasOne(t => t.UsuarioCancela).WithMany(cc => cc.ComprasCanceladas).HasForeignKey(t => t.idUsuarioCancela);
             modelBuilder.Entity<Compras>().HasMany(t => t.ProductosCompra).WithOne(t => t.Compra);
+            modelBuilder.Entity<Compras>().HasOne(t => t.Almacen).WithMany(al => al.Compras).HasForeignKey(t => t.idAlmacen);
+            
 
             // ------------- CortePagos ------------------------------
 
@@ -152,6 +164,10 @@ namespace Pos.EntityFramework.Edbm
 
             // Navigation
             modelBuilder.Entity<Departamentos>().HasMany(t => t.Productos).WithOne(pd => pd.Departamento).HasForeignKey(t => t.idDepartamento);
+            modelBuilder.Entity<Departamentos>().HasMany(t => t.SubDepartamentos).WithOne(pd => pd.Departamento).HasForeignKey(t => t.IdSubDepartamento);
+            modelBuilder.Entity<Departamentos>().HasMany(t => t.Promociones).WithOne(pr => pr.Departamento).HasForeignKey(t => t.idDepartamento);
+
+
 
 
             // ------------- ImpuestoProductos -----------------------
@@ -162,6 +178,7 @@ namespace Pos.EntityFramework.Edbm
             modelBuilder.Entity<ImpuestoProductos>().Property(t => t.idImpuestoProducto).HasColumnName("idImpuestoProducto");
             modelBuilder.Entity<ImpuestoProductos>().Property(t => t.idImpuesto).HasColumnName("idImpuesto");
             modelBuilder.Entity<ImpuestoProductos>().Property(t => t.idProducto).HasColumnName("idProducto");
+            modelBuilder.Entity<ImpuestoProductos>().Property(t => t.Desglosado).HasColumnName("Desglosado");
 
             // Navigation
             modelBuilder.Entity<ImpuestoProductos>().HasOne(t => t.Impuesto).WithMany(p => p.Productos).HasForeignKey(t => t.idImpuesto);
@@ -179,6 +196,8 @@ namespace Pos.EntityFramework.Edbm
 
             // Navigation
             modelBuilder.Entity<Impuestos>().HasMany(t => t.Productos).WithOne(i => i.Impuesto).HasForeignKey(t => t.idImpuesto);
+            modelBuilder.Entity<Impuestos>().HasMany(t => t.Venta).WithOne(i => i.Impuesto).HasForeignKey(t => t.IdImpuesto);
+
 
             // ------------- Marca -----------------------------------
 
@@ -191,6 +210,7 @@ namespace Pos.EntityFramework.Edbm
 
             // Navigation
             modelBuilder.Entity<Marca>().HasMany(t => t.Productos).WithOne(p => p.Marca).HasForeignKey(t => t.idMarca);
+            modelBuilder.Entity<Marca>().HasMany(t => t.Promociones).WithOne(pr => pr.Marca).HasForeignKey(pr => pr.idMarca);
 
             // ------------- Ordenes ---------------------------------
 
@@ -213,7 +233,35 @@ namespace Pos.EntityFramework.Edbm
             modelBuilder.Entity<Ordenes>().HasOne(t => t.Proveedor).WithMany(op => op.Ordenes).HasForeignKey(t => t.idProveedor);
             modelBuilder.Entity<Ordenes>().HasMany(t => t.ProductosOrden).WithOne(t => t.Orden);
             modelBuilder.Entity<Ordenes>().HasOne(t => t.Compra).WithMany(oc => oc.OrdenesCompra).HasForeignKey(t => t.idCompra);
+            
+            // ------------- Pantallas ---------------------------------
 
+            // Fields
+            modelBuilder.Entity<Pantallas>().ToTable("Pantallas");
+            modelBuilder.Entity<Pantallas>().HasKey(c => new { c.idPantalla });
+            modelBuilder.Entity<Pantallas>().Property(t => t.idPantalla).HasColumnName("idPantalla");
+            modelBuilder.Entity<Pantallas>().Property(t => t.NombrePantalla).HasColumnName("NombrePantalla");
+            modelBuilder.Entity<Pantallas>().Property(t => t.TextoPanel).HasColumnName("TextoPanel");
+            modelBuilder.Entity<Pantallas>().Property(t => t.Url).HasColumnName("Url");
+            modelBuilder.Entity<Pantallas>().Property(t => t.Icono).HasColumnName("Icono");
+            modelBuilder.Entity<Pantallas>().Property(t => t.Nivel).HasColumnName("Nivel"); 
+            modelBuilder.Entity<Pantallas>().Property(t => t.Activo).HasColumnName("Activo");
+            modelBuilder.Entity<Pantallas>().Property(t => t.SubPantalla).HasColumnName("SubPantalla");
+
+            //Navigation
+            modelBuilder.Entity<Pantallas>().HasMany(t => t.PantallasUsuarios).WithOne(t => t.Pantalla);
+
+            // ------------- PantallasUsuario ---------------------------------
+            // Fields
+            modelBuilder.Entity<PantallasUsuario>().ToTable("PantallasUsuario");
+            modelBuilder.Entity<PantallasUsuario>().HasKey(c => new { c.idPantallasUsuario });
+            modelBuilder.Entity<PantallasUsuario>().Property(t => t.idPantallasUsuario).HasColumnName("idPantallasUsuario");
+            modelBuilder.Entity<PantallasUsuario>().Property(t => t.idUsuario).HasColumnName("idUsuario");
+            modelBuilder.Entity<PantallasUsuario>().Property(t => t.idPantalla).HasColumnName("idPantalla");
+
+            // Navigation
+            modelBuilder.Entity<PantallasUsuario>().HasOne(t => t.Usuario).WithMany(p => p.PantallasUsuario).HasForeignKey(t => t.idUsuario);
+            modelBuilder.Entity<PantallasUsuario>().HasOne(t => t.Pantalla).WithMany(t => t.PantallasUsuarios).HasForeignKey(t => t.idPantalla);
             // ------------- PLUProductos ----------------------------
 
             // Fields
@@ -226,6 +274,20 @@ namespace Pos.EntityFramework.Edbm
             // Navigation
             modelBuilder.Entity<PLUProductos>().HasOne(t => t.Producto).WithMany(p => p.PLUs).HasForeignKey(t => t.idProducto);
 
+            // ------------- ProductoAlmacen -------------------------
+
+            // Fields
+            modelBuilder.Entity<ProductoAlmacen>().ToTable("ProductoAlmacen");
+            modelBuilder.Entity<ProductoAlmacen>().HasKey(c => new { c.idProductoAlmacen });
+            modelBuilder.Entity<ProductoAlmacen>().Property(t => t.idProductoAlmacen).HasColumnName("idProductoAlmacen");
+            modelBuilder.Entity<ProductoAlmacen>().Property(t => t.idAlmacen).HasColumnName("idAlmacen");
+            modelBuilder.Entity<ProductoAlmacen>().Property(t => t.idProducto).HasColumnName("idProducto");
+            modelBuilder.Entity<ProductoAlmacen>().Property(t => t.Existencia).HasColumnName("Existencia");
+
+            // Navigation
+            modelBuilder.Entity<ProductoAlmacen>().HasOne(t => t.Producto).WithMany(p => p.Almacenes).HasForeignKey(t => t.idProducto);
+            modelBuilder.Entity<ProductoAlmacen>().HasOne(t => t.Almacen).WithMany(p => p.Productos).HasForeignKey(t => t.idAlmacen);
+
             // ------------- Productos -------------------------------
 
             // Fields
@@ -233,7 +295,6 @@ namespace Pos.EntityFramework.Edbm
             modelBuilder.Entity<Productos>().HasKey(c => new { c.idProducto });
             modelBuilder.Entity<Productos>().Property(t => t.idProducto).HasColumnName("idProducto");
             modelBuilder.Entity<Productos>().Property(t => t.NombreProducto).HasColumnName("NombreProducto");
-            modelBuilder.Entity<Productos>().Property(t => t.Existencia).HasColumnName("Existencia");
             modelBuilder.Entity<Productos>().Property(t => t.PrecioCosto).HasColumnName("PrecioCosto");
             modelBuilder.Entity<Productos>().Property(t => t.PrecioVenta).HasColumnName("PrecioVenta");
             modelBuilder.Entity<Productos>().Property(t => t.PrecioVentaSinImpuestos).HasColumnName("PrecioVentaSinImpuestos");
@@ -245,18 +306,25 @@ namespace Pos.EntityFramework.Edbm
             modelBuilder.Entity<Productos>().Property(t => t.Maximo).HasColumnName("Maximo");
             modelBuilder.Entity<Productos>().Property(t => t.MinimoCompra).HasColumnName("MinimoCompra");
             modelBuilder.Entity<Productos>().Property(t => t.idCatalogoSat).HasColumnName("idCatalogoSat");
+            modelBuilder.Entity<Productos>().Property(t => t.idUnidadSat).HasColumnName("idUnidadSat");
             modelBuilder.Entity<Productos>().Property(t => t.ImagenId).HasColumnName("ImagenId");
+            modelBuilder.Entity<Productos>().Property(t => t.idSubDepartamento).HasColumnName("idSubDepartamento");
 
             // Navigation
             modelBuilder.Entity<Productos>().HasOne(t => t.Marca).WithMany(p => p.Productos).HasForeignKey(t => t.idMarca);
             modelBuilder.Entity<Productos>().HasOne(t => t.Departamento).WithMany(p => p.Productos).HasForeignKey(t => t.idDepartamento);
+            modelBuilder.Entity<Productos>().HasOne(t => t.SubDepartamento).WithMany(p => p.Productos).HasForeignKey(t => t.idSubDepartamento);
             modelBuilder.Entity<Productos>().HasMany(t => t.Impuestos).WithOne(t => t.Producto);
             modelBuilder.Entity<Productos>().HasMany(t => t.PLUs).WithOne(t => t.Producto);
             modelBuilder.Entity<Productos>().HasMany(t => t.Proveedores).WithOne(t => t.Producto);
             modelBuilder.Entity<Productos>().HasMany(t => t.Ventas).WithOne(t => t.Productos);
             modelBuilder.Entity<Productos>().HasMany(t => t.Compras).WithOne(t => t.Producto);
             modelBuilder.Entity<Productos>().HasOne(t => t.CatalogoSat).WithMany(cs => cs.Productos).HasForeignKey(t => t.idCatalogoSat);
+            modelBuilder.Entity<Productos>().HasOne(t => t.UnidadSat).WithMany(cs => cs.Productos).HasForeignKey(t => t.idUnidadSat);
             modelBuilder.Entity<Productos>().HasMany(t => t.Lotes).WithOne(t => t.producto);
+            modelBuilder.Entity<Productos>().HasMany(t => t.Almacenes).WithOne(p => p.Producto);
+            modelBuilder.Entity<Productos>().HasMany(t => t.Promociones).WithOne(p => p.Producto);
+            modelBuilder.Entity<Productos>().HasOne(t => t.Unidad).WithMany(t => t.Productos).HasForeignKey(t => t.idUnidad);
 
             // ------------- ProductosCompra -------------------------
 
@@ -291,6 +359,20 @@ namespace Pos.EntityFramework.Edbm
             modelBuilder.Entity<ProductosOrden>().HasOne(t => t.Orden).WithMany(p => p.ProductosOrden).HasForeignKey(t => t.idOrden);
             modelBuilder.Entity<ProductosOrden>().HasOne(t => t.Producto).WithMany(po => po.Ordenes).HasForeignKey(t => t.idProducto);
 
+            // ------------- ProductosPromocion ----------------------
+
+            // Fields
+            modelBuilder.Entity<ProductosPromocion>().ToTable("ProductosPromocion");
+            modelBuilder.Entity<ProductosPromocion>().HasKey(c => new { c.idProductoPromocion });
+            modelBuilder.Entity<ProductosPromocion>().Property(t => t.idProductoPromocion).HasColumnName("idProductoPromocion");
+            modelBuilder.Entity<ProductosPromocion>().Property(t => t.idPromocion).HasColumnName("idPromocion");
+            modelBuilder.Entity<ProductosPromocion>().Property(t => t.idProducto).HasColumnName("idProducto");
+            modelBuilder.Entity<ProductosPromocion>().Property(t => t.Cantidad).HasColumnName("Cantidad");
+
+            // Navigation
+            modelBuilder.Entity<ProductosPromocion>().HasOne(t => t.Promocion).WithMany(pr => pr.Productos).HasForeignKey(t => t.idPromocion);
+            modelBuilder.Entity<ProductosPromocion>().HasOne(t => t.Producto).WithMany(pr => pr.Promociones).HasForeignKey(t => t.idProducto);
+
             // ------------- ProductosProveedor ----------------------
 
             // Fields 
@@ -315,10 +397,32 @@ namespace Pos.EntityFramework.Edbm
             modelBuilder.Entity<ProductosVenta>().Property(t => t.idProducto).HasColumnName("idProducto");
             modelBuilder.Entity<ProductosVenta>().Property(t => t.Cantidad).HasColumnName("Cantidad");
             modelBuilder.Entity<ProductosVenta>().Property(t => t.Monto).HasColumnName("Monto");
+            modelBuilder.Entity<ProductosVenta>().Property(t => t.Estatus).HasColumnName("Estatus");
 
             // Navigation
             modelBuilder.Entity<ProductosVenta>().HasOne(t => t.Venta).WithMany(p => p.Productos).HasForeignKey(t => t.idVenta);
             modelBuilder.Entity<ProductosVenta>().HasOne(t => t.Productos).WithMany(v => v.Ventas).HasForeignKey(t => t.idProducto);
+
+            // ------------- Promociones -----------------------------
+
+            // Fields
+            modelBuilder.Entity<Promociones>().ToTable("Promociones");
+            modelBuilder.Entity<Promociones>().HasKey(c => new { c.idPromocion });
+            modelBuilder.Entity<Promociones>().Property(t => t.idPromocion).HasColumnName("idPromocion");
+            modelBuilder.Entity<Promociones>().Property(t => t.NombrePromocion).HasColumnName("NombrePromocion");
+            modelBuilder.Entity<Promociones>().Property(t => t.Inicio).HasColumnName("Inicio");
+            modelBuilder.Entity<Promociones>().Property(t => t.Fin).HasColumnName("Fin");
+            modelBuilder.Entity<Promociones>().Property(t => t.Monto).HasColumnName("Monto");
+            modelBuilder.Entity<Promociones>().Property(t => t.Porcentaje).HasColumnName("Porcentaje");
+            modelBuilder.Entity<Promociones>().Property(t => t.idDepartamento).HasColumnName("idDepartamento");
+            modelBuilder.Entity<Promociones>().Property(t => t.idMarca).HasColumnName("idMarca");
+            modelBuilder.Entity<Promociones>().Property(t => t.DiasPromocion).HasColumnName("DiasPromocion");
+            modelBuilder.Entity<Promociones>().Property(t => t.Estatus).HasColumnName("Estatus");
+
+            // Navigation
+            modelBuilder.Entity<Promociones>().HasOne(t => t.Marca).WithMany(m => m.Promociones).HasForeignKey(t => t.idMarca);
+            modelBuilder.Entity<Promociones>().HasOne(t => t.Departamento).WithMany(d => d.Promociones).HasForeignKey(t => t.idDepartamento);
+            modelBuilder.Entity<Promociones>().HasMany(t => t.Productos).WithOne(t => t.Promocion);
 
             // ------------- Proveedores -----------------------------
 
@@ -350,7 +454,9 @@ namespace Pos.EntityFramework.Edbm
             modelBuilder.Entity<Retiro>().Property(t => t.Comentarios).HasColumnName("Comentarios");
             modelBuilder.Entity<Retiro>().Property(t => t.Hora).HasColumnName("Hora");
             modelBuilder.Entity<Retiro>().Property(t => t.Cantidad).HasColumnName("Cantidad");
-
+            modelBuilder.Entity<Retiro>().Property(t => t.Tipo).HasColumnName("Tipo");
+            modelBuilder.Entity<Retiro>().Property(t => t.Estatus).HasColumnName("Estatus");
+            
             // Navigation
             modelBuilder.Entity<Retiro>().HasOne(t => t.Corte).WithMany(r => r.Retiros).HasForeignKey(t => t.IdCorte);
 
@@ -366,6 +472,19 @@ namespace Pos.EntityFramework.Edbm
 
             // Navigation
             modelBuilder.Entity<TipoPago>().HasMany(t => t.Ventas).WithOne(t => t.TipoPago);
+            modelBuilder.Entity<TipoPago>().HasMany(t => t.Cortes).WithOne(t => t.TipoPago);
+
+            // ------------- TipoUsuario --------------------------------
+
+            // Fields 
+            modelBuilder.Entity<TipoUsuario>().ToTable("TipoUsuario");
+            modelBuilder.Entity<TipoUsuario>().HasKey(c => new { c.idTipoUsuario });
+            modelBuilder.Entity<TipoUsuario>().Property(t => t.idTipoUsuario).HasColumnName("idTipoUsuario");
+            modelBuilder.Entity<TipoUsuario>().Property(t => t.Descripcion).HasColumnName("Descripcion");
+            modelBuilder.Entity<TipoUsuario>().Property(t => t.NivelUsuario).HasColumnName("NivelUsuario");
+
+            // Navigation
+            modelBuilder.Entity<TipoUsuario>().HasMany(t => t.Usuarios).WithOne(t => t.TipoUsuario);
 
             // ------------- Turnos ------------------------------
 
@@ -397,12 +516,13 @@ namespace Pos.EntityFramework.Edbm
             //Fields
             modelBuilder.Entity<UnidadSat>().ToTable("UnidadSat");
             modelBuilder.Entity<UnidadSat>().HasKey(c => new { c.idUnidadSat });
+            modelBuilder.Entity<UnidadSat>().Property(t => t.ClaveUnidad).HasColumnName("idUnidadSat");
             modelBuilder.Entity<UnidadSat>().Property(t => t.ClaveUnidad).HasColumnName("ClaveUnidad");
             modelBuilder.Entity<UnidadSat>().Property(t => t.Descripcion).HasColumnName("Descripcion");
             modelBuilder.Entity<UnidadSat>().Property(t => t.Activo).HasColumnName("Activo");
 
             //Navigation
-            modelBuilder.Entity<UnidadSat>().HasMany(t => t.UnidadesCatalogoSat).WithOne(x => x.unidadSat).HasForeignKey(t => t.idUnidadSat);
+            modelBuilder.Entity<UnidadSat>().HasMany(t => t.Productos).WithOne(t => t.UnidadSat);
 
             // ------------- Usuarios --------------------------------
 
@@ -416,6 +536,7 @@ namespace Pos.EntityFramework.Edbm
             modelBuilder.Entity<Usuarios>().Property(t => t.Nombres).HasColumnName("Nombres");
             modelBuilder.Entity<Usuarios>().Property(t => t.Contraseña).HasColumnName("Contraseña");
             modelBuilder.Entity<Usuarios>().Property(t => t.Activo).HasColumnName("Activo");
+            modelBuilder.Entity<Usuarios>().Property(t => t.idTipoUsuario).HasColumnName("idTipoUsuario");
 
             // Navigation
             modelBuilder.Entity<Usuarios>().HasMany(t => t.VentasUsuario).WithOne(t => t.Usuario);
@@ -424,6 +545,21 @@ namespace Pos.EntityFramework.Edbm
             modelBuilder.Entity<Usuarios>().HasMany(t => t.ComprasCanceladas).WithOne(t => t.UsuarioCancela);
             modelBuilder.Entity<Usuarios>().HasMany(t => t.OrdenesAutorizadas).WithOne(t => t.Usuario);
             modelBuilder.Entity<Usuarios>().HasMany(t => t.CortesUsuario).WithOne(t => t.Usuario);
+            modelBuilder.Entity<Usuarios>().HasMany(t => t.PantallasUsuario).WithOne(t => t.Usuario);
+            modelBuilder.Entity<Usuarios>().HasOne(t => t.TipoUsuario).WithMany(tu => tu.Usuarios).HasForeignKey(t => t.idUsuario);
+
+            // ------------- SubDepartamentos ----------------------------
+
+            // Fields
+            modelBuilder.Entity<SubDepartamento>().ToTable("SubDepartamentos");
+            modelBuilder.Entity<SubDepartamento>().HasKey(c => new { c.IdSubDepartamento });
+            modelBuilder.Entity<SubDepartamento>().Property(t => t.IdSubDepartamento).HasColumnName("IdSubDepartamentos");
+            modelBuilder.Entity<SubDepartamento>().Property(t => t.IdDepartamento).HasColumnName("IdDepartamento");
+            modelBuilder.Entity<SubDepartamento>().Property(t => t.Nombre).HasColumnName("Nombre");
+
+            // Navigation
+            modelBuilder.Entity<SubDepartamento>().HasMany(t => t.Productos).WithOne(pd => pd.SubDepartamento).HasForeignKey(t => t.idSubDepartamento);
+            modelBuilder.Entity<SubDepartamento>().HasOne(t => t.Departamento).WithMany(pd => pd.SubDepartamentos).HasForeignKey(t => t.IdDepartamento);
 
             // ------------- VentaImpuestos ------------------------------
 
@@ -494,6 +630,7 @@ namespace Pos.EntityFramework.Edbm
             modelBuilder.Entity<Ventas>().HasMany(t => t.Productos).WithOne(t => t.Venta);
             modelBuilder.Entity<Ventas>().HasMany(t => t.Pagos).WithOne(t => t.Venta);
             modelBuilder.Entity<Ventas>().HasMany(t => t.Lotes).WithOne(t => t.venta);
+            modelBuilder.Entity<Ventas>().HasMany(t => t.Impuesto).WithOne(t => t.Venta); 
         }
     }
 }

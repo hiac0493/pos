@@ -35,7 +35,7 @@ namespace checkpoint.Views.CashClose.Services
         public Cortes GetCurrentCashClose(int idUsuario)
         {
             string webApiUrl = WebApiMethods.GetCurrentCashClose + idUsuario;
-             Cortes model = new Cortes();
+            Cortes model = new Cortes();
             HttpStatusCode ResponseOk = App.HttpTools.HttpGetSingle(webApiUrl, ref model, "Hubo un error en la lectura de las unidades");
             if (ResponseOk == HttpStatusCode.OK)
             {
@@ -47,7 +47,7 @@ namespace checkpoint.Views.CashClose.Services
             }
         }
 
-        public double GetTotalSale(int idUsuario, long folioInicio, long folioFin)
+        public double GetTotalSale(int idUsuario, long folioInicio, long? folioFin)
         {
             string webApiUrl = WebApiMethods.GetTotalSale+ $"?idUsuario={idUsuario}&folioInicio={folioInicio}&folioFin={folioFin}";
             double sale = 0;
@@ -58,7 +58,7 @@ namespace checkpoint.Views.CashClose.Services
                 return 0;
         }
 
-        public List<CortePagos> GetAllPagosCorte(long folioInicio, long folioFinal, int IdUsuario)
+        public List<CortePagos> GetAllPagosCorte(long folioInicio, long? folioFinal, int IdUsuario)
         {
             string webApiUrl = WebApiMethods.GetAllPagosCorte + $"?folioInicio={folioInicio}&folioFinal={folioFinal}&IdUsuario={IdUsuario}";
             IList<CortePagos> infolist = new List<CortePagos>();
@@ -74,7 +74,7 @@ namespace checkpoint.Views.CashClose.Services
 
         }
 
-        public List<VentaImpuestos> GetAllTaxes(long folioInicio, long folioFinal, int IdUsuario)
+        public List<VentaImpuestos> GetAllTaxes(long folioInicio, long? folioFinal, int IdUsuario)
         {
             string webApiUrl = WebApiMethods.GetAllTaxes + $"?folioInicio={folioInicio}&folioFinal={folioFinal}&IdUsuario={IdUsuario}";
             IList<VentaImpuestos> infolist = new List<VentaImpuestos>();
@@ -89,7 +89,7 @@ namespace checkpoint.Views.CashClose.Services
             }
         }
 
-        public double GetTotalTaxes(long folioInicio, long folioFinal, int IdUsuario)
+        public double GetTotalTaxes(long folioInicio, long? folioFinal, int IdUsuario)
         {
             string webApiUrl = WebApiMethods.GetTotalTaxes + $"?folioInicio={folioInicio}&folioFinal={folioFinal}&IdUsuario={IdUsuario}";
             double sale = 0;
@@ -99,7 +99,7 @@ namespace checkpoint.Views.CashClose.Services
             else
                 return 0;
         }
-        public List<TasaImpuesto> GetTotalWithTaxes(long folioInicio, long folioFinal, int IdUsuario)
+        public List<TasaImpuesto> GetTotalWithTaxes(long folioInicio, long? folioFinal, int IdUsuario)
         {
             string webApiUrl = WebApiMethods.GetTotalWithTaxes + $"?folioInicio={folioInicio}&folioFinal={folioFinal}&IdUsuario={IdUsuario}";
             IList<TasaImpuesto> infolist = new List<TasaImpuesto>();
@@ -113,7 +113,7 @@ namespace checkpoint.Views.CashClose.Services
                 return null;
             }
         }
-        public List<TasaImpuesto> GetReturnsWithTaxes(long folioInicio, long folioFinal, int IdUsuario)
+        public List<TasaImpuesto> GetReturnsWithTaxes(long folioInicio, long? folioFinal, int IdUsuario)
         {
             string webApiUrl = WebApiMethods.GetReturnsWithTaxes + $"?folioInicio={folioInicio}&folioFinal={folioFinal}&IdUsuario={IdUsuario}";
             IList<TasaImpuesto> infolist = new List<TasaImpuesto>();
@@ -127,7 +127,7 @@ namespace checkpoint.Views.CashClose.Services
                 return null;
             }
         }
-        public double GetTotalReturns(long folioInicio, long folioFinal, int IdUsuario)
+        public double GetTotalReturns(long folioInicio, long? folioFinal, int IdUsuario)
         {
             string webApiUrl = WebApiMethods.GetTotalReturns + $"?folioInicio={folioInicio}&folioFinal={folioFinal}&IdUsuario={IdUsuario}";
             double sale = 0;
@@ -137,7 +137,7 @@ namespace checkpoint.Views.CashClose.Services
             else
                 return 0;
         }
-        public double CalcIvaTasa(int IdUsuario, long folioInicio, long folioFinal)
+        public double CalcIvaTasa(int IdUsuario, long folioInicio, long? folioFinal)
         {
             string webApiUrl = WebApiMethods.CalcIvaTasa + $"?IdUsuario={IdUsuario}&folioInicio={folioInicio}&folioFinal={folioFinal}";
             double sale = 0;
@@ -147,7 +147,7 @@ namespace checkpoint.Views.CashClose.Services
             else
                 return 0;
         }
-        public double CalcIvaReturn(int IdUsuario, long folioInicio, long folioFinal)
+        public double CalcIvaReturn(int IdUsuario, long folioInicio, long? folioFinal)
         {
             string webApiUrl = WebApiMethods.CalcIvaReturn + $"?IdUsuario={IdUsuario}&folioInicio={folioInicio}&folioFinal={folioFinal}";
             double sale = 0;

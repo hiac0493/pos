@@ -41,6 +41,7 @@ namespace checkpoint.Views.Users.Views
         {
             _userPresenter = new UserPresenter(new UsersServices());
             newUserNameTxtBox.PreviewTextInput += newUserNameTxtBox.OnlyLettersValidationTextBox;
+            searchUserTxtBox.PreviewTextInput += searchUserTxtBox.OnlyLettersValidationTextBox;
             newUserPaternalLastName.PreviewTextInput += newUserPaternalLastName.OnlyLettersValidationTextBox;
             newUserMaternalLastName.PreviewTextInput += newUserMaternalLastName.OnlyLettersValidationTextBox;
             newUserUserNickname.PreviewTextInput += newUserUserNickname.LettersAndNumbersValidationTextBox;

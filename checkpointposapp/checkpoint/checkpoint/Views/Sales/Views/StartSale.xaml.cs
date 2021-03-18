@@ -5,14 +5,19 @@ using checkpoint.Sales.Models;
 using checkpoint.Sales.Presenters;
 using checkpoint.Sales.Services;
 using checkpoint.Sales.Views;
-using checkpoint.Views.Dialogs.WithdrawCash.Views;
+using checkpoint.Views.CashClose.Models;
+using checkpoint.Views.CashClose.Presenters;
+using checkpoint.Views.CashClose.Services;
 using checkpoint.Views.Sales.Models;
+using checkpoint.Views.WithdrawCash;
+using checkpoint.Views.WithdrawCash.Views;
 using CrearTicketVenta;
 using ESC_POS_USB_NET.Printer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -24,15 +29,44 @@ namespace checkpoint.Views.Sales.Views
     /// </summary>
     public partial class StartSale : UserControl
     {
+        #region Properties
+        //**************************************************
+        //*             PROPERTIES
+        //**************************************************
         private SalesPresenter _salesPresenter;
         private CheckPresenter _checkPresenter;
+        double totalTaxe, ivaTasa, totalReturns, ivaReturns;
+        private CashClosePresenter _cashClosePresenter;
         BindingList<ProductsGridSales> products = new BindingList<ProductsGridSales>();
         List<Impuestos> impuestosVenta = new List<Impuestos>();
         List<Impuestos> impuestosResumen = new List<Impuestos>();
+        Cortes corte = new Cortes();
+        Cortes cortesToSave = new Cortes();
+        Cortes cortesAux = new Cortes();
+        BindingList<CortePagos> cortePagoList = new BindingList<CortePagos>();
+        BindingList<VentaImpuestos> impuestoList = new BindingList<VentaImpuestos>();
+        BindingList<TasaImpuesto> tasaList = new BindingList<TasaImpuesto>();
+        BindingList<TasaImpuesto> returnList = new BindingList<TasaImpuesto>();
         Ventas auxVenta = new Ventas();
+        #endregion
+
+        #region Constructor
+
+        //**************************************************
+        //*             CONSTRUCTOR
+        //**************************************************
+        double globalEfectivo = 0;
         public StartSale()
         {
             InitializeComponent();
+            _cashClosePresenter = new CashClosePresenter(new CashCloseServices());
+            corte = _cashClosePresenter.GetCurrentCashClose(App._userApplication.idUsuario);
+            if (corte == null || corte.FolioVentaFin!=null)
+            {
+                OpenCash openCash = new OpenCash();
+                openCash.ShowDialog();
+            }
+
             skuText.Focus();
             clienteText.Text = "Publico en General";
             products.ListChanged += Products_ListChanged;
@@ -40,20 +74,142 @@ namespace checkpoint.Views.Sales.Views
             _salesPresenter = new SalesPresenter(new SalesServices());
             Product.ItemsSource = products;
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-            
-            /*Withdraw retiros = new Withdraw();
-            retiros.ShowDialog();*/
+            globalEfectivo = _salesPresenter.GetTotalEfectivo(App._userApplication.idUsuario);
+
+
+        }
+        #endregion
+        #region Write data
+        private void saveCashClose(Cortes cortesToSave)
+        {
+            cortesAux = _cashClosePresenter.SaveCashClose(cortesToSave).Result;
+        }
+        #endregion
+
+        #region Read data
+
+        #endregion
+        #region Methods form
+        private void endCashClose()
+        {
+            cortesToSave = _cashClosePresenter.GetCurrentCashClose(4);
+            cortesToSave.FolioVentaFin = _cashClosePresenter.GetLastFolio();
+            cortesToSave.TotalVenta = _cashClosePresenter.GetTotalSale(4, cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin);
+
+            paymentsGrid.ItemsSource = cortePagoList;
+            cortePagoList.AddRange(_cashClosePresenter.GetAllPagosCorte(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, 4));
+
+            taxesGrid.ItemsSource = impuestoList;
+            impuestoList.AddRange(_cashClosePresenter.GetAllTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, 4));
+
+            totalSale.Text = cortesToSave.TotalVenta.ToString("C2");
+
+            totalTaxe = _cashClosePresenter.GetTotalTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, 4);
+            totalTaxes.Text = totalTaxe.ToString("C2");
+            ivaGrid.ItemsSource = tasaList;
+            tasaList.AddRange(_cashClosePresenter.GetTotalWithTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, 4));
+            returnsGrid.ItemsSource = returnList;
+            totalTasa.Text = cortesToSave.TotalVenta.ToString("C2");
+
+            ivaTasa = _cashClosePresenter.CalcIvaTasa(4, cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin);
+            totalTasaIva.Text = ivaTasa.ToString("C2");
+            returnList.AddRange(_cashClosePresenter.GetReturnsWithTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, 4));
+
+            totalReturns = _cashClosePresenter.GetTotalReturns(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, 4);
+
+            totalReturn.Text = totalReturns.ToString("C2");
+
+            ivaReturns = _cashClosePresenter.CalcIvaReturn(4, cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin);
+            totalReturnIva.Text = ivaReturns.ToString("C2");
+            saveCashClose(cortesToSave);
+        }
+
+        private void PrintCashClose()
+        {
+            if (cortesAux != null)
+            {
+                CreateTicket ticket = new CreateTicket();
+                Printer printer = new Printer("EPSON TM-T20II Receipt5");
+                printer.AlignCenter();
+                printer.Append("CORTE Z");
+                printer.Append("N° " + cortesAux.IdCorte);
+
+                printer.AlignLeft();
+                printer.Append("Fecha " + cortesAux.FechaInicio.ToString());
+                printer.Append(cortesAux.Caja.Nombre + " " + cortesAux.Turno.Nombre);
+                printer.Separator();
+                printer.BoldMode("Total de venta: " + cortesAux.TotalVenta.ToString("C2"));
+                printer.Separator();
+                printer.PrintDocument();
+                printer = new Printer("EPSON TM-T20II Receipt5");
+                double sumTipoPago = 0;
+                foreach (CortePagos tipoPago in cortePagoList)
+                {
+                    ticket.TextoExtremos(tipoPago.TipoPago, tipoPago.Total.ToString("C2"));
+                    sumTipoPago += tipoPago.Total;
+                }
+                ticket.TextoCentro("");
+                ticket.AgregarTotalesCentrado("Suma: ", (float)sumTipoPago);
+                ticket.ImprimirTicket("EPSON TM-T20II Receipt5");
+
+                printer.Separator();
+                printer.BoldMode("Total de impuestos: " + totalTaxe.ToString("C2"));
+                printer.Separator();
+                printer.PrintDocument();
+                printer = new Printer("EPSON TM-T20II Receipt5");
+                double sumTipoPagoTax = 0;
+                foreach (VentaImpuestos impuesto in impuestoList)
+                {
+                    ticket.TextoExtremos(impuesto.TipoImpuesto, impuesto.Total.ToString("C2"));
+                    sumTipoPagoTax += impuesto.Total;
+                }
+                ticket.TextoCentro("");
+                ticket.AgregarTotalesCentrado("Suma: ", (float)sumTipoPagoTax);
+                ticket.ImprimirTicket("EPSON TM-T20II Receipt5");
+
+                printer.Separator();
+                printer.BoldMode("Total de venta: " + cortesAux.TotalVenta.ToString("C2"));
+                printer.Separator();
+                printer.PrintDocument();
+                printer = new Printer("EPSON TM-T20II Receipt5");
+                double sumTasa = 0;
+                foreach (TasaImpuesto tasaTax in tasaList)
+                {
+                    ticket.TextoExtremos(tasaTax.Nombre, tasaTax.Total.ToString("C2"));
+                    sumTasa += tasaTax.Total;
+                }
+                ticket.TextoCentro("");
+                ticket.AgregarTotalesCentrado("Suma: ", (float)sumTasa);
+                ticket.ImprimirTicket("EPSON TM-T20II Receipt5");
+
+                printer.Separator();
+                printer.BoldMode("Total de devoluciones: " + totalReturns.ToString("C2"));
+                printer.Separator();
+                printer.PrintDocument();
+                printer = new Printer("EPSON TM-T20II Receipt5");
+                double sumDevoluciones = 0;
+                foreach (TasaImpuesto returns in returnList)
+                {
+                    ticket.TextoExtremos(returns.Nombre, returns.Total.ToString("C2"));
+                    sumDevoluciones += returns.Total;
+                }
+                ticket.TextoCentro("");
+                ticket.AgregarTotalesCentrado("Suma: ", (float)sumDevoluciones);
+                ticket.CortaTicket();
+                ticket.ImprimirTicket("EPSON TM-T20II Receipt5");
+                cleanView();
+            }
         }
 
         private void Products_ListChanged(object sender, ListChangedEventArgs e)
         {
-            if(products.Count > 0)
+            if (products.Count > 0)
             {
-                App.OnUseChanged(false);
+                App.OnUseChanged(true);
             }
             else
             {
-                App.OnUseChanged(true);
+                App.OnUseChanged(false);
             }
             totalLabel.Content = products.Sum(x => x.Price * x.Quantity).ToString("N2");
             impuestosVenta = new List<Impuestos>();
@@ -89,7 +245,6 @@ namespace checkpoint.Views.Sales.Views
             }
             skuText.Text = string.Empty;
         }
-
         private void updateProductToBuy(object sender)
         {
             ProductsGridSales productSelected = Product.SelectedValue as ProductsGridSales;
@@ -126,6 +281,7 @@ namespace checkpoint.Views.Sales.Views
                     skuText.Text = cantidad[1];
                 }
                 ProductSale productExtractToDB = quantity > 0 ? _salesPresenter.GetProductByPLU(skuText.Text) : null;
+                productExtractToDB.precioVenta = ModifyPricePromo(productExtractToDB);
                 if (productExtractToDB != null)
                 {
                     addProductToSale(productExtractToDB, quantity);
@@ -133,56 +289,108 @@ namespace checkpoint.Views.Sales.Views
             }
         }
 
+        private float ModifyPricePromo(ProductSale product)
+        {
+            float total = 0;
+            if(product.promociones != null && product.promociones.Count() > 0)
+            {
+                foreach (var promocion in product.promociones)
+                {
+                    float totalParcial = CalcularPrecio(promocion, product.precioVenta);
+                    if (total == 0)
+                        total = totalParcial;
+                    else if (total > totalParcial)
+                        total = totalParcial;
+                }
+            }
+            return total > 0 ? total : product.precioVenta;
+        }
+
+        private float CalcularPrecio(Promociones promocion, float precioVenta)
+        {
+            float total = 0;
+            if (promocion.Monto != null)
+                total = (float)promocion.Monto;
+            else
+                total = precioVenta * (1 - ((float)promocion.Porcentaje / 100));
+            return total;
+        }
+
         private void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.F2)
+            switch (e.Key)
             {
-                CheckPrices checkPrice = new CheckPrices();
-                checkPrice.ShowDialog();
-                if ((bool)checkPrice.DialogResult)
-                {
-                    ProductSale productExtractToDB = _salesPresenter.GetProductByPLU(checkPrice.productoPLU);
-                    addProductToSale(productExtractToDB, 1);
-                }
-            }
-            else if (e.Key == Key.F12)
-            {
-                Ventas venta = new Ventas
-                {
-                    cambio = 0,
-                    estatus = 'A',
-                    fecha = DateTime.Now,
-                    folioVenta = 0,
-                    idUsuario = App._userApplication.idUsuario,
-                    impuestos = 0,
-                    pagado = products.Sum(x => x.Price * x.Quantity),
-                    productos = (from productos in products select new AddProductSale { cantidad = productos.Quantity, idProducto = productos.idProducto, monto = productos.Total }).ToList(),
-                    total = products.Sum(x => x.Price * x.Quantity),
-                    pagos = new List<VentaPagos> { new VentaPagos { cantidad = products.Sum(x => x.Price * x.Quantity), idTipoPago = 1 } },
-                    subtotal = products.Sum(x => x.Price * x.Quantity),
-                    utilidad = 0,
-                    impuesto = impuestosResumen
-                };
-
-                EndSale endsale = new EndSale(venta, products);
-                endsale.ShowDialog();
-                if ((bool)endsale.DialogResult)
-                {
-                    venta.cambio = endsale.cambio;
-                    venta.pagado = endsale.pagado;
-                    venta = endsale.ventaFin;
-                    venta.impuestos = (float)Math.Round(venta.impuesto.Sum(x => x.cantidad), 2);
-                    Ventas addVenta = _salesPresenter.AddVenta(venta).Result;
-                    auxVenta = addVenta;
-                    products.Clear();
-                    //PrintMethod();
-                }
-            }
-            else if (e.Key == Key.F11)
-            {
-                PrintTest();
+                case Key.Escape:
+                    SalesTabControl.SelectedIndex = 0; 
+                    cortePagoList = new BindingList<CortePagos>();
+                    impuestoList = new BindingList<VentaImpuestos>();
+                    tasaList = new BindingList<TasaImpuesto>();
+                    returnList = new BindingList<TasaImpuesto>();
+                    break;
+                case Key.F3:
+                    globalEfectivo = _salesPresenter.GetTotalEfectivo(App._userApplication.idUsuario);
+                    Withdraw retiroStart = new Withdraw(globalEfectivo, true);
+                    retiroStart.ShowDialog();
+                    break;
+                case Key.F9:
+                    endCashClose();
+                    SalesTabControl.SelectedIndex = 1;
+                    break;
+                case Key.F2:
+                    CheckPrices checkPrice = new CheckPrices();
+                    checkPrice.ShowDialog();
+                    if ((bool)checkPrice.DialogResult)
+                    {
+                        ProductSale productExtractToDB = _salesPresenter.GetProductByPLU(checkPrice.productoPLU);
+                        addProductToSale(productExtractToDB, 1);
+                    }
+                    break;
+                case Key.F12:
+                    Ventas venta = new Ventas
+                    {
+                        cambio = 0,
+                        estatus = 'A',
+                        fecha = DateTime.Now,
+                        folioVenta = 0,
+                        idUsuario = App._userApplication.idUsuario,
+                        impuestos = 0,
+                        pagado = products.Sum(x => x.Price * x.Quantity),
+                        productos = (from productos in products select new AddProductSale { cantidad = productos.Quantity, idProducto = productos.idProducto, monto = productos.Total }).ToList(),
+                        total = products.Sum(x => x.Price * x.Quantity),
+                        pagos = new List<VentaPagos> { new VentaPagos { cantidad = products.Sum(x => x.Price * x.Quantity), idTipoPago = 1 } },
+                        subtotal = products.Sum(x => x.Price * x.Quantity),
+                        utilidad = 0,
+                        impuesto = impuestosResumen
+                    };
+                    EndSale endsale = new EndSale(venta, products);
+                    endsale.ShowDialog();
+                    if ((bool)endsale.DialogResult)
+                    {
+                        venta.cambio = endsale.cambio;
+                        venta.pagado = endsale.pagado;
+                        venta = endsale.ventaFin;
+                        venta.impuestos = (float)Math.Round(venta.impuesto.Sum(x => x.cantidad), 2);
+                        SaleResult addVenta = _salesPresenter.AddVenta(venta).Result;
+                        auxVenta = addVenta.venta;
+                        //TO DO
+                        if (addVenta.totalEfectivo >= 1000 )
+                        {
+                            WithdrawAlert retiros = new WithdrawAlert(addVenta.totalEfectivo, false);
+                            retiros.ShowDialog();
+                        }
+                        
+                        products.Clear();
+                        //PrintMethod();
+                    }
+                    break;
+                case Key.F11:
+                    PrintCashClose();
+                    break;
             }
         }
+
+
+
 
         private void PrintTest()
         {
@@ -194,65 +402,66 @@ namespace checkpoint.Views.Sales.Views
 
         private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Delete)
+            if (e.Key == Key.Delete)
             {
                 e.Handled = true;
                 skuText.Focus();
             }
         }
 
-        //Region Funciones de impresión de ticket
         private void PrintMethod()
         {
-            CreateTicket ticket = new CreateTicket();
-            Printer printer = new Printer("EPSON TM-T20II Receipt5");
-            printer.AlignCenter();
-            //IMAGEN
-            /*Bitmap image = new Bitmap(Bitmap.FromFile("Icon.bmp"));
-            printer.Image(image);*/
-            printer.Append("CHECKPOINT SA DE CV");
-            printer.Append("MMC110808MA8");
-            printer.Append("LIB. OCEGUERA KM11 COLA.M. DE LEON");
-            printer.AlignLeft();
-            printer.NewLine();
-            printer.Separator();
-            printer.NewLine();
-            string cashierName = App._userApplication.Nombres + " " + App._userApplication.ApellidoPaterno + " " + App._userApplication.ApellidoMaterno;
-            printer.Append("CAJERO: " + cashierName);
-            printer.Append("VENTA # " + auxVenta.folioVenta);
-            printer.Append("FECHA: " + auxVenta.fecha);
-            printer.NewLine();
-            printer.Separator();
-            printer.NewLine();
-            printer.Append("DESCRIPCION             N#     PRECIO      TOTAL");
-            printer.PrintDocument();
-            foreach (AddProductSale product in auxVenta.productos)
+            if (auxVenta != null)
             {
-                ticket.AgregaArticulo(product.Productos.NombreProducto, product.cantidad, product.Productos.PrecioVenta, product.monto);
+                CreateTicket ticket = new CreateTicket();
+                Printer printer = new Printer("EPSON TM-T20II Receipt5");
+                printer.AlignCenter();
+                //IMAGEN
+                /*Bitmap image = new Bitmap(Bitmap.FromFile("Icon.bmp"));
+                printer.Image(image);*/
+                printer.Append("CHECKPOINT SA DE CV");
+                printer.Append("MMC110808MA8");
+                printer.Append("LIB. OCEGUERA KM11 COLA.M. DE LEON");
+                printer.AlignLeft();
+                printer.NewLine();
+                printer.Separator();
+                printer.NewLine();
+                string cashierName = App._userApplication.Nombres + " " + App._userApplication.ApellidoPaterno + " " + App._userApplication.ApellidoMaterno;
+                printer.Append("CAJERO: " + cashierName);
+                printer.Append("VENTA # " + auxVenta.folioVenta);
+                printer.Append("FECHA: " + auxVenta.fecha);
+                printer.NewLine();
+                printer.Separator();
+                printer.NewLine(); 
+                printer.Append("DESCRIPCION             N#     PRECIO      TOTAL");
+                printer.PrintDocument();
+                foreach (AddProductSale product in auxVenta.productos)
+                {
+                    ticket.AgregaArticulo(product.Productos.NombreProducto, product.cantidad, product.Productos.PrecioVenta, product.monto);
+                }
+                ticket.TextoIzquierda("");
+                ticket.lineasGuion();
+                ticket.AgregarTotalesCentrado("SUBTOTAL:", auxVenta.subtotal);
+                ticket.AgregarTotalesCentrado("IVA:", auxVenta.impuestos);
+                ticket.AgregarTotalesCentrado("TOTAL:", auxVenta.total);
+                ticket.TextoIzquierda("");
+                ticket.AgregarTotalesCentrado("SU PAGO:", auxVenta.pagado);
+                ticket.AgregarTotalesCentrado("CAMBIO:", auxVenta.cambio);
+                ticket.lineasGuion();
+                ticket.TextoIzquierda("");
+                ticket.ImprimirTicket("EPSON TM-T20II Receipt5");
+
+                Printer printerEnd = new Printer("EPSON TM-T20II Receipt5");
+                printerEnd.AlignCenter();
+                printerEnd.NewLines(2);
+                printerEnd.Code39(auxVenta.folioVenta.ToString());
+                printerEnd.Append(auxVenta.folioVenta.ToString());
+                printerEnd.AlignLeft();
+                printerEnd.FullPaperCut();
+                printerEnd.PrintDocument();
+                printerEnd.OpenDrawer();
             }
-            ticket.TextoIzquierda("");
-            ticket.lineasGuion();
-            ticket.AgregarTotalesCentrado("SUBTOTAL:", auxVenta.subtotal);
-            ticket.AgregarTotalesCentrado("IVA:", auxVenta.impuestos);
-            ticket.AgregarTotalesCentrado("TOTAL:", auxVenta.total);
-            ticket.TextoIzquierda("");
-            ticket.AgregarTotalesCentrado("SU PAGO:", auxVenta.pagado);
-            ticket.AgregarTotalesCentrado("CAMBIO:", auxVenta.cambio);
-            ticket.lineasGuion();
-            ticket.TextoIzquierda("");
-            ticket.ImprimirTicket("EPSON TM-T20II Receipt5");
-
-            Printer printerEnd = new Printer("EPSON TM-T20II Receipt5");
-            printerEnd.AlignCenter();
-            printerEnd.NewLines(2);
-            printerEnd.Code39(auxVenta.folioVenta.ToString());
-            printerEnd.Append(auxVenta.folioVenta.ToString());
-            printerEnd.AlignLeft();
-            printerEnd.FullPaperCut();
-            printerEnd.PrintDocument();
         }
-
-        //endregion
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
@@ -269,13 +478,23 @@ namespace checkpoint.Views.Sales.Views
 
         private void Product_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if(Product.ActualWidth >= 343)
+            if (Product.ActualWidth >= 343)
                 skuText.Width = Product.ActualWidth - 343;
         }
-
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Product.Height = this.ActualHeight - 165;
         }
+
+        private void OnlyNumbersTxtBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+        private void cleanView()
+        {
+            cortesToSave = new Cortes();
+        }
+        #endregion
     }
 }

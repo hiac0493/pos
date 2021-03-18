@@ -10,6 +10,7 @@ namespace Pos.Business.Model
         public Compras()
         {
             this.ProductosCompra = new List<ProductosCompra>();
+            this.OrdenesCompra = new List<Ordenes>();
         }
         public long FolioCompra { get; set; }
         [Required]
@@ -25,6 +26,8 @@ namespace Pos.Business.Model
         public char Estatus { get; set; }
         public int? idUsuarioCancela { get; set;}
         public virtual Usuarios UsuarioCancela { get; set; }
+        public int idAlmacen { get; set; }
+        public virtual Almacenes Almacen { get; set; }
         [Required]
         public DateTime Fecha { get; set; }
         public ICollection<ProductosCompra> ProductosCompra { get; set; }

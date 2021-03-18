@@ -5,7 +5,6 @@ using Pos.EntityFramework.Edbm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Pos.DAL.Repository.Domain
 {
@@ -38,7 +37,12 @@ namespace Pos.DAL.Repository.Domain
         public bool GetUsuarioAdmin(string user, string pass)
         {
             Usuarios usuario = dbContext.Usuarios.Where(x => x.NombreUsuario.Equals(user) && x.Contraseña.Equals(pass)).SingleOrDefault();
-            return usuario.Tipo.Equals("Admin") ? true : false;
+            return usuario.idTipoUsuario <= 2 ? true : false;
+        }
+
+        public IEnumerable<Usuarios> GetAllUsuariosWithPermissions()
+        {
+            return dbContext.Usuarios.Include(x => x.PantallasUsuario).Where(x => x.Activo);
         }
 
     }

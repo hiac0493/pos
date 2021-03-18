@@ -1,0 +1,215 @@
+﻿<UserControl x:Class="checkpoint.Views.Catalogs.Permissions.View.Permissions"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:local="clr-namespace:checkpoint.Views.Catalogs.Permissions.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1200">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type TextBox}">
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style TargetType="{x:Type DataGrid}">
+            <Setter Property="BorderBrush" Value="#495057"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="white"/>
+            <Style.Resources>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="#2196f3"/>
+                    <Setter Property="Padding" Value="30 5 5 5 "/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Style>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Foreground" Value="#495057"/>
+                    <Style.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="Padding" Value="30 5 5 5"/>
+                        </Style>
+                    </Style.Resources>
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style TargetType="{x:Type Button}">
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Style.Resources>
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <TextBlock Text="PERMISOS DE USUARIO"
+                       Name="supplierNametxt"
+					   FontSize="30"
+                       FontWeight="Bold"/>
+        </Grid>
+        <Grid Grid.Row="1"
+              Margin="0 30 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0"
+                  Margin="0 0 0 0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <StackPanel>
+                            <TextBlock Text="USUARIOS"
+					            FontSize="20"
+                                FontWeight="Bold"
+                                Foreground="#495057"/>
+                            <StackPanel Margin=" 0 15 0 15"
+                                Orientation="Horizontal">
+                                <TextBlock Text="BUSCAR:"
+							       FontSize="15"
+							       VerticalAlignment="Center"
+                                   Foreground="#495057"
+                                   FontWeight="Bold"/>
+                                <TextBox   Padding="5"
+							       Foreground="#495057"
+                                   Name="searchUserTxtBox"
+                                   FontSize="15"
+							       HorizontalAlignment="Left"
+							       MinWidth="260"
+							       MaxHeight="30"
+							       Margin="10 0 0 0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <StackPanel  x:Name="userCont">
+                            <DataGrid Height="{Binding ActualHeight, ElementName=userCont}"
+                                      CanUserAddRows="False"
+                                      AlternatingRowBackground="#bae4ff"
+                                      MouseDoubleClick="UserGrid_MouseDoubleClick"
+                                      Margin="0"
+                                      IsReadOnly="True"
+                                      Name="UserGrid"
+                                      AutoGenerateColumns="false"
+                                      Focusable="True"
+                                      HorizontalAlignment="Stretch"
+                                      GridLinesVisibility="None"
+                                      RowHeaderWidth="0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Usuario"
+                                                        Binding="{Binding NombreUsuario}"
+                                                Width="200"/>
+                                    <DataGridTextColumn Header="Nombre" 
+                                                        Binding="{Binding Nombre}"
+                                                Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="1">
+                <TextBlock Name="assignBtn"  HorizontalAlignment="Center" VerticalAlignment="Center">
+                <fa5:SvgAwesome   Icon="Solid_LongArrowAltRight"   
+								  Width="40"
+								  Foreground="black"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                </TextBlock>
+            </Grid>
+            <Grid Grid.Column="2"
+                  Margin="0 0 0 0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <StackPanel>
+                            <TextBlock Text="PANTALLAS"
+					            FontSize="20"
+                                FontWeight="Bold"
+                                Foreground="#495057"/>
+                            <StackPanel Margin=" 0 15 0 15"
+                                Orientation="Horizontal">
+                                <TextBlock Text="BUSCAR:"
+							       FontSize="15"
+							       VerticalAlignment="Center"
+                                   Foreground="#495057"
+                                   FontWeight="Bold"/>
+                                <TextBox   Padding="5"
+							       Foreground="#495057"
+                                   FontSize="15"
+							       HorizontalAlignment="Left"
+							       MinWidth="260"
+							       MaxHeight="30"
+							       Margin="10 0 0 0"/>
+                                <Button Padding="5"
+                            Name="buttonOrder"
+                                        Click="buttonOrder_Click"
+					        Margin="30 0 0 0"
+							Background="#0069c0"
+							BorderThickness="0"
+                            Width="120">
+                                    <StackPanel>
+                                        <TextBlock Text="Guardar"
+									       Foreground="white"
+									       FontSize="15"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <StackPanel >
+
+                            <DataGrid Height="{Binding ActualHeight, ElementName=userCont}"
+                                      CanUserAddRows="False"
+                                      AlternatingRowBackground="#bae4ff"
+                                      Margin="0"
+                                      IsReadOnly="True"
+                                      Name="ScreensGrid"
+                                      AutoGenerateColumns="false"
+                                      Focusable="True"
+                                      HorizontalAlignment="Stretch"
+                                      GridLinesVisibility="None"
+                                      RowHeaderWidth="0">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Width="70">
+
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox Margin="10 3 0 0"
+                                                  Name="CheckScreen"
+                                                  Checked="CheckScreen_Checked"
+                                                  Unchecked="CheckScreen_Checked"
+                                                  Loaded="CheckScreen_Loaded"
+                                                  VerticalAlignment="Center"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Nombre de pantalla" 
+                                                        Binding="{Binding NombrePantalla}"
+                                                        Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

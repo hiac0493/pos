@@ -7,6 +7,10 @@ namespace Pos.Business.Model
 {
     public class Cajas
     {
+        public Cajas()
+        {
+            this.Cortes = new List<Cortes>();
+        }
         public int IdCaja  { get; set;}
         [Required]
         public string Nombre { get; set; }

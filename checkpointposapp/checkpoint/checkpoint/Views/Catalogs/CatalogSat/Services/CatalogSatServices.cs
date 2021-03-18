@@ -41,6 +41,20 @@ namespace checkpoint.Views.Catalogs.CatalogSat.Services
                 return null;
             }
         }
+        public catalogoSat GetCatalogByClave(string claveCatalogo)
+        {
+            string webApiUrl = WebApiMethods.GetCatalogByClave + claveCatalogo;
+            catalogoSat catalogList = new catalogoSat();
+            HttpStatusCode ResponseOk = App.HttpTools.HttpGetSingle(webApiUrl, ref catalogList, "Hubo un error en la lectura del catalogo");
+            if (ResponseOk == HttpStatusCode.OK)
+            {
+                return catalogList != null ? catalogList : null;
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         public async Task<catalogoSat> SaveCatalogSat(catalogoSat catalogSat)
         {

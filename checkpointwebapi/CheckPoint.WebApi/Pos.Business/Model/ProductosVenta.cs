@@ -18,5 +18,6 @@ namespace Pos.Business.Model
         public float Cantidad { get; set; }
         [Required]
         public float Monto { get; set; }
+        public bool Estatus { get; set; }
     }
 }

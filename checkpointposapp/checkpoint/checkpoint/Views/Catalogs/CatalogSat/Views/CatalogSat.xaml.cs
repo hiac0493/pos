@@ -62,7 +62,7 @@ namespace checkpoint.Views.Catalogs.CatalogSat.Views
         {
             if (catalogoToSave.idCatalogoSat.Equals(0))
             {
-                catalogoToSave = _CatalogSatPresenter.SaveCatalogSat(catalogoToSave).Result;
+                catalogoToSave = _CatalogSatPresenter.SaveCatalogSat(catalogoToSave);
                 if (catalogoToSave != null && catalogoToSave.Activo)
                     catalogSatList.Add(catalogoToSave);
             }
@@ -75,7 +75,7 @@ namespace checkpoint.Views.Catalogs.CatalogSat.Views
                 }
                 else
                 {
-                    catalogoToSave = _CatalogSatPresenter.SaveCatalogSat(catalogoToSave).Result;
+                    catalogoToSave = _CatalogSatPresenter.SaveCatalogSat(catalogoToSave);
                     searchCatalogSatTextBox.Text = string.Empty;
                     catalogSatList.Clear();
                     catalogSatList.AddRange(_CatalogSatPresenter.GetAllCatalogSat());

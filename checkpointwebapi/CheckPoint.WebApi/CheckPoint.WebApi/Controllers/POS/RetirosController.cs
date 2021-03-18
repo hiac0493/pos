@@ -55,7 +55,7 @@ namespace CheckPoint.WebApi.Controllers.POS
         {
             try
             {
-                List<Retiro> result = PosUoW.RetirosRepository.GetAllByCriteria(x => x.IdCorte.Equals(idcorte), x => x.IdRetiro).ToList();
+                List<Retiro> result = PosUoW.RetirosRepository.GetAllByCriteria(x => x.IdCorte.Equals(idcorte) && x.Estatus, x => x.IdRetiro).ToList();
                 if (result != null)
                 {
                     return Ok(result);
@@ -70,7 +70,6 @@ namespace CheckPoint.WebApi.Controllers.POS
                 return StatusCode(StatusCodes.Status500InternalServerError, ex);
             }
         }
-
 
 
     }

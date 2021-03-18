@@ -15,5 +15,6 @@ namespace checkpoint.Views.Catalogs.CatalogSat.Services
 
         Task<catalogoSat> SaveCatalogSat(catalogoSat catalogSat);
 
+        public catalogoSat GetCatalogByClave(string claveCatalogo);
     }
 }

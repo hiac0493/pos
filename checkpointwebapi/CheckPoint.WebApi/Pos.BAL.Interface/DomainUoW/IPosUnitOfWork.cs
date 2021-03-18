@@ -15,11 +15,16 @@ namespace Pos.BAL.Interface.DomainUoW
         IMarcaRepository MarcaRepository { get; }
         IOrdenesRepository OrdenesRepository { get; }
         IPLUProductoRepository PLUProductoRepository { get; }
+        IPantallasRepository PantallasRepository { get; }
+        IPantallasUsuarioRepository PantallasUsuarioRepository { get; }
+        IProductoAlmacenRepository ProductoAlmacenRepository { get; }
         IProductosCompraRepository ProductosCompraRepository { get; }
         IProductosOrdenRepository ProductosOrdenRepository { get; }
+        IProductosPromocionRepository ProductosPromocionRepository { get; }
         IProductosProveedorRepository ProductosProveedorRepository { get; }
         IProductosRepository ProductosRepository { get; }
         IProductosVentaRepository ProductosVentaRepository { get; }
+        IPromocionesRepository PromocionesRepository { get; }
         IProveedoresRepository ProveedoresRepository { get; }
         IRetirosRepository RetirosRepository { get; }
         ITipoPagoRepository TipoPagoRepository { get; }

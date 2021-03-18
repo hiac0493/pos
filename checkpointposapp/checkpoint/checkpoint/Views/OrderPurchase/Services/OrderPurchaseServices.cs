@@ -5,8 +5,6 @@ using checkpoint.Views.OrderPurchase.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace checkpoint.OrderPurcharse.Services
@@ -140,6 +138,17 @@ namespace checkpoint.OrderPurcharse.Services
             var result = App.HttpTools.HttpGetList<Ordenes>(webApiUrl, ref ordersResult, "Error al leer la lista de ordenes");
             if (result == HttpStatusCode.OK)
                 return ordersResult.ToList();
+            else
+                return null;
+        }
+
+        public IEnumerable<Almacenes> GetAllAlmacenes()
+        {
+            string webApiUrl = WebApiMethods.GetAllAlmacenes;
+            IList<Almacenes> almacenesResult = new List<Almacenes>();
+            var result = App.HttpTools.HttpGetList<Almacenes>(webApiUrl, ref almacenesResult, "Error al obtener la lista de almacenes");
+            if (result == HttpStatusCode.OK)
+                return almacenesResult;
             else
                 return null;
         }

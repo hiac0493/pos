@@ -51,6 +51,7 @@ namespace checkpoint.Views.Catalogs.Screens.Views
         private void InitializeFormWithData()
         {
             _ScreenPresenter = new ScreenPresenter(new ScreenServices());
+            txtNivel.PreviewTextInput += txtNivel.OnlyNumbersValidationTextBox;
             screenGrid.ItemsSource = screenList;
             screenList.AddRange(_ScreenPresenter.GetAllPantallas());
             cleanView();
@@ -122,6 +123,7 @@ namespace checkpoint.Views.Catalogs.Screens.Views
             txtPanel.Text = pantallasToSave.TextoPanel;
             txtUrl.Text = pantallasToSave.Url;
             txtIcon.Text = pantallasToSave.Icono;
+            txtNivel.Text = pantallasToSave.Nivel.ToString();
             checkStatus.IsChecked = pantallasToSave.Activo;
             checkSubScreen.IsChecked = pantallasToSave.SubPantalla;
         }
@@ -132,6 +134,7 @@ namespace checkpoint.Views.Catalogs.Screens.Views
             pantallasToSave.TextoPanel = txtPanel.Text;
             pantallasToSave.Url = txtUrl.Text;
             pantallasToSave.Icono = txtIcon.Text;
+            pantallasToSave.Nivel = Int32.Parse(txtNivel.Text);
             pantallasToSave.Activo = (bool)checkStatus.IsChecked;
             pantallasToSave.SubPantalla = (bool)checkSubScreen.IsChecked;
             saveScreen();
@@ -144,6 +147,7 @@ namespace checkpoint.Views.Catalogs.Screens.Views
             txtPanel.Text = string.Empty;
             txtUrl.Text = string.Empty;
             txtIcon.Text = string.Empty;
+            txtNivel.Text = string.Empty;
             checkStatus.IsChecked = true;
             checkSubScreen.IsChecked = false;
             pantallasToSave = new Pantallas();

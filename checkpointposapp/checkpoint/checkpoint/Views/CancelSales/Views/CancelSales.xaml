@@ -6,7 +6,8 @@
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:local="clr-namespace:checkpoint.Views.CancelSales.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="720" d:DesignWidth="1200">
+             d:DesignHeight="720" d:DesignWidth="1200"
+             SizeChanged="UserControl_SizeChanged">
     <UserControl.Resources>
         <Style TargetType="{x:Type Button}">
             <Style.Resources>
@@ -64,6 +65,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Row="1" 
+                      Grid.ColumnSpan="2"
                       Grid.Column="0"
                       Margin="0 0 15 0">
                     <StackPanel Margin="0 30 0 0">
@@ -76,6 +78,7 @@
                         </StackPanel>
                         <Border BorderThickness="1 0 1 1"
                                 BorderBrush="#495057"
+                                Name="borderProductsGrid"
                                 Padding="30">
                             <StackPanel>
                                 <StackPanel Margin="0 0 0 30"
@@ -83,10 +86,12 @@
                                     <TextBox   Padding="5"
 							                   Foreground="#495057"
 							                   FontSize="15"
+                                               Name="FolioVentaText"
 							                   HorizontalAlignment="Left"
 							                   MinWidth="270"
+                                               KeyDown="FolioVentaText_KeyDown"
 							                   MaxHeight="30"/>
-                                     <Button Padding="5"
+                                    <Button Padding="5"
 					                         Margin="10 0 0 0"
 							                 Background="#0069c0"
 							                 BorderThickness="0"
@@ -106,10 +111,12 @@
 					                        Margin="10 0 0 0"
 							                Background="#0069c0"
 							                BorderThickness="0"
+                                            Name="CancelButton"
+                                            Click="CancelButton_Click"
                                             Width="100"
                                             Height="30">
                                         <StackPanel Orientation="Horizontal" >
-                                            <TextBlock Text="ACEPTAR"
+                                            <TextBlock Text="CANCELAR"
 									                   Foreground="white"
 									                   FontSize="12"/>
                                         </StackPanel>
@@ -118,7 +125,8 @@
                                 <DataGrid AlternatingRowBackground="#bae4ff"
                                           Margin="0 10 0 0"                     
                                           AutoGenerateColumns="false"
-                                          MaxHeight="300"
+                                          CanUserAddRows="False"
+                                          Name="ProductsSaleGrid"
                                           HorizontalAlignment="Left"
                                           GridLinesVisibility="None"
                                           RowHeaderWidth="0"
@@ -129,6 +137,9 @@
                                                 <DataTemplate>
                                                     <Button Padding="5"
 							                                Background="#0069C0"
+                                                            Name="CancelProductSale"
+                                                            Loaded="CancelProductSale_Loaded"
+                                                            Click="CancelProductSale_Click"
 							                                BorderThickness="0"
                                                             Width="30"
                                                             Height="30"
@@ -145,74 +156,13 @@
                                         </DataGridTemplateColumn>
                                         <DataGridTextColumn Header="Producto" 
                                                             Width="*"
-                                                            Binding="{Binding NombreProducto}"/>
+                                                            Binding="{Binding Productos.NombreProducto}"/>
                                         <DataGridTextColumn Header="Cantidad" 
-                                                            Width="100"
-                                                            Binding="{Binding Cantidad}"/>
+                                                            Width="350"
+                                                            Binding="{Binding cantidad}"/>
                                         <DataGridTextColumn Header="Precio" 
-                                                            Width="100"
-                                                            Binding="{Binding Monto}"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </Grid>
-                <Grid Grid.Row="1" 
-                      Grid.Column="1"
-                      Margin="0 0 15 0">
-                    <StackPanel Margin="0 30 0 0">
-                        <StackPanel>
-                            <TextBlock Text="CANCELACIONES DURANTE EL TURNO"
-                                       Foreground="white"
-                                       Background="#0069c0"
-                                       FontSize="20px"
-                                       Padding="5px" />
-                        </StackPanel>
-                        <Border BorderThickness="1 0 1 1"
-                                BorderBrush="#495057"
-                                Padding="30">
-                            <StackPanel>
-                                <StackPanel Margin="0 0 0 30"
-                                            Orientation="Horizontal">
-                                    <TextBox   Padding="5"
-							                   Foreground="#495057"
-							                   FontSize="15"
-							                   HorizontalAlignment="Left"
-							                   MinWidth="270"
-							                   MaxHeight="30"/>
-                                    <Button Padding="5"
-					                         Margin="10 0 0 0"
-							                 Background="#0069c0"
-							                 BorderThickness="0"
-                                             Width="100"
-                                             Height="30">
-                                        <StackPanel Orientation="Horizontal" >
-                                            <fa5:SvgAwesome Icon="Solid_Search"   
-								                            Width="15"
-											                Foreground="White"
-                                                            Margin="0 0 10 0"/>
-                                            <TextBlock Text="BUSCAR"
-									                   Foreground="white"
-									                   FontSize="12"/>
-                                        </StackPanel>
-                                    </Button>
-                                </StackPanel>
-                                <DataGrid AlternatingRowBackground="#bae4ff"
-                                          Margin="0 10 0 0"                     
-                                          AutoGenerateColumns="false"
-                                          MaxHeight="300"
-                                          HorizontalAlignment="Left"
-                                          GridLinesVisibility="None"
-                                          RowHeaderWidth="0"
-                                          MinHeight="300">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Folio" 
-                                                            Width="200"
-                                                                    Binding="{Binding FolioVenta}"/>
-                                        <DataGridTextColumn Header="Total" 
-                                                                    Width="*"
-                                                                    Binding="{Binding Name}"/>
+                                                            Width="350"
+                                                            Binding="{Binding monto, StringFormat={}{0:C2}}"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </StackPanel>

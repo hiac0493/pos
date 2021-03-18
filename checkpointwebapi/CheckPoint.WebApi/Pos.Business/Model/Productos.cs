@@ -18,20 +18,21 @@ namespace Pos.Business.Model
             this.Compras = new List<ProductosCompra>();
             this.Ordenes = new List<ProductosOrden>();
             this.Lotes = new List<VentaLote>();
+            this.Almacenes = new List<ProductoAlmacen>();
+            this.Promociones = new List<ProductosPromocion>();
         }
         public int idProducto { get; set; }
         [Required]
         public string NombreProducto { get; set; }
         [Required]
-        public float Existencia { get; set; }
-        [Required]
         public float PrecioCosto { get; set; }
         [Required]
         public float PrecioVenta { get; set; }
-        public float PrecioVentaSinImpuestos { get; set; }
+        public float? PrecioVentaSinImpuestos { get; set; }
         public int idMarca { get; set; }
         public Marca Marca { get; set; }
         public int idDepartamento { get; set; }
+        public int idSubDepartamento { get; set; }
         public float Ganancia { get; set; }
         public Unidades Unidad { get; set; }
         public int idUnidad { get; set; }
@@ -42,9 +43,11 @@ namespace Pos.Business.Model
         [Required]
         public float MinimoCompra { get; set; }
         public CatalogoSat CatalogoSat { get; set; }
-        [Required]
-        public int idCatalogoSat { get; set; }
+        public int? idCatalogoSat { get; set; }
+        public UnidadSat UnidadSat { get; set; }
+        public int? idUnidadSat { get; set; }
         public Departamentos Departamento { get; set; }
+        public SubDepartamento SubDepartamento { get; set; }
         public string ImagenId { get; set; }
         public virtual ICollection<ImpuestoProductos> Impuestos { get; set; }
         public virtual ICollection<PLUProductos> PLUs { get; set; }
@@ -53,5 +56,7 @@ namespace Pos.Business.Model
         public virtual ICollection<ProductosCompra> Compras { get; set; }
         public virtual ICollection<ProductosOrden> Ordenes { get; set; }
         public virtual ICollection<VentaLote> Lotes { get; set; }
+        public virtual ICollection<ProductoAlmacen> Almacenes { get; set; }
+        public virtual ICollection<ProductosPromocion> Promociones { get; set; }
     }
 }
