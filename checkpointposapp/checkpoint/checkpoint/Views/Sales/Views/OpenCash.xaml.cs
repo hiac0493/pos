@@ -53,10 +53,10 @@ namespace checkpoint.Sales.Views
                 cortesToSave.FolioVentaInicio = folio;
                 cortesToSave.FolioVentaFin = null;
                 cortesToSave.FondoCaja = Convert.ToDouble(cashMoney.Text);
-                cortesToSave.FechaInicio = new DateTime(2020,12,03);
-                cortesToSave.FechaFinal = new DateTime(2020, 12, 03);
-                cortesToSave.TotalVenta = 1;
-                cortesToSave.TotalUtilidad = 1;
+                cortesToSave.FechaInicio = DateTime.Now;
+                cortesToSave.FechaFinal = DateTime.Now;
+                cortesToSave.TotalVenta = 0;
+                cortesToSave.TotalUtilidad = 0;
                 saveCashClose();
                 cleanView();
             }

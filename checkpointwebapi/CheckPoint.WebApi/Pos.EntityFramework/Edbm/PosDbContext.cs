@@ -32,6 +32,7 @@ namespace Pos.EntityFramework.Edbm
         public DbSet<ProductosCompra> ProductosCompra { get; set; }
         public DbSet<ProductosProveedor> ProductosProveedor { get; set; }
         public DbSet<ProductosVenta> ProductosVenta { get; set; }
+        public DbSet<Promociones> Promociones { get; set; }
         public DbSet<Proveedores> Proveedores { get; set; }
         public DbSet<Retiro> Retiro { get; set; }
         public DbSet<TipoPago> TipoPago { get; set; }

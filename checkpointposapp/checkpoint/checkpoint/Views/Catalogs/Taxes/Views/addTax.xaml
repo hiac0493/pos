@@ -61,8 +61,8 @@
     <Grid Margin="15px"
           Background="white">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="490"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -70,207 +70,219 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Grid.ColumnSpan="2">
             <TextBlock  Text="IMPUESTOS"
-						FontSize="40"
+                        FontSize="40"
                         FontWeight="Bold"/>
         </Grid>
         <Grid Grid.Row="1">
-            <StackPanel Margin="0 30 0 0">
-                <TextBlock Text="LISTA DE IMPUESTOS"
-                           Foreground="#495057"
-                           FontSize="20"
-                           FontWeight="Bold">
-                </TextBlock>
-                <StackPanel Orientation="Horizontal">
-                    <Button Padding="5"
-                            x:Name="activateTaxBtn"
-                            Click="activateTaxBtn_Click"
-					        Margin="0 10 30 0"
-							Background="#0069c0"
-							BorderThickness="0"
-                            Width="120"
-                            Height="30">
-                        <StackPanel Orientation="Horizontal" >
-                            <fa5:SvgAwesome Icon="Solid_Unlock"   
-								            Width="15"
-											Foreground="White"
-                                            Margin="0 0 10 0"/>
-
-                            <TextBlock Text="ACTIVAR"
-									   Foreground="white"
-									   FontSize="12"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Padding="5"
-                            x:Name="deactivateTaxBtn"
-                            Click="deactivateTaxBtn_Click"
-					        Margin="0 10 30 0"
-							Background="#0069c0"
-							BorderThickness="0"
-                            Width="120"
-                            Height="30">
-                        <StackPanel Orientation="Horizontal" >
-                            <fa5:SvgAwesome Icon="Solid_Minus"   
-								            Width="15"
-											Foreground="White"
-                                            Margin="0 0 10 0"/>
-
-                            <TextBlock Text="DESACTIVAR"
-									   Foreground="white"
-									   FontSize="12"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal"
-                            Margin=" 0 15 0 0">
-                    <TextBlock Text="BUSCAR:"
-							   FontSize="20"
-							   VerticalAlignment="Center"
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" >
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock     Text="LISTA DE IMPUESTOS"
+                               Foreground="#495057"
+                               FontSize="20"
                                FontWeight="Bold"
-                               Foreground="#495057"/>
+                               Grid.Row="0">
+                </TextBlock>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
+                        <Button Padding="5"
+                            Margin="0 10 30 0"
+                            Background="#0069c0"
+                            BorderThickness="0"
+                            Width="120"
+                            Height="30"
+                            Click="activateTaxBtn_Click">
+                            <StackPanel Orientation="Horizontal" >
+                                <fa5:SvgAwesome Icon="Solid_LockOpen"   
+                                                Width="15"
+                                                Foreground="White"
+                                                Margin="0 0 10 0"/>
+                                <TextBlock Text="ACTIVAR"
+                                           Foreground="white"
+                                           FontSize="12"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Padding="5"
+                                Margin="0 10 30 0"
+                                Background="#0069c0"
+                                BorderThickness="0"
+                                Width="120"
+                                Height="30"
+                                Click="deactivateTaxBtn_Click">
+                            <StackPanel Orientation="Horizontal" >
+                                <fa5:SvgAwesome Icon="Solid_Minus"   
+                                            Width="15"
+                                            Foreground="White"
+                                            Margin="0 0 10 0"/>
+                                <TextBlock Text="ELIMINAR"
+                                           Foreground="white"
+                                           FontSize="12"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="2" Margin="0 15 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="BUSCAR:"
+                               FontSize="20"
+                               VerticalAlignment="Center"
+                               FontWeight="Bold"
+                               Foreground="#495057"
+                               Grid.Column="0"/>
                     <TextBox   Padding="5"
-                               x:Name="searchTaxTextBox"
-                               TextChanged="searchTaxTextBox_TextChanged"
-                               KeyDown="searchTaxTextBox_KeyDown"
-							   Foreground="#495057"
-							   FontSize="15"
-							   HorizontalAlignment="Left"
-							   MinWidth="300"
-							   MaxHeight="30"
-							   Margin="30 0 0 0"/>
-                </StackPanel>
-                <StackPanel  Margin=" 0 15 0 0" 
-                             x:Name="UsersContent">
-                    <DataGrid x:Name="taxGrid"
-                              MouseDoubleClick="taxGrid_MouseDoubleClick"
-                              CanUserAddRows="False"
-                              AlternatingRowBackground="#bae4ff"
-                              Margin="0"
-                              IsReadOnly="True"
-                              AutoGenerateColumns="false"
-                              Focusable="True"
-                              MaxHeight="300"
-                              HorizontalAlignment="Left"
-                              GridLinesVisibility="None"
-                              RowHeaderWidth="0"
-                              MinHeight="300"
-                              Width="{Binding ElementName=UsersContent, Path=ActualWidth}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Nombre"
+                                   Foreground="#495057"
+                                   FontSize="15"
+                                   HorizontalAlignment="Stretch"
+                                   MaxHeight="30"
+                                   Margin="30 0 0 0"
+                                   x:Name="searchTaxTextBox"
+                                   TextChanged="searchTaxTextBox_TextChanged"
+                                   KeyDown="searchTaxTextBox_KeyDown"
+                                   Grid.Column="1"/>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="1" >
+                <DataGrid x:Name="taxGrid"
+                          MouseDoubleClick="taxGrid_MouseDoubleClick"
+                          CanUserAddRows="False"
+                          AlternatingRowBackground="#bae4ff"
+                          IsReadOnly="True"
+                          AutoGenerateColumns="false"
+                          Focusable="True"
+                          HorizontalAlignment="Left"
+                          GridLinesVisibility="None"
+                          RowHeaderWidth="0"
+                          Margin="0 15 0 0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Nombre"
                                                 Width="*"
                                                 Binding="{Binding Descripcion}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
-            </StackPanel>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
         </Grid>
         <Grid Grid.Column="1" Grid.Row="1" Margin="10 0 0 0">
-            <TabControl x:Name="brandGrid">
-                <TabItem>
-                    <StackPanel>
-                        <StackPanel Width="460"
-                                    HorizontalAlignment="Left"
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <StackPanel HorizontalAlignment="Left"
                                     Margin="0 30 0 0">
-                            <TextBlock Text="NUEVO IMPUESTO"
-							           FontSize="20"
+                    <TextBlock Text="NUEVO IMPUESTO"
+                                       FontSize="20"
                                        FontWeight="Bold"
                                        Foreground="#495057"
                                        Margin="0 0 10 10"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Left"/>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Padding="5"
-                                        x:Name="cancelTaxBtn"
-                                        Click="cancelTaxBtn_Click"
-					                    Margin="0 0 30 0"
-							            Background="#0069c0"
-							            BorderThickness="0"
-                                        Width="120"
-                                        Height="30"
-                                        HorizontalAlignment="Left">
-                                    <StackPanel Orientation="Horizontal" >
-                                        <fa5:SvgAwesome Icon="Solid_Times"   
-								                    Width="15"
-											        Foreground="White"
-                                                    Margin="0 0 10 0"/>
-
-                                        <TextBlock Text="CANCELAR"
-									           Foreground="white"
-									           FontSize="12"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Padding="5"
-                                        x:Name="saveTaxBtn"
-                                        Click="saveTaxBtn_Click"
-					                    Margin="0 0 30 0"
-							            Background="#0069c0"
-							            BorderThickness="0"
-                                        Width="120"
-                                        Height="30"
-                                        HorizontalAlignment="Left">
-                                    <StackPanel Orientation="Horizontal" >
-                                        <fa5:SvgAwesome Icon="Solid_Save"   
-								                        Width="15"
-											            Foreground="White"
+                    <StackPanel Orientation="Horizontal">
+                        <Button Padding="5"
+                                    Margin="0 0 30 0"
+                                    Background="#0069c0"
+                                    BorderThickness="0"
+                                    Width="120"
+                                    Height="30"
+                                    HorizontalAlignment="Left"
+                                    Click="cancelTaxBtn_Click">
+                            <StackPanel Orientation="Horizontal" >
+                                <fa5:SvgAwesome Icon="Solid_Times"   
+                                                        Width="15"
+                                                        Foreground="White"
                                                         Margin="0 0 10 0"/>
-                                        <TextBlock Text="GUARDAR"
-									               Foreground="white"
-									               FontSize="12"/>
-                                    </StackPanel>
-                                </Button>
+                                <TextBlock Text="CANCELAR"
+                                       Foreground="white"
+                                       FontSize="12"/>
                             </StackPanel>
-                        </StackPanel>
-                        <StackPanel Margin=" 0 15 0 0"
+                        </Button>
+                        <Button Padding="5"
+                                    Margin="0 0 30 0"
+                                    Background="#0069c0"
+                                    BorderThickness="0"
+                                    Width="120"
+                                    Height="30"
+                                    HorizontalAlignment="Left"
+                                    Click="saveTaxBtn_Click">
+                            <StackPanel Orientation="Horizontal" >
+                                <fa5:SvgAwesome Icon="Solid_Save"   
+                                            Width="15"
+                                            Foreground="White"
+                                            Margin="0 0 10 0"/>
+                                <TextBlock Text="GUARDAR"
+                                       Foreground="white"
+                                       FontSize="12"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Margin=" 0 15 0 0"
                                     Orientation="Horizontal">
-                            <TextBlock Text="ACTIVAR:"
-							           FontSize="15"
-							           VerticalAlignment="Center"
+                    <TextBlock Text="ACTIVAR:"
+                                       FontSize="15"
+                                       VerticalAlignment="Center"
                                        FontWeight="Bold"
                                        Foreground="#495057"
                                        Width="80"/>
-                            <CheckBox Margin="0 3 0 0"
+                    <CheckBox Margin="0 3 65 0"
                                       x:Name="activateTaxChkBox"/>
-                        </StackPanel>
-                        <StackPanel>
-                            <StackPanel Margin=" 0 15 0 15"
-                                        Orientation="Horizontal">
-                                <TextBlock Text="NOMBRE:"
-							               FontSize="15"
-							               VerticalAlignment="Center"
-                                           FontWeight="Bold"
-                                           Foreground="#495057"
-                                           Width="150"/>
-                                <TextBox   Padding="5"
-                                           x:Name="taxNameTextBox"
-							               Foreground="#495057"
-							               FontSize="15"
-							               HorizontalAlignment="Left"
-							               MinWidth="300"
-							               MaxHeight="30"
-							               Margin="10 0 0 0"/>
-                            </StackPanel>
-                        </StackPanel>
-                        <StackPanel>
-                            <StackPanel Margin=" 0 15 0 15"
-                                        Orientation="Horizontal">
-                                <TextBlock Text="PORCENTAJE:"
-							               FontSize="15"
-							               VerticalAlignment="Center"
-                                           FontWeight="Bold"
-                                           Foreground="#495057"
-                                           Width="150"/>
-                                <TextBox   Padding="5"
-                                           x:Name="percentageTaxTextBox"
-							               Foreground="#495057"
-							               FontSize="15"
-							               HorizontalAlignment="Left"
-							               MinWidth="300"
-							               MaxHeight="30"
-							               Margin="10 0 0 0"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </StackPanel>
-                </TabItem>
-            </TabControl>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Row="1">
+                <Grid Margin="0 15 0 15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="NOMBRE:"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               FontWeight="Bold"
+                               Foreground="#495057"
+                               Width="150"
+                               Grid.Column="0"/>
+                    <TextBox   Padding="5"
+                               Foreground="#495057"
+                               FontSize="15"
+                               MaxHeight="30"
+                               Margin="10 0 0 0"
+                               x:Name="taxNameTextBox"
+                               Grid.Column="1"/>
+                </Grid>
+                <Grid Margin="0 0 0 15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="PORCENTAJE:"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               FontWeight="Bold"
+                               Foreground="#495057"
+                               Width="150"
+                               Grid.Column="0"/>
+                    <TextBox   Padding="5"
+                               Foreground="#495057"
+                               FontSize="15"
+                               MaxHeight="30"
+                               Margin="10 0 0 0"
+                               x:Name="percentageTaxTextBox"
+                               Grid.Column="1"/>
+                </Grid>
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

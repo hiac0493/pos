@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Pos.Business.Model
 {

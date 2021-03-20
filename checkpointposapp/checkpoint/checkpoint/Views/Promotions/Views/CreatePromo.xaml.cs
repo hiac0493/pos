@@ -16,6 +16,8 @@ namespace checkpoint.Views.Promotions.Views
     /// </summary>
     public partial class CreatePromo : UserControl
     {
+        float totalCosto = 0;
+        long idPromocion = 0;
         PromotionsPresenter _promotionsPresenter;
         BindingList<ProductosPromocion> producsPromotionList = new BindingList<ProductosPromocion>();
         BindingList<Promociones> promocionesList = new BindingList<Promociones>();
@@ -55,39 +57,75 @@ namespace checkpoint.Views.Promotions.Views
             long inicio = ((DateTime)HoraInicio.Value).ToFileTime();
             _promotionsPresenter.SavePromotion(new Promociones
             {
+                idPromocion = idPromocion,
                 DiasPromocion = DiasPromocionTxt.Text.Trim(),
                 Estatus = true,
                 Fin = ((DateTime)HoraFin.Value).Ticks,
                 Inicio = ((DateTime)HoraInicio.Value).Ticks,
                 NombrePromocion = NombrePromocionTxt.Text.Trim(),
-                idDepartamento = (int)ComboDepartamentos.SelectedValue,
-                idMarca = (int)ComboMarcas.SelectedValue,
+                idDepartamento = ComboDepartamentos.SelectedValue != null ? (int?)ComboDepartamentos.SelectedValue : null,
+                idMarca = ComboMarcas.SelectedValue != null ? (int?)ComboMarcas.SelectedValue : null,
                 Productos = producsPromotionList.ToList(),
                 Monto = PrecioTxt.Text.Trim().Length > 0 ? (float?)float.Parse(PrecioTxt.Text.Trim()) : null,
                 Porcentaje = !String.IsNullOrEmpty(PorcentajeTxt.Text.Trim()) ? (float?)float.Parse(PorcentajeTxt.Text.Trim()) : null
             });
         }
 
-        private void AddProductButton_Click(object sender, RoutedEventArgs e)
+        private void ClearPromoView()
         {
-            GetProductoByPLU(pluProductoText.Text.Trim());
+            idPromocion = 0;
+            DiasPromocionTxt.Text = NombrePromocionTxt.Text = PrecioTxt.Text = PorcentajeTxt.Text = string.Empty;
+            HoraFin.Value = HoraInicio.Value = DateTime.Now;
+            ComboDepartamentos.SelectedIndex = ComboMarcas.SelectedIndex = -1;
         }
 
-        private void GetProductoByPLU(string plu)
+        private void AddProductButton_Click(object sender, RoutedEventArgs e)
+        {
+            float quantity = 1;
+            if (pluProductoText.Text.Contains('*'))
+            {
+                string[] cantidad = pluProductoText.Text.Split('*');
+                float.TryParse(cantidad[0], out quantity);
+                pluProductoText.Text = cantidad[1];
+            }
+            if (quantity > 0)
+                GetProductoByPLU(pluProductoText.Text.Trim(), quantity);
+        }
+
+        private void GetProductoByPLU(string plu, float quantity)
         {
             pluProductoText.Text = string.Empty;
             ProductosPromocion producto = _promotionsPresenter.GetProductoByPLU(plu);
-            producto.Cantidad = 1;
+            ProductosPromocion productOfList = producsPromotionList.Where(x => x.idProducto == producto.idProducto).FirstOrDefault();
             if (producto != null)
-                producsPromotionList.Add(producto);
-
+            {
+                if (productOfList == null)
+                {
+                    producto.Cantidad = quantity;
+                    producsPromotionList.Add(producto);
+                }
+                else
+                {
+                    productOfList.Cantidad += quantity;
+                    producsPromotionList.ResetBindings();
+                }
+                totalCosto += producto.Cantidad * producto.PrecioVenta;
+            }
         }
 
         private void AddProductButton_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
+            if (e.Key == Key.Enter)
             {
-                GetProductoByPLU(pluProductoText.Text.Trim());
+                float quantity = 1;
+                if (pluProductoText.Text.Contains('*'))
+                {
+                    string[] cantidad = pluProductoText.Text.Split('*');
+                    float.TryParse(cantidad[0], out quantity);
+                    pluProductoText.Text = cantidad[1];
+                }
+                if(quantity > 0)
+                    GetProductoByPLU(pluProductoText.Text.Trim(),quantity);
             }
         }
 
@@ -98,12 +136,13 @@ namespace checkpoint.Views.Promotions.Views
             if(currentPromotion != null)
             {
                 TabPageControl.SelectedIndex = 1;
-                FillPromoData(currentPromotion);
+                FillPromoData(_promotionsPresenter.GetPromocionById(currentPromotion.idPromocion));
             }
         }
 
         private void FillPromoData(Promociones promotion)
         {
+            idPromocion = promotion.idPromocion;
             producsPromotionList.AddRange(promotion.Productos);
             NombrePromocionTxt.Text = promotion.NombrePromocion;
             DiasPromocionTxt.Text = promotion.DiasPromocion;
@@ -113,6 +152,18 @@ namespace checkpoint.Views.Promotions.Views
             HoraFin.Value = new DateTime(promotion.Fin);
             ComboDepartamentos.SelectedValue = promotion.idDepartamento != 0 ? promotion.idDepartamento : -1;
             ComboMarcas.SelectedValue = promotion.idMarca != 0 ? promotion.idMarca : -1;
+        }
+
+        private void DeleteProduct_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            ProductosPromocion producto = button.DataContext as ProductosPromocion;
+            if(producto != null)
+            {
+                if (producto.idProductoPromocion != 0)
+                    _promotionsPresenter.DeleteProductoPromocion(producto.idProductoPromocion);
+                producsPromotionList.Remove(producto);
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ namespace checkpoint.Views.Catalogs.Products.Services
             string webApiUrl = WebApiMethods.GetAllDepartamentos;
             IList<Departamentos> departamentosList = new List<Departamentos>();
             var ResponseOK = App.HttpTools.HttpGetList<Departamentos>(webApiUrl, ref departamentosList, "No se encontró el departamento");
-            if(ResponseOK == HttpStatusCode.OK)
+            if (ResponseOK == HttpStatusCode.OK)
             {
                 return departamentosList.ToList();
             }
@@ -45,7 +45,7 @@ namespace checkpoint.Views.Catalogs.Products.Services
             string webApiUrl = WebApiMethods.GetAllUnidades;
             IList<Unidades> unidadesList = new List<Unidades>();
             var ResponseOK = App.HttpTools.HttpGetList<Unidades>(webApiUrl, ref unidadesList, "No se encontró la unidad");
-            if(ResponseOK == HttpStatusCode.OK)
+            if (ResponseOK == HttpStatusCode.OK)
             {
                 return unidadesList.ToList();
             }
@@ -59,7 +59,7 @@ namespace checkpoint.Views.Catalogs.Products.Services
             string webApiUrl = WebApiMethods.GetAllCatalogoSat;
             IList<CatalogoSat> catalogoSatList = new List<CatalogoSat>();
             var ResponseOK = App.HttpTools.HttpGetList<CatalogoSat>(webApiUrl, ref catalogoSatList, "No se encontró el catalogo del SAT");
-            if(ResponseOK == HttpStatusCode.OK)
+            if (ResponseOK == HttpStatusCode.OK)
             {
                 return catalogoSatList.ToList();
             }
@@ -73,7 +73,7 @@ namespace checkpoint.Views.Catalogs.Products.Services
             string webApiUrl = WebApiMethods.GetAllUnidadesSat;
             IList<UnidadSat> unidadSatList = new List<UnidadSat>();
             var ResponseOK = App.HttpTools.HttpGetList<UnidadSat>(webApiUrl, ref unidadSatList, "No se encontró la unidad del SAT");
-            if(ResponseOK == HttpStatusCode.OK)
+            if (ResponseOK == HttpStatusCode.OK)
             {
                 return unidadSatList.ToList();
             }
@@ -87,7 +87,7 @@ namespace checkpoint.Views.Catalogs.Products.Services
             string webApiUrl = WebApiMethods.GetAllImpuestos;
             IList<Impuestos> impuestosList = new List<Impuestos>();
             var ResponseOK = App.HttpTools.HttpGetList<Impuestos>(webApiUrl, ref impuestosList, "No se encontraron los impuestos");
-            if(ResponseOK == HttpStatusCode.OK)
+            if (ResponseOK == HttpStatusCode.OK)
             {
                 return impuestosList.ToList();
             }
@@ -101,7 +101,7 @@ namespace checkpoint.Views.Catalogs.Products.Services
             string webApiUrl = WebApiMethods.GetUnidadesSatByid + unitSatId;
             IList<UnidadSat> unidadSatList = new List<UnidadSat>();
             var ResponseOK = App.HttpTools.HttpGetList<UnidadSat>(webApiUrl, ref unidadSatList, "No se encontró la unidad del SAT");
-            if(ResponseOK == HttpStatusCode.OK)
+            if (ResponseOK == HttpStatusCode.OK)
             {
                 return unidadSatList.ToList();
             }
@@ -113,7 +113,7 @@ namespace checkpoint.Views.Catalogs.Products.Services
 
         public async Task<Productos> SaveProduct(Productos productos)
         {
-            string webApiUrl = WebApiMethods.SaveProduct;   
+            string webApiUrl = WebApiMethods.SaveProduct;
             Productos productResult = await App.HttpTools.HttpPostObjectWithResponseDataAsync<Productos, Productos>(webApiUrl, productos, "Hubo un error en el guardado del producto").ConfigureAwait(false);
             return productResult;
         }
@@ -121,7 +121,7 @@ namespace checkpoint.Views.Catalogs.Products.Services
         public async Task<List<Productos>> SaveProducts(List<Productos> productlist)
         {
             string webApiUrl = WebApiMethods.SaveProducts;
-            var productsResult =  await App.HttpTools.HttpPostObjectWithResponseDataAsync<List<Productos>, List<Productos>>(webApiUrl, productlist, "Hubo un error en el guardado del producto").ConfigureAwait(false); ;
+            var productsResult = await App.HttpTools.HttpPostObjectWithResponseDataAsync<List<Productos>, List<Productos>>(webApiUrl, productlist, "Hubo un error en el guardado del producto").ConfigureAwait(false); ;
             return productsResult;
         }
 

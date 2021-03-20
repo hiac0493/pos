@@ -462,4 +462,16 @@
     <value>GetCatalogByClave?claveCatalogo=</value>
     <comment>GetCatalogByClave</comment>
   </data>
+  <data name="GetAllUserTypes" xml:space="preserve">
+    <value>GetAllUserTypes</value>
+    <comment>Get all user types</comment>
+  </data>
+  <data name="GetPromocionById" xml:space="preserve">
+    <value>GetPromocionById?idPromocion=</value>
+    <comment>GetPromocionById</comment>
+  </data>
+  <data name="DeleteProductPromotion" xml:space="preserve">
+    <value>DeleteProductPromotion?idProductoPromocion=</value>
+    <comment>DeleteProductPromotion</comment>
+  </data>
 </root>

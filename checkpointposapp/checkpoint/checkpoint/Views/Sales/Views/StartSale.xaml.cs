@@ -61,7 +61,7 @@ namespace checkpoint.Views.Sales.Views
             InitializeComponent();
             _cashClosePresenter = new CashClosePresenter(new CashCloseServices());
             corte = _cashClosePresenter.GetCurrentCashClose(App._userApplication.idUsuario);
-            if (corte == null || corte.FolioVentaFin!=null)
+            if (corte == null || corte.FolioVentaFin != null)
             {
                 OpenCash openCash = new OpenCash();
                 openCash.ShowDialog();
@@ -92,41 +92,41 @@ namespace checkpoint.Views.Sales.Views
         #region Methods form
         private void endCashClose()
         {
-            cortesToSave = _cashClosePresenter.GetCurrentCashClose(4);
+            cortesToSave = _cashClosePresenter.GetCurrentCashClose(App._userApplication.idUsuario);
             cortesToSave.FolioVentaFin = _cashClosePresenter.GetLastFolio();
-            cortesToSave.TotalVenta = _cashClosePresenter.GetTotalSale(4, cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin);
+            cortesToSave.TotalVenta = _cashClosePresenter.GetTotalSale(App._userApplication.idUsuario, cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin);
 
             paymentsGrid.ItemsSource = cortePagoList;
-            cortePagoList.AddRange(_cashClosePresenter.GetAllPagosCorte(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, 4));
+            cortePagoList.AddRange(_cashClosePresenter.GetAllPagosCorte(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, App._userApplication.idUsuario));
 
             taxesGrid.ItemsSource = impuestoList;
-            impuestoList.AddRange(_cashClosePresenter.GetAllTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, 4));
+            impuestoList.AddRange(_cashClosePresenter.GetAllTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, App._userApplication.idUsuario));
 
             totalSale.Text = cortesToSave.TotalVenta.ToString("C2");
 
-            totalTaxe = _cashClosePresenter.GetTotalTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, 4);
+            totalTaxe = _cashClosePresenter.GetTotalTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, App._userApplication.idUsuario);
             totalTaxes.Text = totalTaxe.ToString("C2");
             ivaGrid.ItemsSource = tasaList;
-            tasaList.AddRange(_cashClosePresenter.GetTotalWithTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, 4));
+            tasaList.AddRange(_cashClosePresenter.GetTotalWithTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, App._userApplication.idUsuario));
             returnsGrid.ItemsSource = returnList;
             totalTasa.Text = cortesToSave.TotalVenta.ToString("C2");
 
-            ivaTasa = _cashClosePresenter.CalcIvaTasa(4, cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin);
+            ivaTasa = _cashClosePresenter.CalcIvaTasa(App._userApplication.idUsuario, cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin);
             totalTasaIva.Text = ivaTasa.ToString("C2");
-            returnList.AddRange(_cashClosePresenter.GetReturnsWithTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, 4));
+            returnList.AddRange(_cashClosePresenter.GetReturnsWithTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, App._userApplication.idUsuario));
 
-            totalReturns = _cashClosePresenter.GetTotalReturns(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, 4);
+            totalReturns = _cashClosePresenter.GetTotalReturns(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, App._userApplication.idUsuario);
 
             totalReturn.Text = totalReturns.ToString("C2");
 
-            ivaReturns = _cashClosePresenter.CalcIvaReturn(4, cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin);
+            ivaReturns = _cashClosePresenter.CalcIvaReturn(App._userApplication.idUsuario, cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin);
             totalReturnIva.Text = ivaReturns.ToString("C2");
             saveCashClose(cortesToSave);
         }
 
         private void PrintCashClose()
         {
-            if (cortesAux != null)
+            if (cortesAux.IdCorte != 0 && cortesAux != null)
             {
                 CreateTicket ticket = new CreateTicket();
                 Printer printer = new Printer("EPSON TM-T20II Receipt5");
@@ -271,46 +271,59 @@ namespace checkpoint.Views.Sales.Views
 
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (skuText.Text != "")
             {
-                float quantity = 1;
-                if (skuText.Text.Contains('*'))
+                if (e.Key == Key.Enter)
                 {
-                    string[] cantidad = skuText.Text.Split('*');
-                    float.TryParse(cantidad[0], out quantity);
-                    skuText.Text = cantidad[1];
-                }
-                ProductSale productExtractToDB = quantity > 0 ? _salesPresenter.GetProductByPLU(skuText.Text) : null;
-                productExtractToDB.precioVenta = ModifyPricePromo(productExtractToDB);
-                if (productExtractToDB != null)
-                {
-                    addProductToSale(productExtractToDB, quantity);
+                    float quantity = 1;
+                    if (skuText.Text.Contains('*'))
+                    {
+                        string[] cantidad = skuText.Text.Split('*');
+                        float.TryParse(cantidad[0], out quantity);
+                        skuText.Text = cantidad[1];
+                    }
+                    ProductSale productExtractToDB = quantity > 0 ? _salesPresenter.GetProductByPLU(skuText.Text) : null;
+
+                    if (productExtractToDB != null)
+                    {
+                        productExtractToDB.precioVenta = ModifyPricePromo(productExtractToDB, quantity);
+                        addProductToSale(productExtractToDB, quantity);
+                    }
                 }
             }
         }
 
-        private float ModifyPricePromo(ProductSale product)
+        private float ModifyPricePromo(ProductSale product, float quantity)
         {
             float total = 0;
-            if(product.promociones != null && product.promociones.Count() > 0)
+            if (product.promociones != null && product.promociones.Count() > 0)
             {
                 foreach (var promocion in product.promociones)
                 {
-                    float totalParcial = CalcularPrecio(promocion, product.precioVenta);
-                    if (total == 0)
-                        total = totalParcial;
-                    else if (total > totalParcial)
-                        total = totalParcial;
+                    if (promocion.Productos.Count > 1)
+                    {
+
+                    }
+                    else
+                    {
+                        float totalParcial = CalcularPrecio(promocion, product.precioVenta, quantity);
+                        if (total == 0)
+                            total = totalParcial;
+                        else if (total > totalParcial)
+                            total = totalParcial;
+                    }
                 }
             }
             return total > 0 ? total : product.precioVenta;
         }
 
-        private float CalcularPrecio(Promociones promocion, float precioVenta)
+        private float CalcularPrecio(Promociones promocion, float precioVenta, float quantity)
         {
             float total = 0;
             if (promocion.Monto != null)
+            {
                 total = (float)promocion.Monto;
+            }
             else
                 total = precioVenta * (1 - ((float)promocion.Porcentaje / 100));
             return total;
@@ -321,7 +334,7 @@ namespace checkpoint.Views.Sales.Views
             switch (e.Key)
             {
                 case Key.Escape:
-                    SalesTabControl.SelectedIndex = 0; 
+                    SalesTabControl.SelectedIndex = 0;
                     cortePagoList = new BindingList<CortePagos>();
                     impuestoList = new BindingList<VentaImpuestos>();
                     tasaList = new BindingList<TasaImpuesto>();
@@ -346,41 +359,43 @@ namespace checkpoint.Views.Sales.Views
                     }
                     break;
                 case Key.F12:
-                    Ventas venta = new Ventas
+                    if (products.Count > 0)
                     {
-                        cambio = 0,
-                        estatus = 'A',
-                        fecha = DateTime.Now,
-                        folioVenta = 0,
-                        idUsuario = App._userApplication.idUsuario,
-                        impuestos = 0,
-                        pagado = products.Sum(x => x.Price * x.Quantity),
-                        productos = (from productos in products select new AddProductSale { cantidad = productos.Quantity, idProducto = productos.idProducto, monto = productos.Total }).ToList(),
-                        total = products.Sum(x => x.Price * x.Quantity),
-                        pagos = new List<VentaPagos> { new VentaPagos { cantidad = products.Sum(x => x.Price * x.Quantity), idTipoPago = 1 } },
-                        subtotal = products.Sum(x => x.Price * x.Quantity),
-                        utilidad = 0,
-                        impuesto = impuestosResumen
-                    };
-                    EndSale endsale = new EndSale(venta, products);
-                    endsale.ShowDialog();
-                    if ((bool)endsale.DialogResult)
-                    {
-                        venta.cambio = endsale.cambio;
-                        venta.pagado = endsale.pagado;
-                        venta = endsale.ventaFin;
-                        venta.impuestos = (float)Math.Round(venta.impuesto.Sum(x => x.cantidad), 2);
-                        SaleResult addVenta = _salesPresenter.AddVenta(venta).Result;
-                        auxVenta = addVenta.venta;
-                        //TO DO
-                        if (addVenta.totalEfectivo >= 1000 )
+                        Ventas venta = new Ventas
                         {
-                            WithdrawAlert retiros = new WithdrawAlert(addVenta.totalEfectivo, false);
-                            retiros.ShowDialog();
+                            cambio = 0,
+                            estatus = 'A',
+                            fecha = DateTime.Now,
+                            folioVenta = 0,
+                            idUsuario = App._userApplication.idUsuario,
+                            impuestos = 0,
+                            pagado = products.Sum(x => x.Price * x.Quantity),
+                            productos = (from productos in products select new AddProductSale { cantidad = productos.Quantity, idProducto = productos.idProducto, monto = productos.Total }).ToList(),
+                            total = products.Sum(x => x.Price * x.Quantity),
+                            pagos = new List<VentaPagos> { new VentaPagos { cantidad = products.Sum(x => x.Price * x.Quantity), idTipoPago = 1 } },
+                            subtotal = products.Sum(x => x.Price * x.Quantity),
+                            utilidad = 0,
+                            impuesto = impuestosResumen
+                        };
+                        EndSale endsale = new EndSale(venta, products);
+                        endsale.ShowDialog();
+                        if ((bool)endsale.DialogResult)
+                        {
+                            venta.cambio = endsale.cambio;
+                            venta.pagado = endsale.pagado;
+                            venta = endsale.ventaFin;
+                            venta.impuestos = (float)Math.Round(venta.impuesto.Sum(x => x.cantidad), 2);
+                            SaleResult addVenta = _salesPresenter.AddVenta(venta).Result;
+                            auxVenta = addVenta.venta;
+                            //TO DO
+                            if (addVenta.totalEfectivo >= 1000)
+                            {
+                                WithdrawAlert retiros = new WithdrawAlert(addVenta.totalEfectivo, false);
+                                retiros.ShowDialog();
+                            }
+                            products.Clear();
+                            PrintMethod();
                         }
-                        
-                        products.Clear();
-                        //PrintMethod();
                     }
                     break;
                 case Key.F11:
@@ -432,7 +447,7 @@ namespace checkpoint.Views.Sales.Views
                 printer.Append("FECHA: " + auxVenta.fecha);
                 printer.NewLine();
                 printer.Separator();
-                printer.NewLine(); 
+                printer.NewLine();
                 printer.Append("DESCRIPCION             N#     PRECIO      TOTAL");
                 printer.PrintDocument();
                 foreach (AddProductSale product in auxVenta.productos)

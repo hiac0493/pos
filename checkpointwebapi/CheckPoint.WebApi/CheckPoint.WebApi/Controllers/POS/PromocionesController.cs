@@ -42,7 +42,7 @@ namespace CheckPoint.WebApi.Controllers.POS
         {
             try
             {
-                Promociones promocion = PosUoW.PromocionesRepository.GetById(x => x.idPromocion.Equals(idPromocion));
+                var promocion = PosUoW.PromocionesRepository.GetPromocionById(idPromocion);
                 if (promocion != null)
                     return Ok(promocion);
                 else
@@ -79,6 +79,29 @@ namespace CheckPoint.WebApi.Controllers.POS
                 }
             }
             catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteProductPromotion")]
+        public IActionResult DeleteProductPromotion(long idProductoPromocion)
+        {
+            try
+            {
+                ProductosPromocion producto = PosUoW.ProductosPromocionRepository.GetById(x => x.idProductoPromocion.Equals(idProductoPromocion));
+                if (producto != null)
+                {
+                    PosUoW.ProductosPromocionRepository.Remove(producto);
+                    PosUoW.Save();
+                    return Ok();
+                }                    
+                else
+                    return NotFound();
+                
+            }
+            catch(Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex);
             }

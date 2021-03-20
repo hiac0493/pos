@@ -10,5 +10,7 @@ namespace checkpoint.Views.Promotions.Services
         ProductosPromocion GetProductoByPLU(string plu);
         List<Departamentos> GetAllDepartamentos();
         List<Marca> GetAllMarca();
+        Promociones GetPromocionById(long idPromocion);
+        void DeleteProductoPromocion(long idProductoPromocion);
     }
 }

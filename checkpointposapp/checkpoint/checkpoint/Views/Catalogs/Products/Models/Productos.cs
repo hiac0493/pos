@@ -30,6 +30,5 @@ namespace checkpoint.Views.Catalogs.Products.Models
         public IList<ImpuestoProducto> Impuestos { get; set; }
         public IList<PLUProductos> PLUs { get; set; }
         public IList<ProductosProveedor> Proveedores { get; set; }
-
     }
 }

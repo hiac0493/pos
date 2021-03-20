@@ -6,13 +6,18 @@ using System.Text;
 
 namespace checkpoint.Views.Promotions.Presenters
 {
-    public class PromotionsPresenter 
+    public class PromotionsPresenter
     {
         private readonly IPromotionsServices _promotionsServices;
 
         public PromotionsPresenter(IPromotionsServices promotionsServices)
         {
             _promotionsServices = promotionsServices;
+        }
+
+        public void DeleteProductoPromocion(long idProductoPromocion)
+        {
+            _promotionsServices.DeleteProductoPromocion(idProductoPromocion);
         }
 
         public List<Departamentos> GetAllDepartamentos()
@@ -33,6 +38,11 @@ namespace checkpoint.Views.Promotions.Presenters
         public ProductosPromocion GetProductoByPLU(string plu)
         {
             return _promotionsServices.GetProductoByPLU(plu);
+        }
+
+        public Promociones GetPromocionById(long idPromocion)
+        {
+            return _promotionsServices.GetPromocionById(idPromocion);
         }
 
         public Promociones SavePromotion(Promociones promotion)

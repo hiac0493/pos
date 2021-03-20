@@ -2,12 +2,14 @@
 using checkpoint.Users.Models;
 using checkpoint.Users.Presenters;
 using checkpoint.Users.Services;
+using Pos.Business.Model;
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace checkpoint.Views.Users.Views
+namespace checkpoint.Views.Catalogs.Users.Views
 {
     /// <summary>
     /// Interaction logic for addUser.xaml
@@ -22,6 +24,7 @@ namespace checkpoint.Views.Users.Views
         private UserPresenter _userPresenter;
         UsuariosRH usuarioUpdate;
         BindingList<UsuariosRH> usersList = new BindingList<UsuariosRH>();
+        BindingList<TipoUsuario> tipoUsuarioList = new BindingList<TipoUsuario>();
         #endregion
         #region Constructor
         //**************************************************
@@ -48,7 +51,9 @@ namespace checkpoint.Views.Users.Views
             activateUpdateUserChkBox.IsChecked = true;
 
             getAllUsers();
+            getAllUserTypes();
             usersGrid.ItemsSource = usersList;
+            newUserTypeComboBox.ItemsSource = tipoUsuarioList;
         }
         #endregion
         #region Write data
@@ -67,6 +72,7 @@ namespace checkpoint.Views.Users.Views
                 newUserUserNickname.Focusable = false;
                 newUserUserNickname.Text = usuarioUpdate.nombreUsuario;
                 activateUpdateUserChkBox.IsChecked = usuarioUpdate.activo == true ? true : false;
+                newUserTypeComboBox.SelectedValue = usuarioUpdate.idTipoUsuario;
                 newUserPassword.Password = usuarioUpdate.contraseña;
             }
         }
@@ -92,6 +98,7 @@ namespace checkpoint.Views.Users.Views
                         usuarioUpdate.apellidoMaterno = newUserMaternalLastName.Text;
                         usuarioUpdate.contraseña = newUserPassword.Password;
                         usuarioUpdate.activo = activateUpdateUserChkBox.IsChecked == true ? true : false;
+                        usuarioUpdate.idTipoUsuario = (int)newUserTypeComboBox.SelectedValue;
                         _userPresenter.SaveUser(usuarioUpdate);
                         if (usuarioUpdate != null && usuarioUpdate.activo == false)
                         {
@@ -123,7 +130,8 @@ namespace checkpoint.Views.Users.Views
                     apellidoPaterno = newUserPaternalLastName.Text,
                     nombres = newUserNameTxtBox.Text,
                     contraseña = newUserPassword.Password,
-                    activo = true
+                    activo = true,
+                    idTipoUsuario = (int)newUserTypeComboBox.SelectedValue
                 };
                 UsuariosRH addUser = _userPresenter.SaveUser(usuario).Result;
                 cleanViewCreate();
@@ -149,6 +157,7 @@ namespace checkpoint.Views.Users.Views
                 newUserUserNickname.Text = string.Empty;
                 newUserPassword.Password = string.Empty;
                 activateUpdateUserChkBox.IsChecked = false;
+                newUserTypeComboBox.SelectedIndex = 0;
                 searchUserTxtBox.Text = string.Empty;
                 usersList.Remove(usuarioUpdate);
 
@@ -178,6 +187,16 @@ namespace checkpoint.Views.Users.Views
             usersList.Clear();
             usersList = new BindingList<UsuariosRH>(_userPresenter.GetAllUsuarios());
             usersGrid.ItemsSource = usersList;
+        }
+
+        private void getAllUserTypes()
+        {
+            tipoUsuarioList.Clear();
+            tipoUsuarioList = new BindingList<TipoUsuario>(_userPresenter.GetAllUserTypes());
+            usersGrid.ItemsSource = tipoUsuarioList;
+            newUserTypeComboBox.SelectedValuePath = "idTipoUsuario";
+            newUserTypeComboBox.DisplayMemberPath = "Descripcion";
+            newUserTypeComboBox.SelectedIndex = 0;
         }
         private void SearchUserHandler(object sender, KeyEventArgs e)
         {

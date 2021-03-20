@@ -39,7 +39,7 @@ namespace CheckPoint.WebApi.Controllers.POS
                 }
                 else
                 {
-                    return BadRequest("Los datos de la marca son incorrectos");
+                    return BadRequest("Los datos del corte son incorrectos");
                 }
             }
             catch (Exception ex)

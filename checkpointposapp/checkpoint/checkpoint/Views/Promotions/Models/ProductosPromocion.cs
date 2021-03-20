@@ -12,5 +12,6 @@ namespace checkpoint.Views.Promotions.Models
         public long idPromocion { get; set; }
         public int idProducto { get; set; }
         public float Cantidad { get; set; }
+        public float PrecioVenta { get; set; }
     }
 }

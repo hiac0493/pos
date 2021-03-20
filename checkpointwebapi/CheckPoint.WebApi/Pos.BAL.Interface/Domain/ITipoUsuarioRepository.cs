@@ -5,8 +5,7 @@ using System.Text;
 
 namespace Pos.BAL.Interface.Domain
 {
-    public interface IPromocionesRepository : IGenericRepository<Promociones>
+    public interface ITipoUsuarioRepository :IGenericRepository<TipoUsuario>
     {
-        object GetPromocionById(long idPromocion);
     }
 }

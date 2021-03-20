@@ -8,6 +8,12 @@ namespace checkpoint.Views.Promotions.Services
 {
     public class PromotionsServices : IPromotionsServices
     {
+        public void DeleteProductoPromocion(long idProductoPromocion)
+        {
+            string webApiUrl = WebApiMethods.DeleteProductPromotion;
+            var result = App.HttpTools.HttpDeleteAsync(webApiUrl, idProductoPromocion, "Error en la eliminacion del producto en la promocion");
+        }
+
         public List<Departamentos> GetAllDepartamentos()
         {
             string webApiUrl = WebApiMethods.GetAllDepartamentos;
@@ -48,6 +54,17 @@ namespace checkpoint.Views.Promotions.Services
             var result = App.HttpTools.HttpGetSingle<ProductosPromocion>(webApiUrl, ref productoResult, "Error al leer producto");
             if (result == HttpStatusCode.OK)
                 return productoResult;
+            else
+                return null;
+        }
+
+        public Promociones GetPromocionById(long idPromocion)
+        {
+            string webApiUrl = WebApiMethods.GetPromocionById + idPromocion;
+            Promociones promocionResult = new Promociones();
+            var result = App.HttpTools.HttpGetSingle<Promociones>(webApiUrl, ref promocionResult, "Error en la obtención de la promoción");
+            if (result == HttpStatusCode.OK)
+                return promocionResult;
             else
                 return null;
         }

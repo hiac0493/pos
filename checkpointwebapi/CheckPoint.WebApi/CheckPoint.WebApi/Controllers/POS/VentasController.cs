@@ -288,7 +288,7 @@ namespace CheckPoint.WebApi.Controllers.POS
             try
             {
                 var sale = PosUoW.VentasRepository.GetTotalSale(idUsuario, folioInicio, folioFin);
-                if (sale != 0)
+                if (sale != null)
                 {
                     return Ok(sale);
                 }

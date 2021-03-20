@@ -1,10 +1,10 @@
-﻿<UserControl x:Class="checkpoint.Views.Catalogs.UnitSat.Views.UnitSat"
+﻿<UserControl x:Class="checkpoint.Views.Catalogs.Users.Views.addUser"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:checkpoint.Views.Catalogs.UnitSat.Views"
+             xmlns:local="clr-namespace:checkpoint.Views.Catalogs.Users.Views"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1200">
     <UserControl.Resources>
@@ -69,7 +69,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Grid.ColumnSpan="2">
-            <TextBlock  Text="UNIDADES DEL SAT"
+            <TextBlock  Text="ADMINISTRACIÓN DE USUARIOS"
                         FontSize="40"
                         FontWeight="Bold"/>
         </Grid>
@@ -84,7 +84,7 @@
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <TextBlock     Text="LISTA DE UNIDADES"
+                <TextBlock     Text="USUARIOS"
                                Foreground="#495057"
                                FontSize="20"
                                FontWeight="Bold"
@@ -102,7 +102,7 @@
                             BorderThickness="0"
                             Width="120"
                             Height="30"
-                            Click="activeUnitSat_Click">
+                            x:Name="activateUserBtn">
                             <StackPanel Orientation="Horizontal" >
                                 <fa5:SvgAwesome Icon="Solid_LockOpen"   
                                                 Width="15"
@@ -119,7 +119,7 @@
                                 BorderThickness="0"
                                 Width="120"
                                 Height="30"
-                                Click="deactivateUnitSat_Click">
+                                Click="DeleteUserBtnClick">
                             <StackPanel Orientation="Horizontal" >
                                 <fa5:SvgAwesome Icon="Solid_Minus"   
                                             Width="15"
@@ -149,15 +149,15 @@
                                    HorizontalAlignment="Stretch"
                                    MaxHeight="30"
                                    Margin="30 0 0 0"
-                                   KeyUp="searchUnitSat_KeyUp"
-                                   TextChanged="searchUnitSat_TextChanged"
-                                   x:Name="searchUnitSatTextBox"
+                                   TextChanged="searchUserTxtBox_TextChanged"
+                                   Name="searchUserTxtBox"
+                                   KeyUp="SearchUserHandler"
                                    Grid.Column="1"/>
                 </Grid>
             </Grid>
             <Grid Grid.Row="1" >
-                <DataGrid x:Name="unitsSatGrid"
-                          MouseDoubleClick="unitsSatGrid_MouseDoubleClick"
+                <DataGrid x:Name="usersGrid"
+                          MouseDoubleClick="usersGrid_MouseDoubleClick"
                           CanUserAddRows="False"
                           AlternatingRowBackground="#bae4ff"
                           IsReadOnly="True"
@@ -169,7 +169,7 @@
                           Margin="0 15 0 0">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Nombre"
-                                            Binding="{Binding NombrePantalla}"
+                                            Binding="{Binding Nombre}"
                                             Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
@@ -183,7 +183,7 @@
             <StackPanel Grid.Row="0">
                 <StackPanel HorizontalAlignment="Left"
                                     Margin="0 30 0 0">
-                    <TextBlock Text="NUEVA UNIDAD"
+                    <TextBlock Text="INFORMACION DE USUARIO"
                                        FontSize="20"
                                        FontWeight="Bold"
                                        Foreground="#495057"
@@ -198,7 +198,7 @@
                                     Width="120"
                                     Height="30"
                                     HorizontalAlignment="Left"
-                                    Click="cancelUnitSat_Click">
+                                    Click="CancelBtnClick">
                             <StackPanel Orientation="Horizontal" >
                                 <fa5:SvgAwesome Icon="Solid_Times"   
                                                         Width="15"
@@ -216,7 +216,7 @@
                                     Width="120"
                                     Height="30"
                                     HorizontalAlignment="Left"
-                                    Click="saveUnitSat_Click">
+                                    Click="newUserBtn_Click">
                             <StackPanel Orientation="Horizontal" >
                                 <fa5:SvgAwesome Icon="Solid_Save"   
                                             Width="15"
@@ -238,7 +238,7 @@
                                        Foreground="#495057"
                                        Width="80"/>
                     <CheckBox Margin="0 3 65 0"
-                                      Name="checkStatus"/>
+                                      x:Name="activateUpdateUserChkBox"/>
                 </StackPanel>
             </StackPanel>
             <StackPanel Grid.Row="1">
@@ -259,7 +259,7 @@
                                FontSize="15"
                                MaxHeight="30"
                                Margin="10 0 0 0"
-                               Name="txtName"
+                               x:Name="newUserNameTxtBox"
                                Grid.Column="1"/>
                 </Grid>
                 <Grid Margin="0 0 0 15">
@@ -267,7 +267,7 @@
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="CLAVE:"
+                    <TextBlock Text="APELLIDO PATERNO:"
                                FontSize="15"
                                VerticalAlignment="Center"
                                FontWeight="Bold"
@@ -279,8 +279,88 @@
                                FontSize="15"
                                MaxHeight="30"
                                Margin="10 0 0 0"
-                               Name="txtClave"
+                               x:Name="newUserPaternalLastName"
                                Grid.Column="1"/>
+                </Grid>
+                <Grid Margin="0 0 0 15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="APELLIDO MATERNO:"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               FontWeight="Bold"
+                               Foreground="#495057"
+                               Width="150"
+                               Grid.Column="0"/>
+                    <TextBox   Padding="5"
+                               Foreground="#495057"
+                               FontSize="15"
+                               MaxHeight="30"
+                               Margin="10 0 0 0"
+                               x:Name="newUserMaternalLastName"
+                               Grid.Column="1"/>
+                </Grid>
+                <Grid Margin="0 0 0 15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="TIPO USUARIO:"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               FontWeight="Bold"
+                               Foreground="#495057"
+                               Width="150"
+                               Grid.Column="0"/>
+                    <ComboBox   Padding="5"
+                               Foreground="#495057"
+                               FontSize="15"
+                               MaxHeight="30"
+                               Margin="10 0 0 0"
+                               x:Name="newUserTypeComboBox"
+                               Grid.Column="1"/>
+                </Grid>
+                <Grid Margin="0 0 0 15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="USUARIO:"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               FontWeight="Bold"
+                               Foreground="#495057"
+                               Width="150"
+                               Grid.Column="0"/>
+                    <TextBox   Padding="5"
+                               Foreground="#495057"
+                               FontSize="15"
+                               MaxHeight="30"
+                               Margin="10 0 0 0"
+                               x:Name="newUserUserNickname"
+                               Grid.Column="1"/>
+                </Grid>
+                <Grid Margin="0 0 0 15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="CONTRASEÑA:"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               FontWeight="Bold"
+                               Foreground="#495057"
+                               Width="150"
+                               Grid.Column="0"/>
+                    <PasswordBox   Padding="5"
+                                   Foreground="#495057"
+                                   FontSize="15"
+                                   MaxHeight="30"
+                                   Margin="10 0 0 0"
+                                   x:Name="newUserPassword"
+                                   Grid.Column="1"/>
                 </Grid>
             </StackPanel>
         </Grid>

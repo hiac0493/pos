@@ -160,6 +160,15 @@ namespace checkpoint.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DeleteProductPromotion?idProductoPromocion=.
+        /// </summary>
+        internal static string DeleteProductPromotion {
+            get {
+                return ResourceManager.GetString("DeleteProductPromotion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GetAllAlmacenes.
         /// </summary>
         internal static string GetAllAlmacenes {
@@ -367,6 +376,15 @@ namespace checkpoint.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GetAllUserTypes.
+        /// </summary>
+        internal static string GetAllUserTypes {
+            get {
+                return ResourceManager.GetString("GetAllUserTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GetAllUsuarios.
         /// </summary>
         internal static string GetAllUsuarios {
@@ -394,7 +412,7 @@ namespace checkpoint.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a GetCatalogByClave?claveCatalogo=.
+        ///   Looks up a localized string similar to GetCatalogByClave?claveCatalogo=.
         /// </summary>
         internal static string GetCatalogByClave {
             get {
@@ -403,7 +421,7 @@ namespace checkpoint.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a GetCatalogByName?catalogName=.
+        ///   Looks up a localized string similar to GetCatalogByName?catalogName=.
         /// </summary>
         internal static string GetCatalogByName {
             get {
@@ -502,7 +520,7 @@ namespace checkpoint.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a GetProductosByAlmacen?idAlmacen=.
+        ///   Looks up a localized string similar to GetProductosByAlmacen?idAlmacen=.
         /// </summary>
         internal static string GetProductosByAlmacen {
             get {
@@ -511,7 +529,7 @@ namespace checkpoint.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a GetProductoWithSuppliers?pluProducto=.
+        ///   Looks up a localized string similar to GetProductoWithSuppliers?pluProducto=.
         /// </summary>
         internal static string GetProductoWithSuppliers {
             get {
@@ -534,6 +552,15 @@ namespace checkpoint.Resources {
         internal static string GetProductsSuggestToBuy {
             get {
                 return ResourceManager.GetString("GetProductsSuggestToBuy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GetPromocionById?idPromocion=.
+        /// </summary>
+        internal static string GetPromocionById {
+            get {
+                return ResourceManager.GetString("GetPromocionById", resourceCulture);
             }
         }
         

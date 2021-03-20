@@ -1,4 +1,6 @@
-﻿using System;
+﻿using checkpoint.Views.Catalogs.Products.Models;
+using checkpoint.Views.Promotions.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,5 +18,6 @@ namespace checkpoint.Views.Sales.Models
         public int? idMarca { get; set; }
         public string DiasPromocion { get; set; }
         public bool Estatus { get; set; }
+        public List<Productos> Productos { get; set; }
     }
 }

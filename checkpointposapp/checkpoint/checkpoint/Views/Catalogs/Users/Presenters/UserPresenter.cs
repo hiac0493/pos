@@ -1,5 +1,6 @@
 ﻿using checkpoint.Users.Models;
 using checkpoint.Users.Services;
+using Pos.Business.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -22,6 +23,10 @@ namespace checkpoint.Users.Presenters
         public List<UsuariosRH> GetAllUsuarios()
         {
             return _usersServices.GetAllUsuarios();
+        }
+        public List<TipoUsuario> GetAllUserTypes()
+        {
+            return _usersServices.GetAllUserTypes();
         }
 
         public Task<UsuariosRH> SaveUser(UsuariosRH usuario)

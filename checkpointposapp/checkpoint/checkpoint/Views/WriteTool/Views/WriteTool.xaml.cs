@@ -72,7 +72,7 @@ namespace checkpoint.Views.WriteTool.Views
                         PLU = celdas[0].Trim(),
                     });
 
-                    if(celdas[5].Trim() != "" & celdas[5].Trim() != "#N/A")
+                    if(celdas[5].Trim() != "" & celdas[5].Trim() != "#N/D")
                     {
                         PLUs.Add(new PLUProductos
                         {
@@ -80,7 +80,7 @@ namespace checkpoint.Views.WriteTool.Views
                         });
                     }
 
-                    if (celdas[4].Trim() != "" & celdas[4].Trim() != "#N/A")
+                    if (celdas[4].Trim() != "" & celdas[4].Trim() != "#N/D")
                     {
                         catalogoSat catalogo = new catalogoSat();
                         catalogo = _catalogSatPresenter.GetCatalogByClave(celdas[4].Trim());

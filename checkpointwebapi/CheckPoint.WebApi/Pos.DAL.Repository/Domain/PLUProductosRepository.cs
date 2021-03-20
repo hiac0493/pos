@@ -18,7 +18,7 @@ namespace Pos.DAL.Repository.Domain
             long localTime = DateTime.Now.Ticks;
             return dbContext.PLUProductos
                 .Include(b => b.Producto).ThenInclude(b => b.Impuestos).ThenInclude(b => b.Impuesto)
-                .Include(b => b.Producto).ThenInclude(b => b.Promociones).ThenInclude(b => b.Promocion)
+                .Include(b => b.Producto).ThenInclude(b => b.Promociones).ThenInclude(b => b.Promocion).ThenInclude(b=>b.Productos)
                 .Where(a => a.PLU.Equals(PLU))
                 .Select(a => new
                 {

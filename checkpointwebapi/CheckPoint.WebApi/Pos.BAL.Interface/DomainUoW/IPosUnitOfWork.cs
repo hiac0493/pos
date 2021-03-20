@@ -28,6 +28,7 @@ namespace Pos.BAL.Interface.DomainUoW
         IProveedoresRepository ProveedoresRepository { get; }
         IRetirosRepository RetirosRepository { get; }
         ITipoPagoRepository TipoPagoRepository { get; }
+        ITipoUsuarioRepository TipoUsuarioRepository { get; }
         ITurnosRepository TurnosRepository { get; }
         IUnidadesRepository UnidadesRepository { get; }
         IUnidadSatRepository UnidadSatRepository  { get; }

@@ -29,7 +29,9 @@ namespace Pos.DAL.Repository.Domain
 
         public double GetTotalSale(int idUsuario, long folioInicio, long folioFin)
         {
-            double result = dbContext.Ventas.Where(x => x.FolioVenta >= folioInicio && x.FolioVenta <= folioFin && x.idUsuario.Equals(idUsuario) && x.Estatus.Equals('A')).Sum(x => x.Total);
+            double result = dbContext.Ventas
+                .Where(x => x.FolioVenta > folioInicio && x.FolioVenta <= folioFin && x.idUsuario.Equals(idUsuario) && x.Estatus.Equals('A'))
+                .Sum(x => x.Total);
             return result;
         }
 
@@ -40,7 +42,8 @@ namespace Pos.DAL.Repository.Domain
 
         public IEnumerable<object> GetAllPagosCorte(long folioInicio, long folioFinal, int IdUsuario)
         {
-            return dbContext.VentaPagos.Include(x => x.Venta).Where(x => x.idVenta >= folioInicio && x.idVenta <= folioFinal && x.Venta.idUsuario.Equals(IdUsuario) && x.Venta.Estatus.Equals('A'))
+            return dbContext.VentaPagos.Include(x => x.Venta)
+                .Where(x => x.idVenta > folioInicio && x.idVenta <= folioFinal && x.Venta.idUsuario.Equals(IdUsuario) && x.Venta.Estatus.Equals('A'))
                  .GroupBy(x => x.idTipoPago)
                  .Select(a => new
                  {
@@ -52,8 +55,11 @@ namespace Pos.DAL.Repository.Domain
 
         public object GetTotalWithTaxes(long folioInicio, long folioFinal, int IdUsuario)
         {
-            List<long> ventasUsuario = dbContext.Ventas.Where(x => x.FolioVenta >= folioInicio && x.FolioVenta <= folioFinal && x.idUsuario.Equals(IdUsuario) && x.Estatus.Equals('A')).Select(x => x.FolioVenta).ToList();
-            List<int> impuesto = dbContext.ImpuestoProductos.Where(x => x.idImpuesto.Equals(1)).Select(x => x.idProducto).ToList();
+            List<long> ventasUsuario = dbContext.Ventas
+                .Where(x => x.FolioVenta > folioInicio && x.FolioVenta <= folioFinal && x.idUsuario.Equals(IdUsuario) && x.Estatus.Equals('A'))
+                .Select(x => x.FolioVenta).ToList();
+            List<int> impuesto = dbContext.ImpuestoProductos.Where(x => x.idImpuesto.Equals(1))
+                .Select(x => x.idProducto).ToList();
             double total = dbContext.ProductosVenta.Include(x => x.Productos).ThenInclude(x => x.Impuestos)
                 .Where(x => ventasUsuario.Contains(x.idVenta) && impuesto.Contains(x.idProducto)).Sum(x => x.Monto);
             double total2 = dbContext.ProductosVenta
@@ -69,8 +75,11 @@ namespace Pos.DAL.Repository.Domain
 
         public object GetReturnsWithTaxes(long folioInicio, long folioFinal, int IdUsuario)
         {
-            List<long> ventasUsuario = dbContext.Ventas.Where(x => x.FolioVenta >= folioInicio && x.FolioVenta <= folioFinal && x.idUsuario.Equals(IdUsuario) && !x.Estatus.Equals('A')).Select(x => x.FolioVenta).ToList();
-            List<int> impuesto = dbContext.ImpuestoProductos.Where(x => x.idImpuesto.Equals(1)).Select(x => x.idProducto).ToList();
+            List<long> ventasUsuario = dbContext.Ventas
+                .Where(x => x.FolioVenta > folioInicio && x.FolioVenta <= folioFinal && x.idUsuario.Equals(IdUsuario) && !x.Estatus.Equals('A'))
+                .Select(x => x.FolioVenta).ToList();
+            List<int> impuesto = dbContext.ImpuestoProductos
+                .Where(x => x.idImpuesto.Equals(1)).Select(x => x.idProducto).ToList();
             double total = dbContext.ProductosVenta.Include(x => x.Productos).ThenInclude(x => x.Impuestos)
                 .Where(x => ventasUsuario.Contains(x.idVenta) && impuesto.Contains(x.idProducto)).Sum(x => x.Monto);
             double total2 = dbContext.ProductosVenta
@@ -86,8 +95,11 @@ namespace Pos.DAL.Repository.Domain
 
         public double CalcIvaTasa(int idUsuario, long folioInicio, long folioFin)
         {
-            List<long> ventasUsuario = dbContext.Ventas.Where(x => x.FolioVenta >= folioInicio && x.FolioVenta <= folioFin && x.idUsuario.Equals(idUsuario) && x.Estatus.Equals('A')).Select(x => x.FolioVenta).ToList();
-            List<int> impuesto = dbContext.ImpuestoProductos.Where(x => x.idImpuesto.Equals(1)).Select(x => x.idProducto).ToList();
+            List<long> ventasUsuario = dbContext.Ventas
+                .Where(x => x.FolioVenta > folioInicio && x.FolioVenta <= folioFin && x.idUsuario.Equals(idUsuario) && x.Estatus.Equals('A'))
+                .Select(x => x.FolioVenta).ToList();
+            List<int> impuesto = dbContext.ImpuestoProductos.Where(x => x.idImpuesto.Equals(1))
+                .Select(x => x.idProducto).ToList();
             double total = dbContext.ProductosVenta.Include(x => x.Productos).ThenInclude(x => x.Impuestos)
                 .Where(x => ventasUsuario.Contains(x.idVenta) && impuesto.Contains(x.idProducto)).Sum(x => x.Monto);
             double totalIva = total / 1.16;
@@ -95,8 +107,11 @@ namespace Pos.DAL.Repository.Domain
         }
         public double CalcIvaReturn(int idUsuario, long folioInicio, long folioFin)
         {
-            List<long> ventasUsuario = dbContext.Ventas.Where(x => x.FolioVenta >= folioInicio && x.FolioVenta <= folioFin && x.idUsuario.Equals(idUsuario) && !x.Estatus.Equals('A')).Select(x => x.FolioVenta).ToList();
-            List<int> impuesto = dbContext.ImpuestoProductos.Where(x => x.idImpuesto.Equals(1)).Select(x => x.idProducto).ToList();
+            List<long> ventasUsuario = dbContext.Ventas
+                .Where(x => x.FolioVenta > folioInicio && x.FolioVenta <= folioFin && x.idUsuario.Equals(idUsuario) && !x.Estatus.Equals('A'))
+                .Select(x => x.FolioVenta).ToList();
+            List<int> impuesto = dbContext.ImpuestoProductos
+                .Where(x => x.idImpuesto.Equals(1)).Select(x => x.idProducto).ToList();
             double total = dbContext.ProductosVenta.Include(x => x.Productos).ThenInclude(x => x.Impuestos)
                 .Where(x => ventasUsuario.Contains(x.idVenta) && impuesto.Contains(x.idProducto)).Sum(x => x.Monto);
             double totalIva = total / 1.16;
@@ -105,7 +120,9 @@ namespace Pos.DAL.Repository.Domain
 
         public double GetTotalReturn(int idUsuario, long folioInicio, long folioFin)
         {
-            double result = dbContext.Ventas.Where(x => x.FolioVenta >= folioInicio && x.FolioVenta <= folioFin && x.idUsuario.Equals(idUsuario) && x.Estatus.Equals('C')).Sum(x => x.Total);
+            double result = dbContext.Ventas
+                .Where(x => x.FolioVenta > folioInicio && x.FolioVenta <= folioFin && x.idUsuario.Equals(idUsuario) && x.Estatus.Equals('C'))
+                .Sum(x => x.Total);
             return result;
         }
     }

@@ -31,7 +31,9 @@ namespace checkpoint.Views.Sales.Views
         {
             InitializeComponent();
             this.KeyDown += OnKeyDownHandler;
-            _checkPresenter = new CheckPresenter(new ProductsCheckServices());
+            skuCheckText.Focus();
+             _checkPresenter = new CheckPresenter(new ProductsCheckServices());
+
         }
         #endregion
         #region Write data

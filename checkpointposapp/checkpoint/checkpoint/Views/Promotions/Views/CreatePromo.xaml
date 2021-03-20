@@ -234,6 +234,8 @@
 							                                        Background="#0069C0"
 							                                        BorderThickness="0"
                                                                     Width="30"
+                                                                    Name="DeleteProduct"
+                                                                    Click="DeleteProduct_Click"
                                                                     Height="30"
                                                                     HorizontalAlignment="Center">
                                                                 <StackPanel Orientation="Horizontal" >
@@ -345,7 +347,7 @@
                                             
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
-                                            <StackPanel Margin="0 0 15 0">
+                                            <StackPanel Margin="0 0 15 15">
                                                 <TextBlock Text="DEPARTAMENTOS:"
 							                               FontSize="15"
 							                               VerticalAlignment="Center"/>
@@ -376,7 +378,20 @@
 							                               Margin="0 10 15 0"/>
                                             </StackPanel>
                                         </StackPanel>
-                                        <StackPanel>
+                                        <StackPanel Margin="0 0 15 0">
+                                            <TextBlock Text="DESCUENTO TOTAL:"
+							                               FontSize="15"
+							                               VerticalAlignment="Center"/>
+                                            <TextBox   Padding="5"
+							                               Foreground="#495057"
+							                               FontSize="15"
+                                                           Name="DescuentoTxt"
+							                               HorizontalAlignment="Left"
+							                               MinWidth="250"
+							                               MaxHeight="30"
+                                                           Margin="0 15 0 0"/>
+                                        </StackPanel>
+                                        <StackPanel Margin="0 0 0 30">
                                             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"
                                                         Margin="0 0 45 0">
                                                 <Button Padding="5"

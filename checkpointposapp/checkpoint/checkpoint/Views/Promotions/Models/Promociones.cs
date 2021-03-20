@@ -16,6 +16,6 @@ namespace checkpoint.Views.Promotions.Models
         public int? idMarca { get; set; }
         public string DiasPromocion { get; set; }
         public bool Estatus { get; set; }
-        public List<ProductosPromocion> Productos { get; set; }
+        public IList<ProductosPromocion> Productos { get; set; }
     }
 }

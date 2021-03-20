@@ -228,7 +228,6 @@ namespace checkpoint.Views.Catalogs.Products.Views
             if (claveAux != null)
             {
                 productos.idCatalogoSat = claveAux.idCatalogoSat;
-                unidadSatComboBox.SelectedValue = claveAux.idUnidadSat;
             }
         }
 

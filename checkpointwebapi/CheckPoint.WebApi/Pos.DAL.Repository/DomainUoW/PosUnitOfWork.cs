@@ -35,6 +35,7 @@ namespace Pos.DAL.Repository.DomainUoW
             ProveedoresRepository = new ProveedoresRepository(_context);
             RetirosRepository = new RetirosRepository(_context);
             TipoPagoRepository = new TipoPagoRepository(_context);
+            TipoUsuarioRepository = new TipoUsuarioRepository(_context);
             TurnosRepository = new TurnosRepository(_context);
             UnidadesRepository = new UnidadesRepository(_context);
             UnidadSatRepository = new UnidadSatRepository(_context);
@@ -66,6 +67,7 @@ namespace Pos.DAL.Repository.DomainUoW
         public IProveedoresRepository ProveedoresRepository { get; private set; }
         public IRetirosRepository RetirosRepository { get; private set; }
         public ITipoPagoRepository TipoPagoRepository { get; private set; }
+        public ITipoUsuarioRepository TipoUsuarioRepository { get; private set; }
         public ITurnosRepository TurnosRepository { get; private set; }
         public IUnidadesRepository UnidadesRepository { get; private set; }
         public IUnidadSatRepository UnidadSatRepository { get; private set; }

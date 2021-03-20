@@ -17,7 +17,8 @@ namespace Pos.DAL.Repository.Domain
 
         public IEnumerable<object> GetAllTaxes(long folioInicio, long folioFinal, int IdUsuario)
         {
-            return dbContext.VentaImpuestos.Include(x => x.Venta).Where(x => x.IdVenta >= folioInicio && x.IdVenta <= folioFinal && x.Venta.idUsuario.Equals(IdUsuario))
+            return dbContext.VentaImpuestos.Include(x => x.Venta)
+                .Where(x => x.IdVenta > folioInicio && x.IdVenta <= folioFinal && x.Venta.idUsuario.Equals(IdUsuario))
                 .GroupBy(x => x.IdImpuesto)
                 .Select(a => new
                 {
@@ -30,7 +31,7 @@ namespace Pos.DAL.Repository.Domain
 
         public double GetTotalTaxes(long folioInicio, long folioFinal, int IdUsuario)
         {
-            return dbContext.VentaImpuestos.Include(x => x.Venta).Where(x => x.IdVenta >= folioInicio && x.IdVenta <= folioFinal && x.Venta.idUsuario.Equals(IdUsuario)).Sum(x => x.Cantidad);
+            return dbContext.VentaImpuestos.Include(x => x.Venta).Where(x => x.IdVenta > folioInicio && x.IdVenta <= folioFinal && x.Venta.idUsuario.Equals(IdUsuario)).Sum(x => x.Cantidad);
         }
 
 

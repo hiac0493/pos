@@ -58,34 +58,34 @@ namespace checkpoint.Views.CashClose.Views
         #region Methods form
         private void endCashClose()
         {
-            cortesToSave = _cashClosePresenter.GetCurrentCashClose(4);
+            cortesToSave = _cashClosePresenter.GetCurrentCashClose(App._userApplication.idUsuario);
             cortesToSave.FolioVentaFin = _cashClosePresenter.GetLastFolio();
-            cortesToSave.TotalVenta = _cashClosePresenter.GetTotalSale(4, cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin);
+            cortesToSave.TotalVenta = _cashClosePresenter.GetTotalSale(App._userApplication.idUsuario, cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin);
             
             paymentsGrid.ItemsSource = cortePagoList;
-            cortePagoList.AddRange(_cashClosePresenter.GetAllPagosCorte(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, 4));
+            cortePagoList.AddRange(_cashClosePresenter.GetAllPagosCorte(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, App._userApplication.idUsuario));
             
             taxesGrid.ItemsSource = impuestoList;
-            impuestoList.AddRange(_cashClosePresenter.GetAllTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, 4));
+            impuestoList.AddRange(_cashClosePresenter.GetAllTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, App._userApplication.idUsuario));
             
             totalSale.Text = cortesToSave.TotalVenta.ToString("C2");
             
-            totalTaxe = _cashClosePresenter.GetTotalTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, 4);
+            totalTaxe = _cashClosePresenter.GetTotalTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, App._userApplication.idUsuario);
             totalTaxes.Text =  totalTaxe.ToString("C2");
             ivaGrid.ItemsSource = tasaList;
-            tasaList.AddRange(_cashClosePresenter.GetTotalWithTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, 4));
+            tasaList.AddRange(_cashClosePresenter.GetTotalWithTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, App._userApplication.idUsuario));
             returnsGrid.ItemsSource = returnList;
             totalTasa.Text =  cortesToSave.TotalVenta.ToString("C2");
 
-            ivaTasa = _cashClosePresenter.CalcIvaTasa(4,cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin);
+            ivaTasa = _cashClosePresenter.CalcIvaTasa(App._userApplication.idUsuario, cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin);
             totalTasaIva.Text =  ivaTasa.ToString("C2");
-            returnList.AddRange(_cashClosePresenter.GetReturnsWithTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, 4));
+            returnList.AddRange(_cashClosePresenter.GetReturnsWithTaxes(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, App._userApplication.idUsuario));
 
-            totalReturns = _cashClosePresenter.GetTotalReturns(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, 4);
+            totalReturns = _cashClosePresenter.GetTotalReturns(cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin, App._userApplication.idUsuario);
 
             totalReturn.Text = totalReturns.ToString("C2");
 
-            ivaReturns = _cashClosePresenter.CalcIvaReturn(4, cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin);
+            ivaReturns = _cashClosePresenter.CalcIvaReturn(App._userApplication.idUsuario, cortesToSave.FolioVentaInicio, (long)cortesToSave.FolioVentaFin);
             totalReturnIva.Text = ivaReturns.ToString("C2");
             saveCashClose(cortesToSave);
         }

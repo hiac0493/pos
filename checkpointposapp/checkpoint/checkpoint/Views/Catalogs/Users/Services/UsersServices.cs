@@ -1,5 +1,6 @@
 ﻿using checkpoint.Resources;
 using checkpoint.Users.Models;
+using Pos.Business.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -31,6 +32,20 @@ namespace checkpoint.Users.Services
             if (ResponseOK == HttpStatusCode.OK)
             {
                 return usuariosRHsList.ToList();
+            }
+            else
+            {
+                return null;
+            }
+        }        
+        public List<TipoUsuario> GetAllUserTypes()
+        {
+            string webApiUrl = WebApiMethods.GetAllUserTypes;
+            IList<TipoUsuario> tipoUsuariosList = new List<TipoUsuario>();
+            var ResponseOK = App.HttpTools.HttpGetList<TipoUsuario>(webApiUrl, ref tipoUsuariosList, "No se encontraron los tipos de usuario");
+            if (ResponseOK == HttpStatusCode.OK)
+            {
+                return tipoUsuariosList.ToList();
             }
             else
             {
