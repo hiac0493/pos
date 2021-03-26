@@ -8,6 +8,8 @@ using checkpoint.Sales.Views;
 using checkpoint.Views.CashClose.Models;
 using checkpoint.Views.CashClose.Presenters;
 using checkpoint.Views.CashClose.Services;
+using checkpoint.Views.Promotions.Services;
+using checkpoint.Views.Promotions.Presenters;
 using checkpoint.Views.Sales.Models;
 using checkpoint.Views.WithdrawCash;
 using checkpoint.Views.WithdrawCash.Views;
@@ -35,11 +37,14 @@ namespace checkpoint.Views.Sales.Views
         //**************************************************
         private SalesPresenter _salesPresenter;
         private CheckPresenter _checkPresenter;
+        private PromotionsPresenter _promotionsPresenter;
         double totalTaxe, ivaTasa, totalReturns, ivaReturns;
         private CashClosePresenter _cashClosePresenter;
         BindingList<ProductsGridSales> products = new BindingList<ProductsGridSales>();
         List<Impuestos> impuestosVenta = new List<Impuestos>();
         List<Impuestos> impuestosResumen = new List<Impuestos>();
+        List<Promociones> listaPromociones = new List<Promociones>();
+        List<ProductSale> listaProductos = new List<ProductSale>();
         Cortes corte = new Cortes();
         Cortes cortesToSave = new Cortes();
         Cortes cortesAux = new Cortes();
@@ -200,7 +205,56 @@ namespace checkpoint.Views.Sales.Views
                 cleanView();
             }
         }
-
+        private void ActualizarPromos(List<Promociones> lista_promos)
+        {
+            foreach (Promociones item in lista_promos)
+            {
+                Promociones promoExists = listaPromociones.Where(x => x.idPromocion.Equals(item.idPromocion)).FirstOrDefault();
+                if (promoExists == null)
+                {
+                    listaPromociones.Add(item);
+                }
+            }
+        }
+        private void CombinarPromos(List<ProductSale> listaProductos)
+        {
+            List<Productos> listToDelete;
+            foreach (Promociones item in listaPromociones)
+            {
+                listToDelete = new List<Productos>();
+                foreach (Productos product in item.Productos)
+                {
+                    if (listaProductos.Where(c => c.idProducto.Equals(product.idProducto)).Count() >= product.Cantidad)
+                    {
+                        listToDelete.Add(product);
+                    }
+                    else
+                    {
+                        listToDelete = null;
+                        break;
+                    }
+                }
+                if (listToDelete != null)
+                {
+                    EliminarProductos(listToDelete);
+                    ProductSale productExtractToDB = new ProductSale();
+                        //_salesPresenter.GetProductById(item.ProductoPromo.idProducto.ToString());
+                    addProductToSale(productExtractToDB, 1);
+                }
+            }
+        }
+        private void EliminarProductos(List<Productos> listToDelete)
+        {
+            ProductSale productToDelete;
+            foreach (Productos product in listToDelete)
+            {
+                productToDelete = listaProductos.Where(p => p.idProducto.Equals(product.idProducto)).FirstOrDefault();
+                for (int i = 0; i < product.Cantidad; i++)
+                {
+                    listaProductos.Remove(productToDelete);
+                }
+            }
+        }
         private void Products_ListChanged(object sender, ListChangedEventArgs e)
         {
             if (products.Count > 0)
@@ -232,6 +286,7 @@ namespace checkpoint.Views.Sales.Views
         {
             ProductsGridSales productTypeForme = new ProductsGridSales { idProducto = productExtractToDB.idProducto, PLU = productExtractToDB.pluProducto, Description = productExtractToDB.nombre, Price = productExtractToDB.precioVenta, Quantity = (int)quantity, Total = productExtractToDB.precioVenta * quantity, impuestosList = productExtractToDB.impuestos };
             ProductsGridSales productExist = products.Where(x => x.idProducto.Equals(productExtractToDB.idProducto)).FirstOrDefault();
+            listaProductos.Add(productExtractToDB);
             if (productExist != null)
             {
                 productExist.Quantity += productTypeForme.Quantity;
@@ -241,10 +296,17 @@ namespace checkpoint.Views.Sales.Views
             else
             {
                 //imageProduct.GetGoogleImageById(productExtractToDB.imagenId);
+
                 products.Add(productTypeForme);
+            }
+            if (productExtractToDB.promociones != null)
+            {
+                ActualizarPromos(productExtractToDB.promociones);
+                CombinarPromos(listaProductos);
             }
             skuText.Text = string.Empty;
         }
+
         private void updateProductToBuy(object sender)
         {
             ProductsGridSales productSelected = Product.SelectedValue as ProductsGridSales;
@@ -286,7 +348,7 @@ namespace checkpoint.Views.Sales.Views
 
                     if (productExtractToDB != null)
                     {
-                        productExtractToDB.precioVenta = ModifyPricePromo(productExtractToDB, quantity);
+                        //productExtractToDB.precioVenta = ModifyPricePromo(productExtractToDB, quantity);
                         addProductToSale(productExtractToDB, quantity);
                     }
                 }
@@ -496,6 +558,12 @@ namespace checkpoint.Views.Sales.Views
             if (Product.ActualWidth >= 343)
                 skuText.Width = Product.ActualWidth - 343;
         }
+
+        private void SalesTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Product.Height = this.ActualHeight - 165;
