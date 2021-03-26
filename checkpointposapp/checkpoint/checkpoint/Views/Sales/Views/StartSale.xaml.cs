@@ -219,6 +219,7 @@ namespace checkpoint.Views.Sales.Views
         private void CombinarPromos(List<ProductSale> listaProductos)
         {
             List<Productos> listToDelete;
+            float totalProducts = 0;
             foreach (Promociones item in listaPromociones)
             {
                 listToDelete = new List<Productos>();
@@ -236,15 +237,25 @@ namespace checkpoint.Views.Sales.Views
                 }
                 if (listToDelete != null)
                 {
-                    EliminarProductos(listToDelete);
+                    totalProducts = EliminarProductos(listToDelete);
                     ProductSale productExtractToDB = new ProductSale();
+                    productExtractToDB.nombre = item.NombrePromocion;
+                    if (item.Porcentaje.HasValue)
+                    {
+                        productExtractToDB.precioVenta = -1*(((item.Porcentaje.Value) / 100) * totalProducts);
+                    }
+                    else
+                    {
+                        productExtractToDB.precioVenta = item.Monto.Value*-1;
+                    }
                         //_salesPresenter.GetProductById(item.ProductoPromo.idProducto.ToString());
                     addProductToSale(productExtractToDB, 1);
                 }
             }
         }
-        private void EliminarProductos(List<Productos> listToDelete)
+        private float EliminarProductos(List<Productos> listToDelete)
         {
+            float total = 0;
             ProductSale productToDelete;
             foreach (Productos product in listToDelete)
             {
@@ -252,8 +263,10 @@ namespace checkpoint.Views.Sales.Views
                 for (int i = 0; i < product.Cantidad; i++)
                 {
                     listaProductos.Remove(productToDelete);
+                    total +=productToDelete.precioVenta;
                 }
             }
+            return total;
         }
         private void Products_ListChanged(object sender, ListChangedEventArgs e)
         {
